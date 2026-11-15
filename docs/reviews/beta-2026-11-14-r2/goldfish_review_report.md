@@ -14,7 +14,7 @@ Status: resolved
 
 **SHA-256 anterior:** `0d4712ad2080484f3673acdb1dbbf353b617d016b65410c2a631d91f1f46bce6`.
 
-**SHA-256 atualizado:** `6ce9cfb5435f6d424ba81b406750465eb102c58cf1621aea155f593339cc75bc`.
+**SHA-256 atualizado:** `a0cf4512a26ad376a86642d0b4d4de0a542b165118c6def105acc07bad739d59`.
 
 O [diff](resolution_changes.diff) registra as alterações. O manifesto e os pareceres da auditoria conservam a referência à versão anterior; este registro acompanha a resolução sem declarar nova auditoria independente ou execução do produto.
 
@@ -118,6 +118,10 @@ Trecho resultante:
 | A-03 | T9-01 | Major | PROPOSE FIX | Encerrado documentalmente |
 | A-04 | T7-01 | Nit | PROPOSE FIX | Encerrado documentalmente |
 | A-05 | T9-02 | Nit | PROPOSE FIX | Encerrado documentalmente |
+
+## Esclarecimento posterior — vencimentos (2026-11-15)
+
+Por orientação do solicitante, a regra 3, os exemplos de rejeição e o P09 agora distinguem entrada e parcelas: aceitar entrada e primeira parcela no mesmo dia quando previsto na condição selecionada; rejeitar vencimentos repetidos entre parcelas e entrada posterior à primeira parcela. O ajuste comercial continua sem autorização para alterar datas. As referências atuais são as linhas 311, 336 e 743 do desenho. Trata-se de precisão do contrato e de seus critérios de teste, sem novo achado ou alteração das cinco classificações encerradas.
 
 ## Verificação e alcance
 

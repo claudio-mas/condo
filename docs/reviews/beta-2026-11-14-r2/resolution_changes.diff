@@ -97,7 +97,8 @@
 -1. Resolver preço e limite de desconto no servidor. `discountAmount = ROUND_HALF_UP(listPrice × discountRate, 2)` e `netPrice = listPrice − discountAmount`, ambos em centavos exatos. Preço e líquido devem ser positivos, desconto dentro da faixa autorizada; desconto ausente equivale a zero.
 +1. Resolver preço e limite efetivo de desconto no servidor, aplicando exceção por unidade, limite do empreendimento ou zero, nessa ordem. `discountAmount = ROUND_HALF_UP(listPrice × discountRate, 2)` e `netPrice = listPrice − discountAmount`, ambos em centavos exatos. Preço e líquido devem ser positivos, desconto dentro da faixa autorizada; valor solicitado ausente equivale a zero. Sem limite efetivo configurado, qualquer desconto positivo é recusado.
  2. Exigir pelo menos um pagamento: entrada ou parcela. Valores são positivos com duas casas; IDs são únicos inclusive entre entrada e parcelas. Sem entrada, usar `null`, nunca uma entrada fictícia de valor zero.
- 3. Validar cada `dueDate` como data gregoriana existente, inclusive ano bissexto; apenas `format: date` não basta. Na emissão nova, vencimentos não podem anteceder a data civil de emissão no fuso do empreendimento. Parcelas estão em ordem estritamente crescente; entrada, quando presente, vence antes ou na data da primeira parcela. Não derivar vencimentos adicionando meses.
+-3. Validar cada `dueDate` como data gregoriana existente, inclusive ano bissexto; apenas `format: date` não basta. Na emissão nova, vencimentos não podem anteceder a data civil de emissão no fuso do empreendimento. Parcelas estão em ordem estritamente crescente; entrada, quando presente, vence antes ou na data da primeira parcela. Não derivar vencimentos adicionando meses.
++3. Validar cada `dueDate` como data gregoriana existente, inclusive ano bissexto; apenas `format: date` não basta. Na emissão nova, vencimentos não podem anteceder a data civil de emissão no fuso do empreendimento. Os vencimentos das parcelas são estritamente crescentes, sem repetição entre parcelas. A entrada, quando presente e havendo parcelas, vence antes ou no mesmo dia da primeira parcela; essa coincidência é permitida. Todas as datas permanecem iguais às da condição administrativa selecionada. Não derivar vencimentos adicionando meses.
  4. Exigir `entry.amount (ou 0) + soma(installments.amount) = netPrice` com igualdade de centavos. Rejeitar totais menores/maiores; o validador não corrige dinheiro submetido. O desconto incide primeiro no preço e o cronograma distribui o líquido, sem aplicar outro desconto em cada parcela.
 -5. Na ferramenta de divisão assistida, o consultor informa todas as datas e a entrada fixa, se houver. Dividir os centavos restantes por `n` parcelas usando quociente inteiro; o resto inteiro é o ajuste. Somar todo o resto à primeira parcela por padrão. Pode somá-lo à entrada existente por escolha explícita, mantendo as parcelas no quociente. A interface exibe o ajuste e exige confirmação antes de salvar. Com nenhuma parcela, a entrada única recebe todo o líquido; não há divisão ou resíduo. O servidor reconstrói/confere a divisão e persiste o ajuste no resultado, sem confiar em metadados enviados pelo navegador.
 -6. Congelar plano, desconto, cronograma e ajuste no snapshot. Revalidar a condição autorizada e o total na emissão e na confirmação; nenhuma alteração posterior reescreve uma proposta pronta.
@@ -120,7 +121,7 @@
  ```
  
 -Se o consultor escolher ajuste na entrada, esta passa a R$ 10.000,01 e cada uma das três parcelas fica em R$ 28.333,33, nas mesmas datas, ainda totalizando R$ 95.000,00. Esse é outro plano confirmado, não uma modificação oculta. Rejeitar, por exemplo, três parcelas de R$ 28.333,33 com entrada de R$ 10.000,00 (falta R$ 0,01), `2027-02-29`, data repetida, valor negativo, campo de recorrência ou desconto acima do limite.
-+Os UUIDs do exemplo são identificadores fictícios; versão e responsável reais são resolvidos pelo servidor. Mesmo somando R$ 95.000,00, recusar ajuste comercial que mude uma data, a entrada para R$ 10.000,01 ou a quantidade de parcelas; esses casos exigem nova condição administrativa versionada. Recusar também três parcelas de R$ 28.333,33 com entrada de R$ 10.000,00 (falta R$ 0,01), `2027-02-29`, data repetida, valor negativo, recorrência, desconto acima do limite efetivo ou entrada fixa incompatível com o líquido. Testar o limite por empreendimento, exceção maior/menor por unidade, exceção zero e ausência de ambos os limites; um `adjustedByUserId` forjado não altera o autor efetivo.
++Os UUIDs do exemplo são identificadores fictícios; versão e responsável reais são resolvidos pelo servidor. Mesmo somando R$ 95.000,00, recusar ajuste comercial que mude uma data, a entrada para R$ 10.000,01 ou a quantidade de parcelas; esses casos exigem nova condição administrativa versionada. Recusar também três parcelas de R$ 28.333,33 com entrada de R$ 10.000,00 (falta R$ 0,01), `2027-02-29`, vencimentos repetidos entre parcelas, valor negativo, recorrência, desconto acima do limite efetivo ou entrada fixa incompatível com o líquido. A entrada pode coincidir com a primeira parcela quando essa for a data prevista na condição selecionada. Testar o limite por empreendimento, exceção maior/menor por unidade, exceção zero e ausência de ambos os limites; um `adjustedByUserId` forjado não altera o autor efetivo.
  
  ### 7. Emissão consistente entre banco e PDF
  
@@ -253,7 +254,7 @@
  | Create | `tests/integration/simulations.test.ts` | Dono, concorrência, troca de unidade, faixas e condições. |
  
 -**Verificação do pacote:** outro consultor não abre o rascunho; revisão antiga gera conflito; troca de unidade refaz referências sem reaproveitar participação/custos indevidos. Cenário personalizado não sobrescreve oficiais. Atualização explícita destaca diferenças e preserva dados válidos. Parcelas conciliam exatamente com o líquido; conferir o exemplo de desconto de 5%, entrada de R$ 10.000,00 e resíduo de R$ 0,01 na primeira parcela ou entrada. Rejeitar soma divergente, datas inexistentes/repetidas/anteriores à emissão, recorrência e alteração não autorizada da condição, sem presumir juros/correção. Reiniciar a aplicação conserva o atendimento.
-+**Verificação do pacote:** outro consultor não abre o rascunho; revisão antiga gera conflito; troca de unidade refaz referências sem reaproveitar participação/custos indevidos. Cenário personalizado não sobrescreve oficiais. Atualização explícita destaca diferenças e preserva dados válidos. Aceitar desconto autorizado de 5% sobre R$ 100.000,00 mantendo datas, três parcelas e entrada de R$ 10.000,00, com parcelas R$ 28.333,34/R$ 28.333,33/R$ 28.333,33 e resíduo de R$ 0,01 na primeira. Recusar o mesmo líquido com data alterada, entrada diferente ou parcela acrescentada/removida; orientar nova condição administrativa versionada. Conferir versão selecionada, desconto, valores resultantes e responsável persistidos, ignorando autor forjado. Rejeitar soma divergente, datas inexistentes/repetidas/anteriores à emissão, recorrência, parcela não positiva, entrada incompatível e desconto acima do limite efetivo, sem presumir juros/correção. Sem parcelas, aceitar somente entrada já igual ao líquido. Reiniciar a aplicação conserva o atendimento.
++**Verificação do pacote:** outro consultor não abre o rascunho; revisão antiga gera conflito; troca de unidade refaz referências sem reaproveitar participação/custos indevidos. Cenário personalizado não sobrescreve oficiais. Atualização explícita destaca diferenças e preserva dados válidos. Aceitar desconto autorizado de 5% sobre R$ 100.000,00 mantendo datas, três parcelas e entrada de R$ 10.000,00, com parcelas R$ 28.333,34/R$ 28.333,33/R$ 28.333,33 e resíduo de R$ 0,01 na primeira. Aceitar condição administrativa em que entrada e primeira parcela vencem no mesmo dia, preservando esses vencimentos no ajuste comercial. Recusar o mesmo líquido com data alterada, entrada diferente ou parcela acrescentada/removida; orientar nova condição administrativa versionada. Conferir versão selecionada, desconto, valores resultantes e responsável persistidos, ignorando autor forjado. Rejeitar soma divergente, datas inexistentes ou anteriores à emissão, vencimentos repetidos entre parcelas, entrada posterior à primeira parcela, recorrência, parcela não positiva, entrada incompatível e desconto acima do limite efetivo, sem presumir juros/correção. Sem parcelas, aceitar somente entrada já igual ao líquido. Reiniciar a aplicação conserva o atendimento.
  
  #### P10 — snapshot, apresentação e PDF
  
@@ -383,7 +384,7 @@
 +**Alvo auditado:** [desenho formal da beta](../../designs/plataforma-comercial-hoteleira-beta.md), versão de 937 linhas. **Especificação auditada:** 1–480. **Implementação detalhada auditada:** 481–937, incluindo reconciliação final. SHA-256 da versão auditada: `0d4712ad2080484f3673acdb1dbbf353b617d016b65410c2a631d91f1f46bce6`.
  
 -## Conclusão
-+**Versão após resolução:** 1.000 linhas; especificação 1–504 e plano detalhado 505–1000. SHA-256: `6ce9cfb5435f6d424ba81b406750465eb102c58cf1621aea155f593339cc75bc`. As localizações nos achados abaixo continuam sendo as da versão auditada; as localizações atuais e as alterações estão no registro de resolução.
++**Versão após resolução:** 1.000 linhas; especificação 1–504 e plano detalhado 505–1000. SHA-256: `a0cf4512a26ad376a86642d0b4d4de0a542b165118c6def105acc07bad739d59`. As localizações nos achados abaixo continuam sendo as da versão auditada; as localizações atuais e as alterações estão no registro de resolução.
 +
 +## Conclusão da auditoria sobre a versão anterior
  
@@ -396,7 +397,7 @@
  
  ## Etapas e comprovação de conclusão
  
-@@ -92,14 +96,26 @@
+@@ -92,14 +96,28 @@
  
  | Achado bruto | Etapa/lente | Severidade | Ação consolidada | Tratamento |
  |---|---|---|---|---|
@@ -426,10 +427,12 @@
 +| 5 | A-05 | Sem limite efetivo configurado, somente zero é aceito; desconto positivo deve ser recusado. | Encerrado |
 +
 +As severidades originais foram preservadas. O fechamento decorre das edições autorizadas e da verificação documental desta resolução; os pareceres originais não foram reescritos nem foi realizada nova auditoria Goldfish. Evidências: [registro](goldfish_review_report.md), [diff](resolution_changes.diff) e [verificação da resolução](resolution_verification.json).
++
++Esclarecimento posterior em 2026-11-15: a regra de vencimentos, os exemplos e o P09 foram alinhados para aceitar entrada e primeira parcela no mesmo dia previsto na condição e rejeitar repetição somente entre parcelas; entrada posterior à primeira parcela continua inválida. A imutabilidade das datas no ajuste comercial permanece. O registro de resolução acompanha essa precisão, sem reabrir os cinco achados.
  
  ## Verificações documentais e limites
  
-@@ -128,4 +144,4 @@
+@@ -128,4 +146,4 @@
  
  `fork_turns: "none"` configura a separação do histórico da conversa; não prova a exclusão de instruções do host. Essa exclusão não foi submetida a sonda independente. Todos os revisores confirmaram leitura dos insumos obrigatórios e não relataram entradas inacessíveis. As evidências de leitura estão nos relatórios; os resultados do alvo e contexto foram conferidos novamente pelo coordenador.
  

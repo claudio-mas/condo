@@ -22,12 +22,12 @@
     {
       "path": "/home/claudio/projetos/condo/docs/designs/plataforma-comercial-hoteleira-beta.md",
       "before_sha256": "0d4712ad2080484f3673acdb1dbbf353b617d016b65410c2a631d91f1f46bce6",
-      "after_sha256": "6ce9cfb5435f6d424ba81b406750465eb102c58cf1621aea155f593339cc75bc"
+      "after_sha256": "a0cf4512a26ad376a86642d0b4d4de0a542b165118c6def105acc07bad739d59"
     },
     {
       "path": "/home/claudio/projetos/condo/docs/reviews/beta-2026-11-14-r2/consolidated_review_report.md",
       "before_sha256": "5e2c702dfc92df6af263a3f781aba80be490cb1bcbc3142af7ddbd95f2916c17",
-      "after_sha256": "219cc313dc49cecba2562bc223d21bb0a90954e09d5331834a3583b473cc35ff"
+      "after_sha256": "3b8b58be0874575771296c6c15eb8fe580bd5d516721c97f7b906893aa3fa25e"
     }
   ],
   "preserved_existing_artifacts": [
@@ -148,5 +148,24 @@
     "goldfish_review_report.md",
     "resolution_changes.diff",
     "resolution_verification.json"
+  ],
+  "post_resolution_clarifications": [
+    {
+      "date": "2026-11-15",
+      "scope": "regra 3 de pagamento, exemplo de rejeição e verificação P09",
+      "lines": [
+        311,
+        336,
+        743
+      ],
+      "before_target_sha256": "6ce9cfb5435f6d424ba81b406750465eb102c58cf1621aea155f593339cc75bc",
+      "after_target_sha256": "a0cf4512a26ad376a86642d0b4d4de0a542b165118c6def105acc07bad739d59",
+      "same_day_entry_first_installment_explicitly_allowed": true,
+      "repeated_due_dates_between_installments_rejected": true,
+      "entry_after_first_installment_rejected": true,
+      "selected_condition_dates_remain_immutable": true,
+      "json_schema_and_example_revalidated": true,
+      "product_tests_run": false
+    }
   ]
 }

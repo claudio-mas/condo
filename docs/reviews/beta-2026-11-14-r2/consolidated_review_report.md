@@ -6,7 +6,7 @@
 
 **Alvo auditado:** [desenho formal da beta](../../designs/plataforma-comercial-hoteleira-beta.md), versão de 937 linhas. **Especificação auditada:** 1–480. **Implementação detalhada auditada:** 481–937, incluindo reconciliação final. SHA-256 da versão auditada: `0d4712ad2080484f3673acdb1dbbf353b617d016b65410c2a631d91f1f46bce6`.
 
-**Versão após resolução:** 1.000 linhas; especificação 1–504 e plano detalhado 505–1000. SHA-256: `6ce9cfb5435f6d424ba81b406750465eb102c58cf1621aea155f593339cc75bc`. As localizações nos achados abaixo continuam sendo as da versão auditada; as localizações atuais e as alterações estão no registro de resolução.
+**Versão após resolução:** 1.000 linhas; especificação 1–504 e plano detalhado 505–1000. SHA-256: `a0cf4512a26ad376a86642d0b4d4de0a542b165118c6def105acc07bad739d59`. As localizações nos achados abaixo continuam sendo as da versão auditada; as localizações atuais e as alterações estão no registro de resolução.
 
 ## Conclusão da auditoria sobre a versão anterior
 
@@ -116,6 +116,8 @@ Não houve achados nas lentes Zoom Out e Inventive Catalyst da etapa 5, Comprehe
 | 5 | A-05 | Sem limite efetivo configurado, somente zero é aceito; desconto positivo deve ser recusado. | Encerrado |
 
 As severidades originais foram preservadas. O fechamento decorre das edições autorizadas e da verificação documental desta resolução; os pareceres originais não foram reescritos nem foi realizada nova auditoria Goldfish. Evidências: [registro](goldfish_review_report.md), [diff](resolution_changes.diff) e [verificação da resolução](resolution_verification.json).
+
+Esclarecimento posterior em 2026-11-15: a regra de vencimentos, os exemplos e o P09 foram alinhados para aceitar entrada e primeira parcela no mesmo dia previsto na condição e rejeitar repetição somente entre parcelas; entrada posterior à primeira parcela continua inválida. A imutabilidade das datas no ajuste comercial permanece. O registro de resolução acompanha essa precisão, sem reabrir os cinco achados.
 
 ## Verificações documentais e limites
 
