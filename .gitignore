@@ -1,0 +1,40 @@
+# Dependências instaladas e saídas de build
+node_modules/
+.next/
+out/
+dist/
+build/
+*.tsbuildinfo
+
+# Segredos locais; o modelo de configuração é versionado
+.env
+.env.*
+!.env.example
+
+# Armazenamento privado e PDFs emitidos (não são fontes do projeto)
+/storage/
+/private-storage/
+/generated/**/*.pdf
+/artifacts/proposals/**/*.pdf
+
+# Backups e exportações locais; migrações SQL continuam versionadas
+/backups/
+*.backup
+*.dump
+*.bak
+
+# Resultados locais das verificações
+coverage/
+playwright-report/
+test-results/
+*.log
+
+# Metadados locais do sistema operacional
+.DS_Store
+Thumbs.db
+
+# Gerados obrigatórios para instalação e migrações reproduzíveis
+!package-lock.json
+!drizzle/
+!drizzle/meta/
+!drizzle/meta/**

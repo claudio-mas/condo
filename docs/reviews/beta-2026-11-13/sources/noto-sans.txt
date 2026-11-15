@@ -1,0 +1,256 @@
+URL: https://github.com/notofonts/noto-fonts/tree/main/hinted/ttf/NotoSans
+Resolved URL: https://github.com/notofonts/noto-fonts/tree/main/hinted/ttf/NotoSans
+Fetched UTC: 2026-11-14T01:08:21.888635+00:00
+Raw HTML: noto-sans.html
+Raw SHA256: 481526a701a4e3b25eda2134a8fc1df127ccb1f0c41de481d81fdd01dd96bd65
+Extraction: visible page text; script/style omitted; not a summary.
+
+This repository was archived by the owner on Jan 25, 2023. It is now read-only.
+notofonts
+noto-fonts
+Repository navigation
+Code
+Issues25 (25)
+Pull requests4 (4)
+Actions
+Projects
+Security and quality
+Insights
+More items
+FilesExpand file tree
+main
+Breadcrumbs
+noto-fonts
+/hinted
+/ttf
+/
+NotoSans
+/
+Copy path
+Directory actions
+More options
+More options
+Directory actions
+More options
+More options
+Latest commit
+History
+History
+History
+main
+Breadcrumbs
+noto-fonts
+/hinted
+/ttf
+/
+NotoSans
+/
+Copy path
+Top
+Folders and files
+NameName
+Last commit message
+Last commit date
+parent directory
+..
+NotoSans-Black.ttf
+NotoSans-Black.ttf
+NotoSans-BlackItalic.ttf
+NotoSans-BlackItalic.ttf
+NotoSans-Bold.ttf
+NotoSans-Bold.ttf
+NotoSans-BoldItalic.ttf
+NotoSans-BoldItalic.ttf
+NotoSans-Condensed.ttf
+NotoSans-Condensed.ttf
+NotoSans-CondensedBlack.ttf
+NotoSans-CondensedBlack.ttf
+NotoSans-CondensedBlackItalic.ttf
+NotoSans-CondensedBlackItalic.ttf
+NotoSans-CondensedBold.ttf
+NotoSans-CondensedBold.ttf
+NotoSans-CondensedBoldItalic.ttf
+NotoSans-CondensedBoldItalic.ttf
+NotoSans-CondensedExtraBold.ttf
+NotoSans-CondensedExtraBold.ttf
+NotoSans-CondensedExtraBoldItalic.ttf
+NotoSans-CondensedExtraBoldItalic.ttf
+NotoSans-CondensedExtraLight.ttf
+NotoSans-CondensedExtraLight.ttf
+NotoSans-CondensedExtraLightItalic.ttf
+NotoSans-CondensedExtraLightItalic.ttf
+NotoSans-CondensedItalic.ttf
+NotoSans-CondensedItalic.ttf
+NotoSans-CondensedLight.ttf
+NotoSans-CondensedLight.ttf
+NotoSans-CondensedLightItalic.ttf
+NotoSans-CondensedLightItalic.ttf
+NotoSans-CondensedMedium.ttf
+NotoSans-CondensedMedium.ttf
+NotoSans-CondensedMediumItalic.ttf
+NotoSans-CondensedMediumItalic.ttf
+NotoSans-CondensedSemiBold.ttf
+NotoSans-CondensedSemiBold.ttf
+NotoSans-CondensedSemiBoldItalic.ttf
+NotoSans-CondensedSemiBoldItalic.ttf
+NotoSans-CondensedThin.ttf
+NotoSans-CondensedThin.ttf
+NotoSans-CondensedThinItalic.ttf
+NotoSans-CondensedThinItalic.ttf
+NotoSans-DisplayBlack.ttf
+NotoSans-DisplayBlack.ttf
+NotoSans-DisplayBlackItalic.ttf
+NotoSans-DisplayBlackItalic.ttf
+NotoSans-DisplayBold.ttf
+NotoSans-DisplayBold.ttf
+NotoSans-DisplayBoldItalic.ttf
+NotoSans-DisplayBoldItalic.ttf
+NotoSans-DisplayCondensed.ttf
+NotoSans-DisplayCondensed.ttf
+NotoSans-DisplayCondensedBlack.ttf
+NotoSans-DisplayCondensedBlack.ttf
+NotoSans-DisplayCondensedBlackItalic.ttf
+NotoSans-DisplayCondensedBlackItalic.ttf
+NotoSans-DisplayCondensedBold.ttf
+NotoSans-DisplayCondensedBold.ttf
+NotoSans-DisplayCondensedBoldItalic.ttf
+NotoSans-DisplayCondensedBoldItalic.ttf
+NotoSans-DisplayCondensedExtraBold.ttf
+NotoSans-DisplayCondensedExtraBold.ttf
+NotoSans-DisplayCondensedExtraBoldItalic.ttf
+NotoSans-DisplayCondensedExtraBoldItalic.ttf
+NotoSans-DisplayCondensedExtraLight.ttf
+NotoSans-DisplayCondensedExtraLight.ttf
+NotoSans-DisplayCondensedExtraLightItalic.ttf
+NotoSans-DisplayCondensedExtraLightItalic.ttf
+NotoSans-DisplayCondensedItalic.ttf
+NotoSans-DisplayCondensedItalic.ttf
+NotoSans-DisplayCondensedLight.ttf
+NotoSans-DisplayCondensedLight.ttf
+NotoSans-DisplayCondensedLightItalic.ttf
+NotoSans-DisplayCondensedLightItalic.ttf
+NotoSans-DisplayCondensedMedium.ttf
+NotoSans-DisplayCondensedMedium.ttf
+NotoSans-DisplayCondensedMediumItalic.ttf
+NotoSans-DisplayCondensedMediumItalic.ttf
+NotoSans-DisplayCondensedSemiBold.ttf
+NotoSans-DisplayCondensedSemiBold.ttf
+NotoSans-DisplayCondensedSemiBoldItalic.ttf
+NotoSans-DisplayCondensedSemiBoldItalic.ttf
+NotoSans-DisplayCondensedThin.ttf
+NotoSans-DisplayCondensedThin.ttf
+NotoSans-DisplayCondensedThinItalic.ttf
+NotoSans-DisplayCondensedThinItalic.ttf
+NotoSans-DisplayExtraBold.ttf
+NotoSans-DisplayExtraBold.ttf
+NotoSans-DisplayExtraBoldItalic.ttf
+NotoSans-DisplayExtraBoldItalic.ttf
+NotoSans-DisplayExtraCondensed.ttf
+NotoSans-DisplayExtraCondensed.ttf
+NotoSans-DisplayExtraCondensedBlack.ttf
+NotoSans-DisplayExtraCondensedBlack.ttf
+NotoSans-DisplayExtraCondensedBlackItalic.ttf
+NotoSans-DisplayExtraCondensedBlackItalic.ttf
+NotoSans-DisplayExtraCondensedBold.ttf
+NotoSans-DisplayExtraCondensedBold.ttf
+NotoSans-DisplayExtraCondensedBoldItalic.ttf
+NotoSans-DisplayExtraCondensedBoldItalic.ttf
+NotoSans-DisplayExtraCondensedExtraBold.ttf
+NotoSans-DisplayExtraCondensedExtraBold.ttf
+NotoSans-DisplayExtraCondensedExtraBoldItalic.ttf
+NotoSans-DisplayExtraCondensedExtraBoldItalic.ttf
+NotoSans-DisplayExtraCondensedExtraLight.ttf
+NotoSans-DisplayExtraCondensedExtraLight.ttf
+NotoSans-DisplayExtraCondensedExtraLightItalic.ttf
+NotoSans-DisplayExtraCondensedExtraLightItalic.ttf
+NotoSans-DisplayExtraCondensedItalic.ttf
+NotoSans-DisplayExtraCondensedItalic.ttf
+NotoSans-DisplayExtraCondensedLight.ttf
+NotoSans-DisplayExtraCondensedLight.ttf
+NotoSans-DisplayExtraCondensedLightItalic.ttf
+NotoSans-DisplayExtraCondensedLightItalic.ttf
+NotoSans-DisplayExtraCondensedMedium.ttf
+NotoSans-DisplayExtraCondensedMedium.ttf
+NotoSans-DisplayExtraCondensedMediumItalic.ttf
+NotoSans-DisplayExtraCondensedMediumItalic.ttf
+NotoSans-DisplayExtraCondensedSemiBold.ttf
+NotoSans-DisplayExtraCondensedSemiBold.ttf
+NotoSans-DisplayExtraCondensedSemiBoldItalic.ttf
+NotoSans-DisplayExtraCondensedSemiBoldItalic.ttf
+NotoSans-DisplayExtraCondensedThin.ttf
+NotoSans-DisplayExtraCondensedThin.ttf
+NotoSans-DisplayExtraCondensedThinItalic.ttf
+NotoSans-DisplayExtraCondensedThinItalic.ttf
+NotoSans-DisplayExtraLight.ttf
+NotoSans-DisplayExtraLight.ttf
+NotoSans-DisplayExtraLightItalic.ttf
+NotoSans-DisplayExtraLightItalic.ttf
+NotoSans-DisplayItalic.ttf
+NotoSans-DisplayItalic.ttf
+NotoSans-DisplayLight.ttf
+NotoSans-DisplayLight.ttf
+NotoSans-DisplayLightItalic.ttf
+NotoSans-DisplayLightItalic.ttf
+NotoSans-DisplayMedium.ttf
+NotoSans-DisplayMedium.ttf
+NotoSans-DisplayMediumItalic.ttf
+NotoSans-DisplayMediumItalic.ttf
+NotoSans-DisplayRegular.ttf
+NotoSans-DisplayRegular.ttf
+NotoSans-DisplaySemiBold.ttf
+NotoSans-DisplaySemiBold.ttf
+NotoSans-DisplaySemiBoldItalic.ttf
+NotoSans-DisplaySemiBoldItalic.ttf
+NotoSans-DisplaySemiCondensed.ttf
+NotoSans-DisplaySemiCondensed.ttf
+NotoSans-DisplaySemiCondensedBlack.ttf
+NotoSans-DisplaySemiCondensedBlack.ttf
+NotoSans-DisplaySemiCondensedBlackItalic.ttf
+NotoSans-DisplaySemiCondensedBlackItalic.ttf
+NotoSans-DisplaySemiCondensedBold.ttf
+NotoSans-DisplaySemiCondensedBold.ttf
+NotoSans-DisplaySemiCondensedBoldItalic.ttf
+NotoSans-DisplaySemiCondensedBoldItalic.ttf
+NotoSans-DisplaySemiCondensedExtraBold.ttf
+NotoSans-DisplaySemiCondensedExtraBold.ttf
+NotoSans-DisplaySemiCondensedExtraBoldItalic.ttf
+NotoSans-DisplaySemiCondensedExtraBoldItalic.ttf
+NotoSans-DisplaySemiCondensedExtraLight.ttf
+NotoSans-DisplaySemiCondensedExtraLight.ttf
+NotoSans-DisplaySemiCondensedExtraLightItalic.ttf
+NotoSans-DisplaySemiCondensedExtraLightItalic.ttf
+NotoSans-DisplaySemiCondensedItalic.ttf
+NotoSans-DisplaySemiCondensedItalic.ttf
+NotoSans-DisplaySemiCondensedLight.ttf
+NotoSans-DisplaySemiCondensedLight.ttf
+NotoSans-DisplaySemiCondensedLightItalic.ttf
+NotoSans-DisplaySemiCondensedLightItalic.ttf
+NotoSans-DisplaySemiCondensedMedium.ttf
+NotoSans-DisplaySemiCondensedMedium.ttf
+NotoSans-DisplaySemiCondensedMediumItalic.ttf
+NotoSans-DisplaySemiCondensedMediumItalic.ttf
+NotoSans-DisplaySemiCondensedSemiBold.ttf
+NotoSans-DisplaySemiCondensedSemiBold.ttf
+NotoSans-DisplaySemiCondensedSemiBoldItalic.ttf
+NotoSans-DisplaySemiCondensedSemiBoldItalic.ttf
+NotoSans-DisplaySemiCondensedThin.ttf
+NotoSans-DisplaySemiCondensedThin.ttf
+NotoSans-DisplaySemiCondensedThinItalic.ttf
+NotoSans-DisplaySemiCondensedThinItalic.ttf
+NotoSans-DisplayThin.ttf
+NotoSans-DisplayThin.ttf
+NotoSans-DisplayThinItalic.ttf
+NotoSans-DisplayThinItalic.ttf
+NotoSans-ExtraBold.ttf
+NotoSans-ExtraBold.ttf
+NotoSans-ExtraBoldItalic.ttf
+NotoSans-ExtraBoldItalic.ttf
+NotoSans-ExtraCondensed.ttf
+NotoSans-ExtraCondensed.ttf
+NotoSans-ExtraCondensedBlack.ttf
+NotoSans-ExtraCondensedBlack.ttf
+NotoSans-ExtraCondensedBlackItalic.ttf
+NotoSans-ExtraCondensedBlackItalic.ttf
+NotoSans-ExtraCondensedBold.ttf
+NotoSans-ExtraCondensedBold.ttf
+View all files

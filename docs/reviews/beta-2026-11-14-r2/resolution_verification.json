@@ -1,0 +1,152 @@
+{
+  "date": "2026-11-15",
+  "status": "resolved",
+  "skill": "egm-resolve",
+  "authorization": "targeted user instructions; policy of losses confirmed for both pool modes",
+  "accepted_fixes": 5,
+  "categories": {
+    "PROPOSE FIX": 5,
+    "CONTEST": 0,
+    "ESCALATE": 0,
+    "DECLINE": 0
+  },
+  "remaining_unaddressed": 0,
+  "closed_findings": [
+    "A-02",
+    "A-01",
+    "A-03",
+    "A-04",
+    "A-05"
+  ],
+  "changed_existing_files": [
+    {
+      "path": "/home/claudio/projetos/condo/docs/designs/plataforma-comercial-hoteleira-beta.md",
+      "before_sha256": "0d4712ad2080484f3673acdb1dbbf353b617d016b65410c2a631d91f1f46bce6",
+      "after_sha256": "6ce9cfb5435f6d424ba81b406750465eb102c58cf1621aea155f593339cc75bc"
+    },
+    {
+      "path": "/home/claudio/projetos/condo/docs/reviews/beta-2026-11-14-r2/consolidated_review_report.md",
+      "before_sha256": "5e2c702dfc92df6af263a3f781aba80be490cb1bcbc3142af7ddbd95f2916c17",
+      "after_sha256": "219cc313dc49cecba2562bc223d21bb0a90954e09d5331834a3583b473cc35ff"
+    }
+  ],
+  "preserved_existing_artifacts": [
+    {
+      "path": "/home/claudio/projetos/condo/docs/reviews/beta-2026-11-14-r2/comprehension_report.md",
+      "sha256": "9a6f19d8cd65f1444a6d53fca057bb3905d0c7bcb8aa3e78c6cbde81388f42e6"
+    },
+    {
+      "path": "/home/claudio/projetos/condo/docs/reviews/beta-2026-11-14-r2/critic_report.md",
+      "sha256": "e881e7328c30abd6c96d71b5674951e221c7ad798b60215b6722b14f8fd4245b"
+    },
+    {
+      "path": "/home/claudio/projetos/condo/docs/reviews/beta-2026-11-14-r2/implementation_readiness_report.md",
+      "sha256": "ae14224e525bb393076446329c5ff8e336573c7db205e59bd768695e092fc361"
+    },
+    {
+      "path": "/home/claudio/projetos/condo/docs/reviews/beta-2026-11-14-r2/intermediate_zoom_out_report.md",
+      "sha256": "971e73a381eb09c916bca3f559e610380072d37d1345c931c01a04a30d0b8b31"
+    },
+    {
+      "path": "/home/claudio/projetos/condo/docs/reviews/beta-2026-11-14-r2/review_manifest.json",
+      "sha256": "8a62d7983e08bc0052a482a2a4a781c70e86d3436b85e34c0299ea03acf919e5"
+    },
+    {
+      "path": "/home/claudio/projetos/condo/docs/reviews/beta-2026-11-14-r2/stage9-egm-codebase-details.md",
+      "sha256": "1be8f018ec408eef0d8724d4c79a2a6e561ce19bc2d5f7e4e38373c3d475917b"
+    },
+    {
+      "path": "/home/claudio/projetos/condo/docs/reviews/beta-2026-11-14-r2/stage9-egm-implementation-readiness.md",
+      "sha256": "b3e84e1b5569452489a0698ea01f321a67679b9c06f8353084c379c72a682d0c"
+    },
+    {
+      "path": "/home/claudio/projetos/condo/docs/reviews/beta-2026-11-14-r2/stage9-egm-style.md",
+      "sha256": "fda386b60f8a4afc77f1176b045cc000f1cdb3f9cceb4c7c4d0e8ff667b0738d"
+    },
+    {
+      "path": "/home/claudio/projetos/condo/docs/reviews/beta-2026-11-14-r2/verification_results.json",
+      "sha256": "c77ebe59dd7605c9bbae92ee2ce44ef503be7198703ee86716ba10fcba75d7d2"
+    },
+    {
+      "path": "/home/claudio/projetos/condo/docs/reviews/beta-2026-11-14-r2/zoom_out_report.md",
+      "sha256": "0f4f1ef0a61964ea1c97b406589759da4acc8d0f9b6185f99f8c682d21e1d1a4"
+    },
+    {
+      "path": "/home/claudio/projetos/condo/goldfish_review_report.md",
+      "sha256": "fc40e0e0dfb916137fad9cc978cafcdb79fbdb62b0640692d7ad954664843243"
+    },
+    {
+      "path": "/home/claudio/projetos/condo/consolidated_review_report.md",
+      "sha256": "ee7f5ab81ea0cf00aa885296fe06c602ae80dc9ce7ce57f0378f9313d7060bc0"
+    }
+  ],
+  "unchanged_context_files": 8,
+  "target_lines": 1000,
+  "feature_range": [
+    1,
+    504
+  ],
+  "detailed_range": [
+    505,
+    1000
+  ],
+  "manifest_actions": {
+    "total": 230,
+    "Create": 163,
+    "Modify": 67
+  },
+  "duplicate_creates": 0,
+  "premature_modifies": 0,
+  "earlier_tsx_consumers_covered_by_p13": [
+    "src/app/(auth)/entrar/page.tsx",
+    "src/app/(auth)/recuperar-senha/page.tsx",
+    "src/app/(auth)/trocar-senha/page.tsx",
+    "src/app/(staff)/admin/empreendimentos/[id]/page.tsx",
+    "src/app/(staff)/admin/empreendimentos/[id]/premissas/page.tsx",
+    "src/app/(staff)/admin/empreendimentos/page.tsx",
+    "src/app/(staff)/admin/empresa/page.tsx",
+    "src/app/(staff)/admin/equipe/page.tsx",
+    "src/app/(staff)/dashboard/page.tsx",
+    "src/app/(staff)/layout.tsx",
+    "src/app/(staff)/propostas/[id]/page.tsx",
+    "src/app/(staff)/propostas/page.tsx",
+    "src/app/(staff)/simulacoes/[id]/page.tsx",
+    "src/app/(staff)/simulacoes/nova/page.tsx",
+    "src/app/(staff)/simulacoes/page.tsx",
+    "src/app/error.tsx",
+    "src/app/layout.tsx",
+    "src/app/not-found.tsx",
+    "src/app/p/[token]/page.tsx",
+    "src/app/page.tsx",
+    "src/components/app-shell.tsx",
+    "src/components/premises-form.tsx",
+    "src/components/proposal-content.tsx"
+  ],
+  "message_modules_created_in": "P01",
+  "message_modules_modified_in": [
+    "P06",
+    "P07",
+    "P08",
+    "P09",
+    "P10",
+    "P11",
+    "P12",
+    "P13",
+    "P15"
+  ],
+  "json_schema_2020_12_valid": true,
+  "payment_plan_and_schedule_example_valid": true,
+  "required_condition_version_and_actor_fields_checked": true,
+  "payment_example_entry_and_structure_preserved": true,
+  "pool_loss_policy_required_in_both_modes": true,
+  "traceability_raw_findings_closed": 6,
+  "markdown_tables_checked": 36,
+  "local_links_checked": 33,
+  "product_tests_run": false,
+  "independent_goldfish_reaudit_run": false,
+  "new_artifacts": [
+    "goldfish_review_report.md",
+    "resolution_changes.diff",
+    "resolution_verification.json"
+  ]
+}

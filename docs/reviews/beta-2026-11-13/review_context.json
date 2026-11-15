@@ -1,0 +1,84 @@
+{
+  "review_date": "2026-11-13",
+  "mode": "uninterrupted",
+  "target": "/home/claudio/projetos/condo/docs/designs/plataforma-comercial-hoteleira-beta.md",
+  "target_sha256": "0ad5f486ddc551e1675db1481d3e399b4663f7ee687b30269b1e922ac8d8e60c",
+  "feature_range": [
+    1,
+    358
+  ],
+  "detailed_range": [
+    359,
+    716
+  ],
+  "target_lines": 716,
+  "artifact_directory": "/home/claudio/projetos/condo/docs/reviews/beta-2026-11-13",
+  "goldfish_context": [
+    {
+      "path": "/home/claudio/projetos/condo/concepts_brief.md",
+      "sha256": "29f3759e343d8401eeeca310a0716549176de1fa139609c334322d8e527e7611"
+    },
+    {
+      "path": "/home/claudio/projetos/condo/docs/designs/plataforma-comercial-hoteleira-beta-rfc.md",
+      "sha256": "795778c988ae83ea7a4afd6be4025c854bf4fd69f9ce4785ec02e3c9f6c91faa"
+    },
+    {
+      "path": "/home/claudio/projetos/condo/Desenho do piloto - Plataforma comercial hoteleira.md",
+      "sha256": "0d9faba289d60a0b1c992b049f8b16bb1e610cf99de880415a50682781c8c8c7"
+    },
+    {
+      "path": "/home/claudio/projetos/condo/Plano de implementacao - Plataforma comercial hoteleira.md",
+      "sha256": "bac354aea91792362291f448b28fd2cc9e4f7067e4ddf65fe97a5807a0781016"
+    },
+    {
+      "path": "/home/claudio/projetos/condo/docs/designs/decisao-base-tecnologica-beta.md",
+      "sha256": "8c09592e0f3194635a91027c223bfaae09ce4a977949bc5b9ca4963456c800da"
+    },
+    {
+      "path": "/home/claudio/projetos/condo/docs/reviews/beta-2026-11-13/sources/next-deploying.txt",
+      "sha256": "3ee487a744e00ab4894b6f5ddce2c878d82216d10e75027df6519a3b39274e6e"
+    },
+    {
+      "path": "/home/claudio/projetos/condo/docs/reviews/beta-2026-11-13/sources/next-authentication.txt",
+      "sha256": "764a5d0fa3d25e201cf128e0399eab5268dc6cd71212b79e649a0286af881ed1"
+    },
+    {
+      "path": "/home/claudio/projetos/condo/docs/reviews/beta-2026-11-13/sources/better-auth-drizzle.txt",
+      "sha256": "f3775a118775eaff7cb7c4b74f7964f11216b1c7a9d0305a730f047ab117c7b2"
+    },
+    {
+      "path": "/home/claudio/projetos/condo/docs/reviews/beta-2026-11-13/sources/drizzle-column-types.txt",
+      "sha256": "45bd59237ed54878837a99d62bd641729b398a95bc261148a557d0734a310907"
+    },
+    {
+      "path": "/home/claudio/projetos/condo/docs/reviews/beta-2026-11-13/sources/decimal-js.txt",
+      "sha256": "0640a69c465cd1f6690feaf59a4a3c03298df50e4dedd220762b1d6b4af91bfd"
+    },
+    {
+      "path": "/home/claudio/projetos/condo/docs/reviews/beta-2026-11-13/sources/pdf-lib-api.txt",
+      "sha256": "96bd8b5e0e2f86151fbe0d881e6b5a65a366f121b330fe448c506d093aa3ee0d"
+    },
+    {
+      "path": "/home/claudio/projetos/condo/docs/reviews/beta-2026-11-13/sources/pdf-lib-examples.txt",
+      "sha256": "cdc7a69a961caa63f6754c77c9ecd681dce44619430e04c88c714e71c1a34df3"
+    },
+    {
+      "path": "/home/claudio/projetos/condo/docs/reviews/beta-2026-11-13/sources/noto-sans.txt",
+      "sha256": "ce8c99b9ba81b6bf8e817f23f75fe1a70b5724f8967c3f6017c87dd3634ef548"
+    },
+    {
+      "path": "/home/claudio/projetos/condo/docs/reviews/beta-2026-11-13/sources/pdf-js-examples.txt",
+      "sha256": "a6b81f2e1c2587add29e8075f594d9bf76ca5a6b01952cbc77d411e877b10333"
+    },
+    {
+      "path": "/home/claudio/projetos/condo/docs/reviews/beta-2026-11-13/sources/s3-conditional-writes.txt",
+      "sha256": "a388da2e2fc51d4a711aca02b9d4e137e36c3f8c833ad7fec52f0106ab34ccb2"
+    },
+    {
+      "path": "/home/claudio/projetos/condo/docs/reviews/beta-2026-11-13/sources/postgres-datetime.txt",
+      "sha256": "ca9d99acf071a4c44912e9157bbe0261c378ace83c1aea2bf5fb9ebe5a0f8344"
+    }
+  ],
+  "external_raw_sources": "/home/claudio/projetos/condo/docs/reviews/beta-2026-11-13/external-sources.json",
+  "source_policy": "Local linked files and all 11 external URLs approved by user. Saved HTML plus visible page text; text is extraction, not summary. Context files are available for consultation; actual consulted extents must be declared. Stage 6 reads only target and its persona. No recursive context expansion or old review reports."
+}

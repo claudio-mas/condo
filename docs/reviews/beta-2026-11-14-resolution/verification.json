@@ -1,0 +1,82 @@
+{
+  "status": "passed",
+  "date": "2026-11-14",
+  "target": "docs/designs/plataforma-comercial-hoteleira-beta.md",
+  "target_sha256_before": "0ad5f486ddc551e1675db1481d3e399b4663f7ee687b30269b1e922ac8d8e60c",
+  "target_sha256_after": "0d4712ad2080484f3673acdb1dbbf353b617d016b65410c2a631d91f1f46bce6",
+  "gitignore_sha256": "55a5825ae1008517de8eb462c8470c918769d4e47a7c38d55de8a7572430386b",
+  "accepted_fixes": 15,
+  "severity_counts": {
+    "Major": 13,
+    "Nit": 2
+  },
+  "contested": 0,
+  "escalated": 0,
+  "declined": 0,
+  "unaddressed_findings": 0,
+  "markdown": {
+    "target_lines": 937,
+    "tables": 29,
+    "phases": 15,
+    "fences_closed": true
+  },
+  "manifest": {
+    "create_unique": 163,
+    "modify_entries": 37,
+    "unique_paths_including_existing_gitignore": 164,
+    "valid_order": true,
+    "routes": {
+      "/": "src/app/page.tsx",
+      "/entrar": "src/app/(auth)/entrar/page.tsx",
+      "/recuperar-senha": "src/app/(auth)/recuperar-senha/page.tsx",
+      "/trocar-senha": "src/app/(auth)/trocar-senha/page.tsx",
+      "/dashboard": "src/app/(staff)/dashboard/page.tsx",
+      "/admin/empresa": "src/app/(staff)/admin/empresa/page.tsx",
+      "/admin/equipe": "src/app/(staff)/admin/equipe/page.tsx",
+      "/admin/empreendimentos": "src/app/(staff)/admin/empreendimentos/page.tsx",
+      "/admin/empreendimentos/[id]": "src/app/(staff)/admin/empreendimentos/[id]/page.tsx",
+      "/admin/empreendimentos/[id]/premissas": "src/app/(staff)/admin/empreendimentos/[id]/premissas/page.tsx",
+      "/simulacoes": "src/app/(staff)/simulacoes/page.tsx",
+      "/simulacoes/nova": "src/app/(staff)/simulacoes/nova/page.tsx",
+      "/simulacoes/[id]": "src/app/(staff)/simulacoes/[id]/page.tsx",
+      "/propostas": "src/app/(staff)/propostas/page.tsx",
+      "/propostas/[id]": "src/app/(staff)/propostas/[id]/page.tsx",
+      "/p/[token]": "src/app/p/[token]/page.tsx"
+    }
+  },
+  "payment_example": {
+    "json_schema_valid": true,
+    "schedule_valid": true,
+    "sum": "95000.00",
+    "residual": "0.01",
+    "invalid_shape_examples_rejected": [
+      "invalid_date",
+      "numeric_money",
+      "negative_money",
+      "recurrence"
+    ]
+  },
+  "legacy_comparison": {
+    "zip_xml_inputs_match_p14": true,
+    "independent_decimal_recalculation": {
+      "revenue": "93145.03",
+      "expenses": "31971.75",
+      "result": "61173.28",
+      "simple_payback_months": "97.69",
+      "adjusted_payback_months": "73.69"
+    },
+    "xlsx_unchanged": true,
+    "pool_homologated": false
+  },
+  "gitignore": {
+    "ignored_cases": 19,
+    "preserved_cases": 7,
+    "actual_git_matcher": true,
+    "temporary_repository_only": true
+  },
+  "patch_reconstructs_target_and_gitignore": true,
+  "original_context_files_unchanged": 16,
+  "product_tests_executed": false,
+  "independent_goldfish_rereview_executed": false,
+  "local_links_checked": 34
+}

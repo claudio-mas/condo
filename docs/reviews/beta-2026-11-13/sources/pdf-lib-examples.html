@@ -1,0 +1,572 @@
+<!DOCTYPE html><html lang=""><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>PDF-LIB ·  Create and modify PDF documents in any JavaScript environment.</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content=" Create and modify PDF documents in any JavaScript environment."/><meta property="og:title" content="PDF-LIB ·  Create and modify PDF documents in any JavaScript environment."/><meta property="og:type" content="website"/><meta property="og:url" content="https://Hopding.github.io/"/><meta property="og:description" content=" Create and modify PDF documents in any JavaScript environment."/><meta property="og:image" content="https://Hopding.github.io/img/undraw_online.svg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://Hopding.github.io/img/undraw_tweetstorm.svg"/><link rel="shortcut icon" href="/img/logo3.png"/><link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css"/><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><h2 class="headerTitle">PDF-LIB</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="/docs/api/" target="_self">API</a></li><li class=""><a href="/docs/help" target="_self">Help</a></li><li class=""><a href="https://github.com/Hopding/pdf-lib" target="_self">GitHub</a></li><li class="navSearchWrapper reactNavSearchWrapper"><input type="text" id="search_input_react" placeholder="Search" title="Search"/></li></ul></nav></div></header></div></div><div class="navPusher"><div><div class="homeContainer"><div class="homeWrapperWrapper"><div class="wrapper homeWrapper"><div class="projectTitle"><img style="max-height:250px;object-fit:contain" alt="PDF-LIB" src="/img/logo-full.svg"/></div><div class="homeWrapperInner"><div class="homeCodeSnippet"><div><span><pre><code class="hljs css language-js"><span class="hljs-keyword">import</span> { PDFDocument } <span class="hljs-keyword">from</span> <span class="hljs-string">'pdf-lib'</span>
+
+<span class="hljs-comment">// PDF Creation</span>
+<span class="hljs-keyword">const</span> pdfDoc = <span class="hljs-keyword">await</span> PDFDocument.create()
+<span class="hljs-keyword">const</span> page = pdfDoc.addPage()
+page.drawText(<span class="hljs-string">'You can create PDFs!'</span>)
+<span class="hljs-keyword">const</span> pdfBytes = <span class="hljs-keyword">await</span> pdfDoc.save()
+
+<span class="hljs-comment">// PDF Modification</span>
+<span class="hljs-keyword">const</span> pdfDoc = <span class="hljs-keyword">await</span> PDFDocument.load(...)
+<span class="hljs-keyword">const</span> pages = pdfDoc.getPages()
+pages[<span class="hljs-number">0</span>].drawText(<span class="hljs-string">'You can modify PDFs too!'</span>)
+<span class="hljs-keyword">const</span> pdfBytes = <span class="hljs-keyword">await</span> pdfDoc.save()
+</code></pre>
+</span></div><div><span><pre><code class="hljs css language-js"><span class="hljs-keyword">import</span> { PDFDocument } <span class="hljs-keyword">from</span> <span class="hljs-string">'pdf-lib'</span>
+
+<span class="hljs-comment">// PDF Creation</span>
+<span class="hljs-keyword">const</span> pdfDoc = <span class="hljs-keyword">await</span> PDFDocument.create()
+<span class="hljs-keyword">const</span> page = pdfDoc.addPage()
+page.drawText(<span class="hljs-string">'You can create PDFs!'</span>)
+<span class="hljs-keyword">const</span> pdfBytes = <span class="hljs-keyword">await</span> pdfDoc.save()
+
+<span class="hljs-comment">// PDF Modification</span>
+<span class="hljs-keyword">const</span> pdfDoc = <span class="hljs-keyword">await</span> PDFDocument.load(...)
+<span class="hljs-keyword">const</span> pages = pdfDoc.getPages()
+pages[<span class="hljs-number">0</span>].drawText(<span class="hljs-string">'You can modify PDFs too!'</span>)
+<span class="hljs-keyword">const</span> pdfBytes = <span class="hljs-keyword">await</span> pdfDoc.save()
+</code></pre>
+</span></div></div><div class="homeTagLine"> Create and modify PDF documents in any JavaScript environment.</div></div><div class="section promoSection"><div class="promoRow"><div class="pluginRowBlock"><div class="pluginWrapper"><a class="button getStarted" href="#examples" target="_self">Examples</a></div><div class="pluginWrapper"><a class="button " href="#install" target="_self">Install</a></div></div></div></div></div></div></div><div class="mainContainer"><div class="container"><div class="wrapper"><div class="gridBlock"><div class="blockElement alignCenter fourByGridBlock"><div class="blockContent"><h2><div><span><p>Create and Modify</p>
+</span></div></h2><div><span><p>Create PDF documents from scratch, or modify existing PDF documents. Draw text, images, and vector graphics. Embed your own fonts. Even embed and draw pages from other PDFs.</p>
+</span></div></div></div><div class="blockElement alignCenter fourByGridBlock"><div class="blockContent"><h2><div><span><p>Pure JavaScript</p>
+</span></div></h2><div><span><p>Written in TypeScript and compiled to pure JavaScript with no native dependencies. Works in any JavaScript runtime, including browsers, Node, Deno, and even React Native.</p>
+</span></div></div></div><div class="blockElement alignCenter fourByGridBlock"><div class="blockContent"><h2><div><span><p>Split and Merge</p>
+</span></div></h2><div><span><p>Add, insert, and remove pages. Split a single PDF into separate ones. Or merge multiple PDFs into a single document.</p>
+</span></div></div></div><div class="blockElement alignCenter fourByGridBlock"><div class="blockContent"><h2><div><span><p>Fill Forms</p>
+</span></div></h2><div><span><p>Create new forms or fill and read existing fields. Check boxes, buttons, radio groups, dropdowns, option lists, and text fields are all supported.</p>
+</span></div></div></div></div></div></div><div class="container"><div class="wrapper"><blockquote><a href="https://github.com/Hopding/pdf-lib#features" target="_blank" rel="noopener noreferrer">View the full feature set</a></blockquote></div></div><div class="container quickStartAndExamples homeCodeSnippet lightBackground"><div class="wrapper"><div><div class="splashAnchorContainer"><div id="quick-start" class="anchor"></div><a href="#quick-start"><h2 class="splashSectionHeader">Quick Start</h2></a></div><div><span><pre><code class="hljs css language-html"><span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"utf-8"</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://unpkg.com/pdf-lib"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
+
+  <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">iframe</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"pdf"</span> <span class="hljs-attr">style</span>=<span class="hljs-string">"width: 100%; height: 100%;"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">iframe</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+
+  <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
+    createPdf();
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createPdf</span>(<span class="hljs-params"></span>) </span>{
+      <span class="hljs-keyword">const</span> pdfDoc = <span class="hljs-keyword">await</span> PDFLib.PDFDocument.create();
+      <span class="hljs-keyword">const</span> page = pdfDoc.addPage([<span class="hljs-number">350</span>, <span class="hljs-number">400</span>]);
+      page.moveTo(<span class="hljs-number">110</span>, <span class="hljs-number">200</span>);
+      page.drawText(<span class="hljs-string">'Hello World!'</span>);
+      <span class="hljs-keyword">const</span> pdfDataUri = <span class="hljs-keyword">await</span> pdfDoc.saveAsBase64({ <span class="hljs-attr">dataUri</span>: <span class="hljs-literal">true</span> });
+      <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'pdf'</span>).src = pdfDataUri;
+    }
+  </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span>
+</code></pre>
+</span></div>Save this snippet as an HTML file and load it in your browser to get up and running with pdf-lib as quickly as possible.</div></div></div><div class="container quickStartAndExamples homeCodeSnippet lightBackground"><div class="wrapper"><div><div class="splashAnchorContainer"><div id="deno" class="anchor"></div><a href="#deno"><h2 class="splashSectionHeader">Deno</h2></a></div><div><span><pre><code class="hljs css language-bash">$ deno run --allow-write https://pdf-lib.js.org/deno/quick_start.ts
+</code></pre>
+</span></div>If you are using Deno, then try running the above command in your terminal to quickly create a PDF document! 🦕</div></div></div><div class="container quickStartAndExamples homeCodeSnippet lightBackground" id="install"><div class="wrapper"><div><div class="splashAnchorContainer"><div id="install" class="anchor"></div><a href="#install"><h2 class="splashSectionHeader">Install</h2></a></div><div class="splashAnchorContainer"><div id="npm-module" class="anchor"></div><a href="#npm-module"><h3 class="splashSectionHeader">NPM Module</h3></a></div><p>If you are using <a href="https://www.npmjs.com/">npm</a> or <a href="https://yarnpkg.com/lang/en/">yarn</a> as your package manager:<div><span><pre><code class="hljs css language-sh"><span class="hljs-comment"># With npm</span>
+npm install --save pdf-lib
+
+<span class="hljs-comment"># With yarn</span>
+yarn add pdf-lib
+</code></pre>
+</span></div></p><div class="splashAnchorContainer"><div id="umd-module" class="anchor"></div><a href="#umd-module"><h3 class="splashSectionHeader">UMD Module</h3></a></div><p>If you aren&#x27;t using a package manager, UMD modules are available on the <a href="https://unpkg.com/#/">unpkg</a> and <a href="https://www.jsdelivr.com/">jsDelivr</a> CDNs:<ul><li><a href="https://unpkg.com/pdf-lib/dist/pdf-lib.js">https://unpkg.com/pdf-lib/dist/pdf-lib.js</a></li><li><a href="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js">https://unpkg.com/pdf-lib/dist/pdf-lib.min.js</a></li><li><a href="https://cdn.jsdelivr.net/npm/pdf-lib/dist/pdf-lib.js">https://cdn.jsdelivr.net/npm/pdf-lib/dist/pdf-lib.js</a></li><li><a href="https://cdn.jsdelivr.net/npm/pdf-lib/dist/pdf-lib.min.js">https://cdn.jsdelivr.net/npm/pdf-lib/dist/pdf-lib.min.js</a></li></ul></p><blockquote><strong>NOTE:</strong> if you are using the CDN scripts in production, you should include a specific version number in the URL, for example:<ul><li><a href="https://unpkg.com/pdf-lib@1.4.0/dist/pdf-lib.min.js">https://unpkg.com/pdf-lib@1.4.0/dist/pdf-lib.min.js</a></li><li><a href="https://cdn.jsdelivr.net/npm/pdf-lib@1.4.0/dist/pdf-lib.min.js">https://cdn.jsdelivr.net/npm/pdf-lib@1.4.0/dist/pdf-lib.min.js</a></li></ul></blockquote></div></div></div><div class="container" id="examples"><div class="wrapper"><div class="examplesOuterContainer"><div class="examplesInnerContainer"><div style="display:flex;flex-direction:row;justify-content:space-between;align-items:flex-end;flex-wrap:wrap"><div class="splashAnchorContainer"><div id="create-document" class="anchor"></div><a href="#create-document"><h2 class="splashSectionHeader">Create Document</h2></a></div><a style="margin-bottom:15px;display:flex;flex-direction:row;align-items:center;color:#0084ff" href="https://jsfiddle.net/Hopding/rxwsc8f5/13/" target="_blank" rel="noopener noreferrer"><svg style="height:33px;width:46px;stroke:#0084ff" width="46px" height="33px" viewBox="0 0 46 33"><g stroke-width="1.6" fill="none" fill-rule="evenodd"><path d="M23.4888889,20.543316 C21.4404656,18.4187374 19.0750303,15.6666667 16.4832014,15.6666667 C13.8721947,15.6666667 11.7555556,17.6366138 11.7555556,20.0666667 C11.7555556,22.4967196 13.8721947,24.4666667 16.4832014,24.4666667 C18.8347252,24.4666667 19.9845474,23.0125628 20.6429148,22.312473" id="Oval-1" stroke-linecap="round"></path><path d="M22.5111111,19.5900174 C24.5595344,21.7145959 26.9249697,24.4666667 29.5167986,24.4666667 C32.1278053,24.4666667 34.2444444,22.4967196 34.2444444,20.0666667 C34.2444444,17.6366138 32.1278053,15.6666667 29.5167986,15.6666667 C27.1652748,15.6666667 26.0154526,17.1207706 25.3570852,17.8208603" id="Oval-1-Copy" stroke-linecap="round"></path><path d="M45,22.7331459 C45,19.1499462 42.7950446,16.079593 39.6628004,14.7835315 C39.6774469,14.5246474 39.7003932,14.2674038 39.7003932,14.0035978 C39.7003932,6.82243304 33.8412885,1 26.611593,1 C21.3985635,1 16.9102123,4.03409627 14.8051788,8.41527616 C13.7828502,7.62878013 12.503719,7.15547161 11.1134367,7.15547161 C7.77825654,7.15547161 5.07450503,9.84159999 5.07450503,13.1544315 C5.07450503,13.7760488 5.16938207,14.3779791 5.3477444,14.9418479 C2.74863428,16.4787471 1,19.2867709 1,22.5105187 C1,27.3287502 4.89630545,31.2367856 9.72803666,31.31094 L36.3341301,31.3109406 C41.1201312,31.3406346 45,27.4870665 45,22.7331459 L45,22.7331459 Z" stroke-linejoin="round"></path></g></svg><span style="padding-left:5px">Try the JSFiddle demo</span></a></div><div><span><pre><code class="hljs css language-js"><span class="hljs-keyword">import</span> { PDFDocument, StandardFonts, rgb } <span class="hljs-keyword">from</span> <span class="hljs-string">'pdf-lib'</span>
+
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createPdf</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">const</span> pdfDoc = <span class="hljs-keyword">await</span> PDFDocument.create()
+  <span class="hljs-keyword">const</span> timesRomanFont = <span class="hljs-keyword">await</span> pdfDoc.embedFont(StandardFonts.TimesRoman)
+
+  <span class="hljs-keyword">const</span> page = pdfDoc.addPage()
+  <span class="hljs-keyword">const</span> { width, height } = page.getSize()
+  <span class="hljs-keyword">const</span> fontSize = <span class="hljs-number">30</span>
+  page.drawText(<span class="hljs-string">'Creating PDFs in JavaScript is awesome!'</span>, {
+    <span class="hljs-attr">x</span>: <span class="hljs-number">50</span>,
+    <span class="hljs-attr">y</span>: height - <span class="hljs-number">4</span> * fontSize,
+    <span class="hljs-attr">size</span>: fontSize,
+    <span class="hljs-attr">font</span>: timesRomanFont,
+    <span class="hljs-attr">color</span>: rgb(<span class="hljs-number">0</span>, <span class="hljs-number">0.53</span>, <span class="hljs-number">0.71</span>),
+  })
+
+  <span class="hljs-keyword">const</span> pdfBytes = <span class="hljs-keyword">await</span> pdfDoc.save()
+}
+</code></pre>
+</span></div><iframe id="3566425" class="card"></iframe><script>document.getElementById('3566425').src = '/viewer?url=/assets/create_document.pdf'</script><div style="display:flex;flex-direction:row;justify-content:space-between;align-items:flex-end;flex-wrap:wrap"><div class="splashAnchorContainer"><div id="modify-document" class="anchor"></div><a href="#modify-document"><h2 class="splashSectionHeader">Modify Document</h2></a></div><a style="margin-bottom:15px;display:flex;flex-direction:row;align-items:center;color:#0084ff" href="https://jsfiddle.net/Hopding/64zajhge/1/" target="_blank" rel="noopener noreferrer"><svg style="height:33px;width:46px;stroke:#0084ff" width="46px" height="33px" viewBox="0 0 46 33"><g stroke-width="1.6" fill="none" fill-rule="evenodd"><path d="M23.4888889,20.543316 C21.4404656,18.4187374 19.0750303,15.6666667 16.4832014,15.6666667 C13.8721947,15.6666667 11.7555556,17.6366138 11.7555556,20.0666667 C11.7555556,22.4967196 13.8721947,24.4666667 16.4832014,24.4666667 C18.8347252,24.4666667 19.9845474,23.0125628 20.6429148,22.312473" id="Oval-1" stroke-linecap="round"></path><path d="M22.5111111,19.5900174 C24.5595344,21.7145959 26.9249697,24.4666667 29.5167986,24.4666667 C32.1278053,24.4666667 34.2444444,22.4967196 34.2444444,20.0666667 C34.2444444,17.6366138 32.1278053,15.6666667 29.5167986,15.6666667 C27.1652748,15.6666667 26.0154526,17.1207706 25.3570852,17.8208603" id="Oval-1-Copy" stroke-linecap="round"></path><path d="M45,22.7331459 C45,19.1499462 42.7950446,16.079593 39.6628004,14.7835315 C39.6774469,14.5246474 39.7003932,14.2674038 39.7003932,14.0035978 C39.7003932,6.82243304 33.8412885,1 26.611593,1 C21.3985635,1 16.9102123,4.03409627 14.8051788,8.41527616 C13.7828502,7.62878013 12.503719,7.15547161 11.1134367,7.15547161 C7.77825654,7.15547161 5.07450503,9.84159999 5.07450503,13.1544315 C5.07450503,13.7760488 5.16938207,14.3779791 5.3477444,14.9418479 C2.74863428,16.4787471 1,19.2867709 1,22.5105187 C1,27.3287502 4.89630545,31.2367856 9.72803666,31.31094 L36.3341301,31.3109406 C41.1201312,31.3406346 45,27.4870665 45,22.7331459 L45,22.7331459 Z" stroke-linejoin="round"></path></g></svg><span style="padding-left:5px">Try the JSFiddle demo</span></a></div><div><span><pre><code class="hljs css language-js"><span class="hljs-keyword">import</span> { degrees, PDFDocument, rgb, StandardFonts } <span class="hljs-keyword">from</span> <span class="hljs-string">'pdf-lib'</span>;
+
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">modifyPdf</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">const</span> url = <span class="hljs-string">'https://pdf-lib.js.org/assets/with_update_sections.pdf'</span>
+  <span class="hljs-keyword">const</span> existingPdfBytes = <span class="hljs-keyword">await</span> fetch(url).then(<span class="hljs-function"><span class="hljs-params">res</span> =&gt;</span> res.arrayBuffer())
+
+  <span class="hljs-keyword">const</span> pdfDoc = <span class="hljs-keyword">await</span> PDFDocument.load(existingPdfBytes)
+  <span class="hljs-keyword">const</span> helveticaFont = <span class="hljs-keyword">await</span> pdfDoc.embedFont(StandardFonts.Helvetica)
+
+  <span class="hljs-keyword">const</span> pages = pdfDoc.getPages()
+  <span class="hljs-keyword">const</span> firstPage = pages[<span class="hljs-number">0</span>]
+  <span class="hljs-keyword">const</span> { width, height } = firstPage.getSize()
+  firstPage.drawText(<span class="hljs-string">'This text was added with JavaScript!'</span>, {
+    <span class="hljs-attr">x</span>: <span class="hljs-number">5</span>,
+    <span class="hljs-attr">y</span>: height / <span class="hljs-number">2</span> + <span class="hljs-number">300</span>,
+    <span class="hljs-attr">size</span>: <span class="hljs-number">50</span>,
+    <span class="hljs-attr">font</span>: helveticaFont,
+    <span class="hljs-attr">color</span>: rgb(<span class="hljs-number">0.95</span>, <span class="hljs-number">0.1</span>, <span class="hljs-number">0.1</span>),
+    <span class="hljs-attr">rotate</span>: degrees(<span class="hljs-number">-45</span>),
+  })
+
+  <span class="hljs-keyword">const</span> pdfBytes = <span class="hljs-keyword">await</span> pdfDoc.save()
+}
+</code></pre>
+</span></div><iframe id="7449597" class="card"></iframe><script>document.getElementById('7449597').src = '/viewer?url=/assets/modify_document.pdf'</script><div style="display:flex;flex-direction:row;justify-content:space-between;align-items:flex-end;flex-wrap:wrap"><div class="splashAnchorContainer"><div id="create-form" class="anchor"></div><a href="#create-form"><h2 class="splashSectionHeader">Create Form</h2></a></div><a style="margin-bottom:15px;display:flex;flex-direction:row;align-items:center;color:#0084ff" href="https://jsfiddle.net/Hopding/bct7vngL/4/" target="_blank" rel="noopener noreferrer"><svg style="height:33px;width:46px;stroke:#0084ff" width="46px" height="33px" viewBox="0 0 46 33"><g stroke-width="1.6" fill="none" fill-rule="evenodd"><path d="M23.4888889,20.543316 C21.4404656,18.4187374 19.0750303,15.6666667 16.4832014,15.6666667 C13.8721947,15.6666667 11.7555556,17.6366138 11.7555556,20.0666667 C11.7555556,22.4967196 13.8721947,24.4666667 16.4832014,24.4666667 C18.8347252,24.4666667 19.9845474,23.0125628 20.6429148,22.312473" id="Oval-1" stroke-linecap="round"></path><path d="M22.5111111,19.5900174 C24.5595344,21.7145959 26.9249697,24.4666667 29.5167986,24.4666667 C32.1278053,24.4666667 34.2444444,22.4967196 34.2444444,20.0666667 C34.2444444,17.6366138 32.1278053,15.6666667 29.5167986,15.6666667 C27.1652748,15.6666667 26.0154526,17.1207706 25.3570852,17.8208603" id="Oval-1-Copy" stroke-linecap="round"></path><path d="M45,22.7331459 C45,19.1499462 42.7950446,16.079593 39.6628004,14.7835315 C39.6774469,14.5246474 39.7003932,14.2674038 39.7003932,14.0035978 C39.7003932,6.82243304 33.8412885,1 26.611593,1 C21.3985635,1 16.9102123,4.03409627 14.8051788,8.41527616 C13.7828502,7.62878013 12.503719,7.15547161 11.1134367,7.15547161 C7.77825654,7.15547161 5.07450503,9.84159999 5.07450503,13.1544315 C5.07450503,13.7760488 5.16938207,14.3779791 5.3477444,14.9418479 C2.74863428,16.4787471 1,19.2867709 1,22.5105187 C1,27.3287502 4.89630545,31.2367856 9.72803666,31.31094 L36.3341301,31.3109406 C41.1201312,31.3406346 45,27.4870665 45,22.7331459 L45,22.7331459 Z" stroke-linejoin="round"></path></g></svg><span style="padding-left:5px">Try the JSFiddle demo</span></a></div><div><span><pre><code class="hljs css language-js"><span class="hljs-keyword">import</span> { PDFDocument } <span class="hljs-keyword">from</span> <span class="hljs-string">'pdf-lib'</span>
+
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createForm</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">const</span> pdfDoc = <span class="hljs-keyword">await</span> PDFDocument.create()
+
+  <span class="hljs-keyword">const</span> page = pdfDoc.addPage([<span class="hljs-number">550</span>, <span class="hljs-number">750</span>])
+
+  <span class="hljs-keyword">const</span> form = pdfDoc.getForm()
+
+  page.drawText(<span class="hljs-string">'Enter your favorite superhero:'</span>, { <span class="hljs-attr">x</span>: <span class="hljs-number">50</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">700</span>, <span class="hljs-attr">size</span>: <span class="hljs-number">20</span> })
+
+  <span class="hljs-keyword">const</span> superheroField = form.createTextField(<span class="hljs-string">'favorite.superhero'</span>)
+  superheroField.setText(<span class="hljs-string">'One Punch Man'</span>)
+  superheroField.addToPage(page, { <span class="hljs-attr">x</span>: <span class="hljs-number">55</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">640</span> })
+
+  page.drawText(<span class="hljs-string">'Select your favorite rocket:'</span>, { <span class="hljs-attr">x</span>: <span class="hljs-number">50</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">600</span>, <span class="hljs-attr">size</span>: <span class="hljs-number">20</span> })
+
+  page.drawText(<span class="hljs-string">'Falcon Heavy'</span>, { <span class="hljs-attr">x</span>: <span class="hljs-number">120</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">560</span>, <span class="hljs-attr">size</span>: <span class="hljs-number">18</span> })
+  page.drawText(<span class="hljs-string">'Saturn IV'</span>, { <span class="hljs-attr">x</span>: <span class="hljs-number">120</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">500</span>, <span class="hljs-attr">size</span>: <span class="hljs-number">18</span> })
+  page.drawText(<span class="hljs-string">'Delta IV Heavy'</span>, { <span class="hljs-attr">x</span>: <span class="hljs-number">340</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">560</span>, <span class="hljs-attr">size</span>: <span class="hljs-number">18</span> })
+  page.drawText(<span class="hljs-string">'Space Launch System'</span>, { <span class="hljs-attr">x</span>: <span class="hljs-number">340</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">500</span>, <span class="hljs-attr">size</span>: <span class="hljs-number">18</span> })
+
+  <span class="hljs-keyword">const</span> rocketField = form.createRadioGroup(<span class="hljs-string">'favorite.rocket'</span>)
+  rocketField.addOptionToPage(<span class="hljs-string">'Falcon Heavy'</span>, page, { <span class="hljs-attr">x</span>: <span class="hljs-number">55</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">540</span> })
+  rocketField.addOptionToPage(<span class="hljs-string">'Saturn IV'</span>, page, { <span class="hljs-attr">x</span>: <span class="hljs-number">55</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">480</span> })
+  rocketField.addOptionToPage(<span class="hljs-string">'Delta IV Heavy'</span>, page, { <span class="hljs-attr">x</span>: <span class="hljs-number">275</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">540</span> })
+  rocketField.addOptionToPage(<span class="hljs-string">'Space Launch System'</span>, page, { <span class="hljs-attr">x</span>: <span class="hljs-number">275</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">480</span> })
+  rocketField.select(<span class="hljs-string">'Saturn IV'</span>)
+
+  page.drawText(<span class="hljs-string">'Select your favorite gundams:'</span>, { <span class="hljs-attr">x</span>: <span class="hljs-number">50</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">440</span>, <span class="hljs-attr">size</span>: <span class="hljs-number">20</span> })
+
+  page.drawText(<span class="hljs-string">'Exia'</span>, { <span class="hljs-attr">x</span>: <span class="hljs-number">120</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">400</span>, <span class="hljs-attr">size</span>: <span class="hljs-number">18</span> })
+  page.drawText(<span class="hljs-string">'Kyrios'</span>, { <span class="hljs-attr">x</span>: <span class="hljs-number">120</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">340</span>, <span class="hljs-attr">size</span>: <span class="hljs-number">18</span> })
+  page.drawText(<span class="hljs-string">'Virtue'</span>, { <span class="hljs-attr">x</span>: <span class="hljs-number">340</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">400</span>, <span class="hljs-attr">size</span>: <span class="hljs-number">18</span> })
+  page.drawText(<span class="hljs-string">'Dynames'</span>, { <span class="hljs-attr">x</span>: <span class="hljs-number">340</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">340</span>, <span class="hljs-attr">size</span>: <span class="hljs-number">18</span> })
+
+  <span class="hljs-keyword">const</span> exiaField = form.createCheckBox(<span class="hljs-string">'gundam.exia'</span>)
+  <span class="hljs-keyword">const</span> kyriosField = form.createCheckBox(<span class="hljs-string">'gundam.kyrios'</span>)
+  <span class="hljs-keyword">const</span> virtueField = form.createCheckBox(<span class="hljs-string">'gundam.virtue'</span>)
+  <span class="hljs-keyword">const</span> dynamesField = form.createCheckBox(<span class="hljs-string">'gundam.dynames'</span>)
+
+  exiaField.addToPage(page, { <span class="hljs-attr">x</span>: <span class="hljs-number">55</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">380</span> })
+  kyriosField.addToPage(page, { <span class="hljs-attr">x</span>: <span class="hljs-number">55</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">320</span> })
+  virtueField.addToPage(page, { <span class="hljs-attr">x</span>: <span class="hljs-number">275</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">380</span> })
+  dynamesField.addToPage(page, { <span class="hljs-attr">x</span>: <span class="hljs-number">275</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">320</span> })
+
+  exiaField.check()
+  dynamesField.check()
+
+  page.drawText(<span class="hljs-string">'Select your favorite planet*:'</span>, { <span class="hljs-attr">x</span>: <span class="hljs-number">50</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">280</span>, <span class="hljs-attr">size</span>: <span class="hljs-number">20</span> })
+
+  <span class="hljs-keyword">const</span> planetsField = form.createDropdown(<span class="hljs-string">'favorite.planet'</span>)
+  planetsField.addOptions([<span class="hljs-string">'Venus'</span>, <span class="hljs-string">'Earth'</span>, <span class="hljs-string">'Mars'</span>, <span class="hljs-string">'Pluto'</span>])
+  planetsField.select(<span class="hljs-string">'Pluto'</span>)
+  planetsField.addToPage(page, { <span class="hljs-attr">x</span>: <span class="hljs-number">55</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">220</span> })
+
+  page.drawText(<span class="hljs-string">'Select your favorite person:'</span>, { <span class="hljs-attr">x</span>: <span class="hljs-number">50</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">180</span>, <span class="hljs-attr">size</span>: <span class="hljs-number">18</span> })
+
+  <span class="hljs-keyword">const</span> personField = form.createOptionList(<span class="hljs-string">'favorite.person'</span>)
+  personField.addOptions([
+    <span class="hljs-string">'Julius Caesar'</span>,
+    <span class="hljs-string">'Ada Lovelace'</span>,
+    <span class="hljs-string">'Cleopatra'</span>,
+    <span class="hljs-string">'Aaron Burr'</span>,
+    <span class="hljs-string">'Mark Antony'</span>,
+  ])
+  personField.select(<span class="hljs-string">'Ada Lovelace'</span>)
+  personField.addToPage(page, { <span class="hljs-attr">x</span>: <span class="hljs-number">55</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">70</span> })
+
+  page.drawText(<span class="hljs-string">`* Pluto should be a planet too!`</span>, { <span class="hljs-attr">x</span>: <span class="hljs-number">15</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">15</span>, <span class="hljs-attr">size</span>: <span class="hljs-number">15</span> })
+
+  <span class="hljs-keyword">const</span> pdfBytes = <span class="hljs-keyword">await</span> pdfDoc.save()
+}
+</code></pre>
+</span></div><iframe id="8803751" class="card"></iframe><script>document.getElementById('8803751').src = '/viewer?url=/assets/create_form.pdf'</script><div style="display:flex;flex-direction:row;justify-content:space-between;align-items:flex-end;flex-wrap:wrap"><div class="splashAnchorContainer"><div id="fill-form" class="anchor"></div><a href="#fill-form"><h2 class="splashSectionHeader">Fill Form</h2></a></div><a style="margin-bottom:15px;display:flex;flex-direction:row;align-items:center;color:#0084ff" href="https://jsfiddle.net/Hopding/0mwfqkv6/3/" target="_blank" rel="noopener noreferrer"><svg style="height:33px;width:46px;stroke:#0084ff" width="46px" height="33px" viewBox="0 0 46 33"><g stroke-width="1.6" fill="none" fill-rule="evenodd"><path d="M23.4888889,20.543316 C21.4404656,18.4187374 19.0750303,15.6666667 16.4832014,15.6666667 C13.8721947,15.6666667 11.7555556,17.6366138 11.7555556,20.0666667 C11.7555556,22.4967196 13.8721947,24.4666667 16.4832014,24.4666667 C18.8347252,24.4666667 19.9845474,23.0125628 20.6429148,22.312473" id="Oval-1" stroke-linecap="round"></path><path d="M22.5111111,19.5900174 C24.5595344,21.7145959 26.9249697,24.4666667 29.5167986,24.4666667 C32.1278053,24.4666667 34.2444444,22.4967196 34.2444444,20.0666667 C34.2444444,17.6366138 32.1278053,15.6666667 29.5167986,15.6666667 C27.1652748,15.6666667 26.0154526,17.1207706 25.3570852,17.8208603" id="Oval-1-Copy" stroke-linecap="round"></path><path d="M45,22.7331459 C45,19.1499462 42.7950446,16.079593 39.6628004,14.7835315 C39.6774469,14.5246474 39.7003932,14.2674038 39.7003932,14.0035978 C39.7003932,6.82243304 33.8412885,1 26.611593,1 C21.3985635,1 16.9102123,4.03409627 14.8051788,8.41527616 C13.7828502,7.62878013 12.503719,7.15547161 11.1134367,7.15547161 C7.77825654,7.15547161 5.07450503,9.84159999 5.07450503,13.1544315 C5.07450503,13.7760488 5.16938207,14.3779791 5.3477444,14.9418479 C2.74863428,16.4787471 1,19.2867709 1,22.5105187 C1,27.3287502 4.89630545,31.2367856 9.72803666,31.31094 L36.3341301,31.3109406 C41.1201312,31.3406346 45,27.4870665 45,22.7331459 L45,22.7331459 Z" stroke-linejoin="round"></path></g></svg><span style="padding-left:5px">Try the JSFiddle demo</span></a></div><div><span><pre><code class="hljs css language-js"><span class="hljs-keyword">import</span> { PDFDocument } <span class="hljs-keyword">from</span> <span class="hljs-string">'pdf-lib'</span>
+
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">fillForm</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">const</span> formUrl = <span class="hljs-string">'https://pdf-lib.js.org/assets/dod_character.pdf'</span>
+  <span class="hljs-keyword">const</span> formPdfBytes = <span class="hljs-keyword">await</span> fetch(formUrl).then(<span class="hljs-function"><span class="hljs-params">res</span> =&gt;</span> res.arrayBuffer())
+
+  <span class="hljs-keyword">const</span> marioUrl = <span class="hljs-string">'https://pdf-lib.js.org/assets/small_mario.png'</span>
+  <span class="hljs-keyword">const</span> marioImageBytes = <span class="hljs-keyword">await</span> fetch(marioUrl).then(<span class="hljs-function"><span class="hljs-params">res</span> =&gt;</span> res.arrayBuffer())
+
+  <span class="hljs-keyword">const</span> emblemUrl = <span class="hljs-string">'https://pdf-lib.js.org/assets/mario_emblem.png'</span>
+  <span class="hljs-keyword">const</span> emblemImageBytes = <span class="hljs-keyword">await</span> fetch(emblemUrl).then(<span class="hljs-function"><span class="hljs-params">res</span> =&gt;</span> res.arrayBuffer())
+
+  <span class="hljs-keyword">const</span> pdfDoc = <span class="hljs-keyword">await</span> PDFDocument.load(formPdfBytes)
+
+  <span class="hljs-keyword">const</span> marioImage = <span class="hljs-keyword">await</span> pdfDoc.embedPng(marioImageBytes)
+  <span class="hljs-keyword">const</span> emblemImage = <span class="hljs-keyword">await</span> pdfDoc.embedPng(emblemImageBytes)
+
+  <span class="hljs-keyword">const</span> form = pdfDoc.getForm()
+
+  <span class="hljs-keyword">const</span> nameField = form.getTextField(<span class="hljs-string">'CharacterName 2'</span>)
+  <span class="hljs-keyword">const</span> ageField = form.getTextField(<span class="hljs-string">'Age'</span>)
+  <span class="hljs-keyword">const</span> heightField = form.getTextField(<span class="hljs-string">'Height'</span>)
+  <span class="hljs-keyword">const</span> weightField = form.getTextField(<span class="hljs-string">'Weight'</span>)
+  <span class="hljs-keyword">const</span> eyesField = form.getTextField(<span class="hljs-string">'Eyes'</span>)
+  <span class="hljs-keyword">const</span> skinField = form.getTextField(<span class="hljs-string">'Skin'</span>)
+  <span class="hljs-keyword">const</span> hairField = form.getTextField(<span class="hljs-string">'Hair'</span>)
+
+  <span class="hljs-keyword">const</span> alliesField = form.getTextField(<span class="hljs-string">'Allies'</span>)
+  <span class="hljs-keyword">const</span> factionField = form.getTextField(<span class="hljs-string">'FactionName'</span>)
+  <span class="hljs-keyword">const</span> backstoryField = form.getTextField(<span class="hljs-string">'Backstory'</span>)
+  <span class="hljs-keyword">const</span> traitsField = form.getTextField(<span class="hljs-string">'Feat+Traits'</span>)
+  <span class="hljs-keyword">const</span> treasureField = form.getTextField(<span class="hljs-string">'Treasure'</span>)
+
+  <span class="hljs-keyword">const</span> characterImageField = form.getButton(<span class="hljs-string">'CHARACTER IMAGE'</span>)
+  <span class="hljs-keyword">const</span> factionImageField = form.getButton(<span class="hljs-string">'Faction Symbol Image'</span>)
+
+  nameField.setText(<span class="hljs-string">'Mario'</span>)
+  ageField.setText(<span class="hljs-string">'24 years'</span>)
+  heightField.setText(<span class="hljs-string">`5' 1"`</span>)
+  weightField.setText(<span class="hljs-string">'196 lbs'</span>)
+  eyesField.setText(<span class="hljs-string">'blue'</span>)
+  skinField.setText(<span class="hljs-string">'white'</span>)
+  hairField.setText(<span class="hljs-string">'brown'</span>)
+
+  characterImageField.setImage(marioImage)
+
+  alliesField.setText(
+    [
+      <span class="hljs-string">`Allies:`</span>,
+      <span class="hljs-string">`  • Princess Daisy`</span>,
+      <span class="hljs-string">`  • Princess Peach`</span>,
+      <span class="hljs-string">`  • Rosalina`</span>,
+      <span class="hljs-string">`  • Geno`</span>,
+      <span class="hljs-string">`  • Luigi`</span>,
+      <span class="hljs-string">`  • Donkey Kong`</span>,
+      <span class="hljs-string">`  • Yoshi`</span>,
+      <span class="hljs-string">`  • Diddy Kong`</span>,
+      <span class="hljs-string">``</span>,
+      <span class="hljs-string">`Organizations:`</span>,
+      <span class="hljs-string">`  • Italian Plumbers Association`</span>,
+    ].join(<span class="hljs-string">'\n'</span>),
+  )
+
+  factionField.setText(<span class="hljs-string">`Mario's Emblem`</span>)
+
+  factionImageField.setImage(emblemImage)
+
+  backstoryField.setText(
+    [
+      <span class="hljs-string">`Mario is a fictional character in the Mario video game franchise, `</span>,
+      <span class="hljs-string">`owned by Nintendo and created by Japanese video game designer Shigeru `</span>,
+      <span class="hljs-string">`Miyamoto. Serving as the company's mascot and the eponymous `</span>,
+      <span class="hljs-string">`protagonist of the series, Mario has appeared in over 200 video games `</span>,
+      <span class="hljs-string">`since his creation. Depicted as a short, pudgy, Italian plumber who `</span>,
+      <span class="hljs-string">`resides in the Mushroom Kingdom, his adventures generally center `</span>,
+      <span class="hljs-string">`upon rescuing Princess Peach from the Koopa villain Bowser. His `</span>,
+      <span class="hljs-string">`younger brother and sidekick is Luigi.`</span>,
+    ].join(<span class="hljs-string">'\n'</span>),
+  )
+
+  traitsField.setText(
+    [
+      <span class="hljs-string">`Mario can use three basic three power-ups:`</span>,
+      <span class="hljs-string">`  • the Super Mushroom, which causes Mario to grow larger`</span>,
+      <span class="hljs-string">`  • the Fire Flower, which allows Mario to throw fireballs`</span>,
+      <span class="hljs-string">`  • the Starman, which gives Mario temporary invincibility`</span>,
+    ].join(<span class="hljs-string">'\n'</span>),
+  )
+
+  treasureField.setText([<span class="hljs-string">'• Gold coins'</span>, <span class="hljs-string">'• Treasure chests'</span>].join(<span class="hljs-string">'\n'</span>))
+
+  <span class="hljs-keyword">const</span> pdfBytes = <span class="hljs-keyword">await</span> pdfDoc.save()
+}
+</code></pre>
+</span></div><iframe id="4890170" class="card"></iframe><script>document.getElementById('4890170').src = '/viewer?url=/assets/fill_form.pdf'</script><div style="display:flex;flex-direction:row;justify-content:space-between;align-items:flex-end;flex-wrap:wrap"><div class="splashAnchorContainer"><div id="flatten-form" class="anchor"></div><a href="#flatten-form"><h2 class="splashSectionHeader">Flatten Form</h2></a></div><a style="margin-bottom:15px;display:flex;flex-direction:row;align-items:center;color:#0084ff" href="https://jsfiddle.net/Hopding/skevywdz/2/" target="_blank" rel="noopener noreferrer"><svg style="height:33px;width:46px;stroke:#0084ff" width="46px" height="33px" viewBox="0 0 46 33"><g stroke-width="1.6" fill="none" fill-rule="evenodd"><path d="M23.4888889,20.543316 C21.4404656,18.4187374 19.0750303,15.6666667 16.4832014,15.6666667 C13.8721947,15.6666667 11.7555556,17.6366138 11.7555556,20.0666667 C11.7555556,22.4967196 13.8721947,24.4666667 16.4832014,24.4666667 C18.8347252,24.4666667 19.9845474,23.0125628 20.6429148,22.312473" id="Oval-1" stroke-linecap="round"></path><path d="M22.5111111,19.5900174 C24.5595344,21.7145959 26.9249697,24.4666667 29.5167986,24.4666667 C32.1278053,24.4666667 34.2444444,22.4967196 34.2444444,20.0666667 C34.2444444,17.6366138 32.1278053,15.6666667 29.5167986,15.6666667 C27.1652748,15.6666667 26.0154526,17.1207706 25.3570852,17.8208603" id="Oval-1-Copy" stroke-linecap="round"></path><path d="M45,22.7331459 C45,19.1499462 42.7950446,16.079593 39.6628004,14.7835315 C39.6774469,14.5246474 39.7003932,14.2674038 39.7003932,14.0035978 C39.7003932,6.82243304 33.8412885,1 26.611593,1 C21.3985635,1 16.9102123,4.03409627 14.8051788,8.41527616 C13.7828502,7.62878013 12.503719,7.15547161 11.1134367,7.15547161 C7.77825654,7.15547161 5.07450503,9.84159999 5.07450503,13.1544315 C5.07450503,13.7760488 5.16938207,14.3779791 5.3477444,14.9418479 C2.74863428,16.4787471 1,19.2867709 1,22.5105187 C1,27.3287502 4.89630545,31.2367856 9.72803666,31.31094 L36.3341301,31.3109406 C41.1201312,31.3406346 45,27.4870665 45,22.7331459 L45,22.7331459 Z" stroke-linejoin="round"></path></g></svg><span style="padding-left:5px">Try the JSFiddle demo</span></a></div><div><span><pre><code class="hljs css language-js"><span class="hljs-keyword">import</span> { PDFDocument } <span class="hljs-keyword">from</span> <span class="hljs-string">'pdf-lib'</span>
+
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">flattenForm</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">const</span> formUrl = <span class="hljs-string">'https://pdf-lib.js.org/assets/form_to_flatten.pdf'</span>
+  <span class="hljs-keyword">const</span> formPdfBytes = <span class="hljs-keyword">await</span> fetch(formUrl).then(<span class="hljs-function"><span class="hljs-params">res</span> =&gt;</span> res.arrayBuffer())
+
+  <span class="hljs-keyword">const</span> pdfDoc = <span class="hljs-keyword">await</span> PDFDocument.load(formPdfBytes)
+
+  <span class="hljs-keyword">const</span> form = pdfDoc.getForm()
+
+  form.getTextField(<span class="hljs-string">'Text1'</span>).setText(<span class="hljs-string">'Some Text'</span>);
+  form.getRadioGroup(<span class="hljs-string">'Group2'</span>).select(<span class="hljs-string">'Choice1'</span>);
+  form.getRadioGroup(<span class="hljs-string">'Group3'</span>).select(<span class="hljs-string">'Choice3'</span>);
+  form.getRadioGroup(<span class="hljs-string">'Group4'</span>).select(<span class="hljs-string">'Choice1'</span>);
+  form.getCheckBox(<span class="hljs-string">'Check Box3'</span>).check();
+  form.getCheckBox(<span class="hljs-string">'Check Box4'</span>).uncheck();
+  form.getDropdown(<span class="hljs-string">'Dropdown7'</span>).select(<span class="hljs-string">'Infinity'</span>);
+  form.getOptionList(<span class="hljs-string">'List Box6'</span>).select(<span class="hljs-string">'Honda'</span>);
+
+  form.flatten();
+
+  <span class="hljs-keyword">const</span> pdfBytes = <span class="hljs-keyword">await</span> pdfDoc.save()
+}
+</code></pre>
+</span></div><iframe id="6718236" class="card"></iframe><script>document.getElementById('6718236').src = '/viewer?url=/assets/flatten_form.pdf'</script><div style="display:flex;flex-direction:row;justify-content:space-between;align-items:flex-end;flex-wrap:wrap"><div class="splashAnchorContainer"><div id="copy-pages" class="anchor"></div><a href="#copy-pages"><h2 class="splashSectionHeader">Copy Pages</h2></a></div><a style="margin-bottom:15px;display:flex;flex-direction:row;align-items:center;color:#0084ff" href="https://jsfiddle.net/Hopding/ybank8s9/2/" target="_blank" rel="noopener noreferrer"><svg style="height:33px;width:46px;stroke:#0084ff" width="46px" height="33px" viewBox="0 0 46 33"><g stroke-width="1.6" fill="none" fill-rule="evenodd"><path d="M23.4888889,20.543316 C21.4404656,18.4187374 19.0750303,15.6666667 16.4832014,15.6666667 C13.8721947,15.6666667 11.7555556,17.6366138 11.7555556,20.0666667 C11.7555556,22.4967196 13.8721947,24.4666667 16.4832014,24.4666667 C18.8347252,24.4666667 19.9845474,23.0125628 20.6429148,22.312473" id="Oval-1" stroke-linecap="round"></path><path d="M22.5111111,19.5900174 C24.5595344,21.7145959 26.9249697,24.4666667 29.5167986,24.4666667 C32.1278053,24.4666667 34.2444444,22.4967196 34.2444444,20.0666667 C34.2444444,17.6366138 32.1278053,15.6666667 29.5167986,15.6666667 C27.1652748,15.6666667 26.0154526,17.1207706 25.3570852,17.8208603" id="Oval-1-Copy" stroke-linecap="round"></path><path d="M45,22.7331459 C45,19.1499462 42.7950446,16.079593 39.6628004,14.7835315 C39.6774469,14.5246474 39.7003932,14.2674038 39.7003932,14.0035978 C39.7003932,6.82243304 33.8412885,1 26.611593,1 C21.3985635,1 16.9102123,4.03409627 14.8051788,8.41527616 C13.7828502,7.62878013 12.503719,7.15547161 11.1134367,7.15547161 C7.77825654,7.15547161 5.07450503,9.84159999 5.07450503,13.1544315 C5.07450503,13.7760488 5.16938207,14.3779791 5.3477444,14.9418479 C2.74863428,16.4787471 1,19.2867709 1,22.5105187 C1,27.3287502 4.89630545,31.2367856 9.72803666,31.31094 L36.3341301,31.3109406 C41.1201312,31.3406346 45,27.4870665 45,22.7331459 L45,22.7331459 Z" stroke-linejoin="round"></path></g></svg><span style="padding-left:5px">Try the JSFiddle demo</span></a></div><div><span><pre><code class="hljs css language-js"><span class="hljs-keyword">import</span> { PDFDocument } <span class="hljs-keyword">from</span> <span class="hljs-string">'pdf-lib'</span>
+
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">copyPages</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">const</span> url1 = <span class="hljs-string">'https://pdf-lib.js.org/assets/with_update_sections.pdf'</span>
+  <span class="hljs-keyword">const</span> url2 = <span class="hljs-string">'https://pdf-lib.js.org/assets/with_large_page_count.pdf'</span>
+
+  <span class="hljs-keyword">const</span> firstDonorPdfBytes = <span class="hljs-keyword">await</span> fetch(url1).then(<span class="hljs-function"><span class="hljs-params">res</span> =&gt;</span> res.arrayBuffer())
+  <span class="hljs-keyword">const</span> secondDonorPdfBytes = <span class="hljs-keyword">await</span> fetch(url2).then(<span class="hljs-function"><span class="hljs-params">res</span> =&gt;</span> res.arrayBuffer())
+
+  <span class="hljs-keyword">const</span> firstDonorPdfDoc = <span class="hljs-keyword">await</span> PDFDocument.load(firstDonorPdfBytes)
+  <span class="hljs-keyword">const</span> secondDonorPdfDoc = <span class="hljs-keyword">await</span> PDFDocument.load(secondDonorPdfBytes)
+
+  <span class="hljs-keyword">const</span> pdfDoc = <span class="hljs-keyword">await</span> PDFDocument.create();
+
+  <span class="hljs-keyword">const</span> [firstDonorPage] = <span class="hljs-keyword">await</span> pdfDoc.copyPages(firstDonorPdfDoc, [<span class="hljs-number">0</span>])
+  <span class="hljs-keyword">const</span> [secondDonorPage] = <span class="hljs-keyword">await</span> pdfDoc.copyPages(secondDonorPdfDoc, [<span class="hljs-number">742</span>])
+
+  pdfDoc.addPage(firstDonorPage)
+  pdfDoc.insertPage(<span class="hljs-number">0</span>, secondDonorPage)
+
+  <span class="hljs-keyword">const</span> pdfBytes = <span class="hljs-keyword">await</span> pdfDoc.save()
+}
+</code></pre>
+</span></div><iframe id="6206905" class="card"></iframe><script>document.getElementById('6206905').src = '/viewer?url=/assets/copy_pages.pdf'</script><div style="display:flex;flex-direction:row;justify-content:space-between;align-items:flex-end;flex-wrap:wrap"><div class="splashAnchorContainer"><div id="embed-png-and-jpeg-images" class="anchor"></div><a href="#embed-png-and-jpeg-images"><h2 class="splashSectionHeader">Embed PNG and JPEG Images</h2></a></div><a style="margin-bottom:15px;display:flex;flex-direction:row;align-items:center;color:#0084ff" href="https://jsfiddle.net/Hopding/bcya43ju/5/" target="_blank" rel="noopener noreferrer"><svg style="height:33px;width:46px;stroke:#0084ff" width="46px" height="33px" viewBox="0 0 46 33"><g stroke-width="1.6" fill="none" fill-rule="evenodd"><path d="M23.4888889,20.543316 C21.4404656,18.4187374 19.0750303,15.6666667 16.4832014,15.6666667 C13.8721947,15.6666667 11.7555556,17.6366138 11.7555556,20.0666667 C11.7555556,22.4967196 13.8721947,24.4666667 16.4832014,24.4666667 C18.8347252,24.4666667 19.9845474,23.0125628 20.6429148,22.312473" id="Oval-1" stroke-linecap="round"></path><path d="M22.5111111,19.5900174 C24.5595344,21.7145959 26.9249697,24.4666667 29.5167986,24.4666667 C32.1278053,24.4666667 34.2444444,22.4967196 34.2444444,20.0666667 C34.2444444,17.6366138 32.1278053,15.6666667 29.5167986,15.6666667 C27.1652748,15.6666667 26.0154526,17.1207706 25.3570852,17.8208603" id="Oval-1-Copy" stroke-linecap="round"></path><path d="M45,22.7331459 C45,19.1499462 42.7950446,16.079593 39.6628004,14.7835315 C39.6774469,14.5246474 39.7003932,14.2674038 39.7003932,14.0035978 C39.7003932,6.82243304 33.8412885,1 26.611593,1 C21.3985635,1 16.9102123,4.03409627 14.8051788,8.41527616 C13.7828502,7.62878013 12.503719,7.15547161 11.1134367,7.15547161 C7.77825654,7.15547161 5.07450503,9.84159999 5.07450503,13.1544315 C5.07450503,13.7760488 5.16938207,14.3779791 5.3477444,14.9418479 C2.74863428,16.4787471 1,19.2867709 1,22.5105187 C1,27.3287502 4.89630545,31.2367856 9.72803666,31.31094 L36.3341301,31.3109406 C41.1201312,31.3406346 45,27.4870665 45,22.7331459 L45,22.7331459 Z" stroke-linejoin="round"></path></g></svg><span style="padding-left:5px">Try the JSFiddle demo</span></a></div><div><span><pre><code class="hljs css language-js"><span class="hljs-keyword">import</span> { PDFDocument } <span class="hljs-keyword">from</span> <span class="hljs-string">'pdf-lib'</span>
+
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">embedImages</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">const</span> jpgUrl = <span class="hljs-string">'https://pdf-lib.js.org/assets/cat_riding_unicorn.jpg'</span>
+  <span class="hljs-keyword">const</span> pngUrl = <span class="hljs-string">'https://pdf-lib.js.org/assets/minions_banana_alpha.png'</span>
+
+  <span class="hljs-keyword">const</span> jpgImageBytes = <span class="hljs-keyword">await</span> fetch(jpgUrl).then(<span class="hljs-function">(<span class="hljs-params">res</span>) =&gt;</span> res.arrayBuffer())
+  <span class="hljs-keyword">const</span> pngImageBytes = <span class="hljs-keyword">await</span> fetch(pngUrl).then(<span class="hljs-function">(<span class="hljs-params">res</span>) =&gt;</span> res.arrayBuffer())
+
+  <span class="hljs-keyword">const</span> pdfDoc = <span class="hljs-keyword">await</span> PDFDocument.create()
+
+  <span class="hljs-keyword">const</span> jpgImage = <span class="hljs-keyword">await</span> pdfDoc.embedJpg(jpgImageBytes)
+  <span class="hljs-keyword">const</span> pngImage = <span class="hljs-keyword">await</span> pdfDoc.embedPng(pngImageBytes)
+
+  <span class="hljs-keyword">const</span> jpgDims = jpgImage.scale(<span class="hljs-number">0.5</span>)
+  <span class="hljs-keyword">const</span> pngDims = pngImage.scale(<span class="hljs-number">0.5</span>)
+
+  <span class="hljs-keyword">const</span> page = pdfDoc.addPage()
+
+  page.drawImage(jpgImage, {
+    <span class="hljs-attr">x</span>: page.getWidth() / <span class="hljs-number">2</span> - jpgDims.width / <span class="hljs-number">2</span>,
+    <span class="hljs-attr">y</span>: page.getHeight() / <span class="hljs-number">2</span> - jpgDims.height / <span class="hljs-number">2</span> + <span class="hljs-number">250</span>,
+    <span class="hljs-attr">width</span>: jpgDims.width,
+    <span class="hljs-attr">height</span>: jpgDims.height,
+  })
+  page.drawImage(pngImage, {
+    <span class="hljs-attr">x</span>: page.getWidth() / <span class="hljs-number">2</span> - pngDims.width / <span class="hljs-number">2</span> + <span class="hljs-number">75</span>,
+    <span class="hljs-attr">y</span>: page.getHeight() / <span class="hljs-number">2</span> - pngDims.height + <span class="hljs-number">250</span>,
+    <span class="hljs-attr">width</span>: pngDims.width,
+    <span class="hljs-attr">height</span>: pngDims.height,
+  })
+
+  <span class="hljs-keyword">const</span> pdfBytes = <span class="hljs-keyword">await</span> pdfDoc.save()
+}
+</code></pre>
+</span></div><iframe id="2642173" class="card"></iframe><script>document.getElementById('2642173').src = '/viewer?url=/assets/embed_png_and_jpeg_images.pdf'</script><div style="display:flex;flex-direction:row;justify-content:space-between;align-items:flex-end;flex-wrap:wrap"><div class="splashAnchorContainer"><div id="embed-pdf-pages" class="anchor"></div><a href="#embed-pdf-pages"><h2 class="splashSectionHeader">Embed PDF Pages</h2></a></div><a style="margin-bottom:15px;display:flex;flex-direction:row;align-items:center;color:#0084ff" href="https://jsfiddle.net/Hopding/Lyb16ocj/13/" target="_blank" rel="noopener noreferrer"><svg style="height:33px;width:46px;stroke:#0084ff" width="46px" height="33px" viewBox="0 0 46 33"><g stroke-width="1.6" fill="none" fill-rule="evenodd"><path d="M23.4888889,20.543316 C21.4404656,18.4187374 19.0750303,15.6666667 16.4832014,15.6666667 C13.8721947,15.6666667 11.7555556,17.6366138 11.7555556,20.0666667 C11.7555556,22.4967196 13.8721947,24.4666667 16.4832014,24.4666667 C18.8347252,24.4666667 19.9845474,23.0125628 20.6429148,22.312473" id="Oval-1" stroke-linecap="round"></path><path d="M22.5111111,19.5900174 C24.5595344,21.7145959 26.9249697,24.4666667 29.5167986,24.4666667 C32.1278053,24.4666667 34.2444444,22.4967196 34.2444444,20.0666667 C34.2444444,17.6366138 32.1278053,15.6666667 29.5167986,15.6666667 C27.1652748,15.6666667 26.0154526,17.1207706 25.3570852,17.8208603" id="Oval-1-Copy" stroke-linecap="round"></path><path d="M45,22.7331459 C45,19.1499462 42.7950446,16.079593 39.6628004,14.7835315 C39.6774469,14.5246474 39.7003932,14.2674038 39.7003932,14.0035978 C39.7003932,6.82243304 33.8412885,1 26.611593,1 C21.3985635,1 16.9102123,4.03409627 14.8051788,8.41527616 C13.7828502,7.62878013 12.503719,7.15547161 11.1134367,7.15547161 C7.77825654,7.15547161 5.07450503,9.84159999 5.07450503,13.1544315 C5.07450503,13.7760488 5.16938207,14.3779791 5.3477444,14.9418479 C2.74863428,16.4787471 1,19.2867709 1,22.5105187 C1,27.3287502 4.89630545,31.2367856 9.72803666,31.31094 L36.3341301,31.3109406 C41.1201312,31.3406346 45,27.4870665 45,22.7331459 L45,22.7331459 Z" stroke-linejoin="round"></path></g></svg><span style="padding-left:5px">Try the JSFiddle demo</span></a></div><div><span><pre><code class="hljs css language-js"><span class="hljs-keyword">import</span> { PDFDocument } <span class="hljs-keyword">from</span> <span class="hljs-string">'pdf-lib'</span>
+
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">embedPdfPages</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">const</span> flagUrl = <span class="hljs-string">'https://pdf-lib.js.org/assets/american_flag.pdf'</span>;
+  <span class="hljs-keyword">const</span> constitutionUrl = <span class="hljs-string">'https://pdf-lib.js.org/assets/us_constitution.pdf'</span>;
+
+  <span class="hljs-keyword">const</span> flagPdfBytes = <span class="hljs-keyword">await</span> fetch(flagUrl).then(<span class="hljs-function">(<span class="hljs-params">res</span>) =&gt;</span> res.arrayBuffer());
+  <span class="hljs-keyword">const</span> constitutionPdfBytes = <span class="hljs-keyword">await</span> fetch(constitutionUrl).then(<span class="hljs-function">(<span class="hljs-params">res</span>) =&gt;</span>
+    res.arrayBuffer(),
+  );
+
+  <span class="hljs-keyword">const</span> pdfDoc = <span class="hljs-keyword">await</span> PDFDocument.create();
+
+  <span class="hljs-keyword">const</span> [americanFlag] = <span class="hljs-keyword">await</span> pdfDoc.embedPdf(flagPdfBytes);
+
+  <span class="hljs-keyword">const</span> usConstitutionPdf = <span class="hljs-keyword">await</span> PDFDocument.load(constitutionPdfBytes);
+  <span class="hljs-keyword">const</span> preamble = <span class="hljs-keyword">await</span> pdfDoc.embedPage(usConstitutionPdf.getPages()[<span class="hljs-number">1</span>], {
+    <span class="hljs-attr">left</span>: <span class="hljs-number">55</span>,
+    <span class="hljs-attr">bottom</span>: <span class="hljs-number">485</span>,
+    <span class="hljs-attr">right</span>: <span class="hljs-number">300</span>,
+    <span class="hljs-attr">top</span>: <span class="hljs-number">575</span>,
+  });
+
+  <span class="hljs-keyword">const</span> americanFlagDims = americanFlag.scale(<span class="hljs-number">0.3</span>);
+  <span class="hljs-keyword">const</span> preambleDims = preamble.scale(<span class="hljs-number">2.25</span>);
+
+  <span class="hljs-keyword">const</span> page = pdfDoc.addPage();
+
+  page.drawPage(americanFlag, {
+    ...americanFlagDims,
+    <span class="hljs-attr">x</span>: page.getWidth() / <span class="hljs-number">2</span> - americanFlagDims.width / <span class="hljs-number">2</span>,
+    <span class="hljs-attr">y</span>: page.getHeight() - americanFlagDims.height - <span class="hljs-number">150</span>,
+  });
+  page.drawPage(preamble, {
+    ...preambleDims,
+    <span class="hljs-attr">x</span>: page.getWidth() / <span class="hljs-number">2</span> - preambleDims.width / <span class="hljs-number">2</span>,
+    <span class="hljs-attr">y</span>: page.getHeight() / <span class="hljs-number">2</span> - preambleDims.height / <span class="hljs-number">2</span> - <span class="hljs-number">50</span>,
+  });
+
+  <span class="hljs-keyword">const</span> pdfBytes = <span class="hljs-keyword">await</span> pdfDoc.save();
+}
+</code></pre>
+</span></div><iframe id="1821357" class="card"></iframe><script>document.getElementById('1821357').src = '/viewer?url=/assets/embed_pdf_pages.pdf'</script><div style="display:flex;flex-direction:row;justify-content:space-between;align-items:flex-end;flex-wrap:wrap"><div class="splashAnchorContainer"><div id="embed-font-and-measure-text" class="anchor"></div><a href="#embed-font-and-measure-text"><h2 class="splashSectionHeader">Embed Font and Measure Text</h2></a></div><a style="margin-bottom:15px;display:flex;flex-direction:row;align-items:center;color:#0084ff" href="https://jsfiddle.net/Hopding/rgu6ca59/2/" target="_blank" rel="noopener noreferrer"><svg style="height:33px;width:46px;stroke:#0084ff" width="46px" height="33px" viewBox="0 0 46 33"><g stroke-width="1.6" fill="none" fill-rule="evenodd"><path d="M23.4888889,20.543316 C21.4404656,18.4187374 19.0750303,15.6666667 16.4832014,15.6666667 C13.8721947,15.6666667 11.7555556,17.6366138 11.7555556,20.0666667 C11.7555556,22.4967196 13.8721947,24.4666667 16.4832014,24.4666667 C18.8347252,24.4666667 19.9845474,23.0125628 20.6429148,22.312473" id="Oval-1" stroke-linecap="round"></path><path d="M22.5111111,19.5900174 C24.5595344,21.7145959 26.9249697,24.4666667 29.5167986,24.4666667 C32.1278053,24.4666667 34.2444444,22.4967196 34.2444444,20.0666667 C34.2444444,17.6366138 32.1278053,15.6666667 29.5167986,15.6666667 C27.1652748,15.6666667 26.0154526,17.1207706 25.3570852,17.8208603" id="Oval-1-Copy" stroke-linecap="round"></path><path d="M45,22.7331459 C45,19.1499462 42.7950446,16.079593 39.6628004,14.7835315 C39.6774469,14.5246474 39.7003932,14.2674038 39.7003932,14.0035978 C39.7003932,6.82243304 33.8412885,1 26.611593,1 C21.3985635,1 16.9102123,4.03409627 14.8051788,8.41527616 C13.7828502,7.62878013 12.503719,7.15547161 11.1134367,7.15547161 C7.77825654,7.15547161 5.07450503,9.84159999 5.07450503,13.1544315 C5.07450503,13.7760488 5.16938207,14.3779791 5.3477444,14.9418479 C2.74863428,16.4787471 1,19.2867709 1,22.5105187 C1,27.3287502 4.89630545,31.2367856 9.72803666,31.31094 L36.3341301,31.3109406 C41.1201312,31.3406346 45,27.4870665 45,22.7331459 L45,22.7331459 Z" stroke-linejoin="round"></path></g></svg><span style="padding-left:5px">Try the JSFiddle demo</span></a></div><p><a href="https://github.com/Hopding/pdf-lib/tree/Rewrite#fontkit-installation">The<code>@pdf-lib/fontkit</code> module must be installed to embed custom fonts.</a></p><div><span><pre><code class="hljs css language-js"><span class="hljs-keyword">import</span> { PDFDocument, rgb } <span class="hljs-keyword">from</span> <span class="hljs-string">'pdf-lib'</span>
+<span class="hljs-keyword">import</span> fontkit <span class="hljs-keyword">from</span> <span class="hljs-string">'@pdf-lib/fontkit'</span>
+
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">embedFontAndMeasureText</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">const</span> url = <span class="hljs-string">'https://pdf-lib.js.org/assets/ubuntu/Ubuntu-R.ttf'</span>
+  <span class="hljs-keyword">const</span> fontBytes = <span class="hljs-keyword">await</span> fetch(url).then(<span class="hljs-function"><span class="hljs-params">res</span> =&gt;</span> res.arrayBuffer())
+
+  <span class="hljs-keyword">const</span> pdfDoc = <span class="hljs-keyword">await</span> PDFDocument.create()
+
+  pdfDoc.registerFontkit(fontkit)
+  <span class="hljs-keyword">const</span> customFont = <span class="hljs-keyword">await</span> pdfDoc.embedFont(fontBytes)
+
+  <span class="hljs-keyword">const</span> page = pdfDoc.addPage()
+
+  <span class="hljs-keyword">const</span> text = <span class="hljs-string">'This is text in an embedded font!'</span>
+  <span class="hljs-keyword">const</span> textSize = <span class="hljs-number">35</span>
+  <span class="hljs-keyword">const</span> textWidth = customFont.widthOfTextAtSize(text, textSize)
+  <span class="hljs-keyword">const</span> textHeight = customFont.heightAtSize(textSize)
+
+  page.drawText(text, {
+    <span class="hljs-attr">x</span>: <span class="hljs-number">40</span>,
+    <span class="hljs-attr">y</span>: <span class="hljs-number">450</span>,
+    <span class="hljs-attr">size</span>: textSize,
+    <span class="hljs-attr">font</span>: customFont,
+    <span class="hljs-attr">color</span>: rgb(<span class="hljs-number">0</span>, <span class="hljs-number">0.53</span>, <span class="hljs-number">0.71</span>),
+  })
+  page.drawRectangle({
+    <span class="hljs-attr">x</span>: <span class="hljs-number">40</span>,
+    <span class="hljs-attr">y</span>: <span class="hljs-number">450</span>,
+    <span class="hljs-attr">width</span>: textWidth,
+    <span class="hljs-attr">height</span>: textHeight,
+    <span class="hljs-attr">borderColor</span>: rgb(<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>),
+    <span class="hljs-attr">borderWidth</span>: <span class="hljs-number">1.5</span>,
+  })
+
+  <span class="hljs-keyword">const</span> pdfBytes = <span class="hljs-keyword">await</span> pdfDoc.save()
+}
+</code></pre>
+</span></div><iframe id="4004507" class="card"></iframe><script>document.getElementById('4004507').src = '/viewer?url=/assets/embed_font_and_measure_text.pdf'</script><div style="display:flex;flex-direction:row;justify-content:space-between;align-items:flex-end;flex-wrap:wrap"><div class="splashAnchorContainer"><div id="add-attachments" class="anchor"></div><a href="#add-attachments"><h2 class="splashSectionHeader">Add Attachments</h2></a></div><a style="margin-bottom:15px;display:flex;flex-direction:row;align-items:center;color:#0084ff" href="https://jsfiddle.net/Hopding/9snL63wj/5/" target="_blank" rel="noopener noreferrer"><svg style="height:33px;width:46px;stroke:#0084ff" width="46px" height="33px" viewBox="0 0 46 33"><g stroke-width="1.6" fill="none" fill-rule="evenodd"><path d="M23.4888889,20.543316 C21.4404656,18.4187374 19.0750303,15.6666667 16.4832014,15.6666667 C13.8721947,15.6666667 11.7555556,17.6366138 11.7555556,20.0666667 C11.7555556,22.4967196 13.8721947,24.4666667 16.4832014,24.4666667 C18.8347252,24.4666667 19.9845474,23.0125628 20.6429148,22.312473" id="Oval-1" stroke-linecap="round"></path><path d="M22.5111111,19.5900174 C24.5595344,21.7145959 26.9249697,24.4666667 29.5167986,24.4666667 C32.1278053,24.4666667 34.2444444,22.4967196 34.2444444,20.0666667 C34.2444444,17.6366138 32.1278053,15.6666667 29.5167986,15.6666667 C27.1652748,15.6666667 26.0154526,17.1207706 25.3570852,17.8208603" id="Oval-1-Copy" stroke-linecap="round"></path><path d="M45,22.7331459 C45,19.1499462 42.7950446,16.079593 39.6628004,14.7835315 C39.6774469,14.5246474 39.7003932,14.2674038 39.7003932,14.0035978 C39.7003932,6.82243304 33.8412885,1 26.611593,1 C21.3985635,1 16.9102123,4.03409627 14.8051788,8.41527616 C13.7828502,7.62878013 12.503719,7.15547161 11.1134367,7.15547161 C7.77825654,7.15547161 5.07450503,9.84159999 5.07450503,13.1544315 C5.07450503,13.7760488 5.16938207,14.3779791 5.3477444,14.9418479 C2.74863428,16.4787471 1,19.2867709 1,22.5105187 C1,27.3287502 4.89630545,31.2367856 9.72803666,31.31094 L36.3341301,31.3109406 C41.1201312,31.3406346 45,27.4870665 45,22.7331459 L45,22.7331459 Z" stroke-linejoin="round"></path></g></svg><span style="padding-left:5px">Try the JSFiddle demo</span></a></div><div><span><pre><code class="hljs css language-js"><span class="hljs-keyword">import</span> { PDFDocument } <span class="hljs-keyword">from</span> <span class="hljs-string">'pdf-lib'</span>
+
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">addAttachments</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">const</span> jpgUrl = <span class="hljs-string">'https://pdf-lib.js.org/assets/cat_riding_unicorn.jpg'</span>
+  <span class="hljs-keyword">const</span> pdfUrl = <span class="hljs-string">'https://pdf-lib.js.org/assets/us_constitution.pdf'</span>;
+
+  <span class="hljs-keyword">const</span> jpgAttachmentBytes = <span class="hljs-keyword">await</span> fetch(jpgUrl).then(<span class="hljs-function"><span class="hljs-params">res</span> =&gt;</span> res.arrayBuffer())
+  <span class="hljs-keyword">const</span> pdfAttachmentBytes = <span class="hljs-keyword">await</span> fetch(pdfUrl).then(<span class="hljs-function"><span class="hljs-params">res</span> =&gt;</span> res.arrayBuffer())
+  
+  <span class="hljs-keyword">const</span> pdfDoc = <span class="hljs-keyword">await</span> PDFDocument.create()
+  
+  <span class="hljs-keyword">await</span> pdfDoc.attach(jpgAttachmentBytes, <span class="hljs-string">'cat_riding_unicorn.jpg'</span>, {
+    <span class="hljs-attr">mimeType</span>: <span class="hljs-string">'image/jpeg'</span>,
+    <span class="hljs-attr">description</span>: <span class="hljs-string">'Cool cat riding a unicorn! 🦄🐈🕶️'</span>,
+    <span class="hljs-attr">creationDate</span>: <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(<span class="hljs-string">'2019/12/01'</span>),
+    <span class="hljs-attr">modificationDate</span>: <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(<span class="hljs-string">'2020/04/19'</span>),
+  })
+  
+  <span class="hljs-keyword">await</span> pdfDoc.attach(pdfAttachmentBytes, <span class="hljs-string">'us_constitution.pdf'</span>, {
+    <span class="hljs-attr">mimeType</span>: <span class="hljs-string">'application/pdf'</span>,
+    <span class="hljs-attr">description</span>: <span class="hljs-string">'Constitution of the United States 🇺🇸🦅'</span>,
+    <span class="hljs-attr">creationDate</span>: <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(<span class="hljs-string">'1787/09/17'</span>),
+    <span class="hljs-attr">modificationDate</span>: <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(<span class="hljs-string">'1992/05/07'</span>),
+  })
+  
+  <span class="hljs-keyword">const</span> page = pdfDoc.addPage();
+  page.drawText(<span class="hljs-string">'This PDF has two attachments'</span>, { <span class="hljs-attr">x</span>: <span class="hljs-number">135</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">415</span> })
+  
+  <span class="hljs-keyword">const</span> pdfBytes = <span class="hljs-keyword">await</span> pdfDoc.save()
+}
+</code></pre>
+</span></div><blockquote>Note that only some PDF readers can view attachments. This includes Adobe Reader, Foxit Reader, and Firefox.</blockquote><iframe id="9908123" class="card"></iframe><script>document.getElementById('9908123').src = '/viewer?url=/assets/add_attachments.pdf'</script><div style="display:flex;flex-direction:row;justify-content:space-between;align-items:flex-end;flex-wrap:wrap"><div class="splashAnchorContainer"><div id="set-document-metadata" class="anchor"></div><a href="#set-document-metadata"><h2 class="splashSectionHeader">Set Document Metadata</h2></a></div><a style="margin-bottom:15px;display:flex;flex-direction:row;align-items:center;color:#0084ff" href="https://jsfiddle.net/Hopding/vcwmfnbe/2/" target="_blank" rel="noopener noreferrer"><svg style="height:33px;width:46px;stroke:#0084ff" width="46px" height="33px" viewBox="0 0 46 33"><g stroke-width="1.6" fill="none" fill-rule="evenodd"><path d="M23.4888889,20.543316 C21.4404656,18.4187374 19.0750303,15.6666667 16.4832014,15.6666667 C13.8721947,15.6666667 11.7555556,17.6366138 11.7555556,20.0666667 C11.7555556,22.4967196 13.8721947,24.4666667 16.4832014,24.4666667 C18.8347252,24.4666667 19.9845474,23.0125628 20.6429148,22.312473" id="Oval-1" stroke-linecap="round"></path><path d="M22.5111111,19.5900174 C24.5595344,21.7145959 26.9249697,24.4666667 29.5167986,24.4666667 C32.1278053,24.4666667 34.2444444,22.4967196 34.2444444,20.0666667 C34.2444444,17.6366138 32.1278053,15.6666667 29.5167986,15.6666667 C27.1652748,15.6666667 26.0154526,17.1207706 25.3570852,17.8208603" id="Oval-1-Copy" stroke-linecap="round"></path><path d="M45,22.7331459 C45,19.1499462 42.7950446,16.079593 39.6628004,14.7835315 C39.6774469,14.5246474 39.7003932,14.2674038 39.7003932,14.0035978 C39.7003932,6.82243304 33.8412885,1 26.611593,1 C21.3985635,1 16.9102123,4.03409627 14.8051788,8.41527616 C13.7828502,7.62878013 12.503719,7.15547161 11.1134367,7.15547161 C7.77825654,7.15547161 5.07450503,9.84159999 5.07450503,13.1544315 C5.07450503,13.7760488 5.16938207,14.3779791 5.3477444,14.9418479 C2.74863428,16.4787471 1,19.2867709 1,22.5105187 C1,27.3287502 4.89630545,31.2367856 9.72803666,31.31094 L36.3341301,31.3109406 C41.1201312,31.3406346 45,27.4870665 45,22.7331459 L45,22.7331459 Z" stroke-linejoin="round"></path></g></svg><span style="padding-left:5px">Try the JSFiddle demo</span></a></div><div><span><pre><code class="hljs css language-js"><span class="hljs-keyword">import</span> { PDFDocument, StandardFonts } <span class="hljs-keyword">from</span> <span class="hljs-string">'pdf-lib'</span>
+
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setDocumentMetadata</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">const</span> pdfDoc = <span class="hljs-keyword">await</span> PDFDocument.create()
+  <span class="hljs-keyword">const</span> timesRomanFont = <span class="hljs-keyword">await</span> pdfDoc.embedFont(StandardFonts.TimesRoman)
+  
+  <span class="hljs-keyword">const</span> page = pdfDoc.addPage([<span class="hljs-number">500</span>, <span class="hljs-number">600</span>])
+  page.setFont(timesRomanFont)
+  page.drawText(<span class="hljs-string">'The Life of an Egg'</span>, { <span class="hljs-attr">x</span>: <span class="hljs-number">60</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">500</span>, <span class="hljs-attr">size</span>: <span class="hljs-number">50</span> })
+  page.drawText(<span class="hljs-string">'An Epic Tale of Woe'</span>, { <span class="hljs-attr">x</span>: <span class="hljs-number">125</span>, <span class="hljs-attr">y</span>: <span class="hljs-number">460</span>, <span class="hljs-attr">size</span>: <span class="hljs-number">25</span> })
+  
+  <span class="hljs-comment">// Note that these fields are visible in the "Document Properties" section of </span>
+  <span class="hljs-comment">// most PDF readers.</span>
+  pdfDoc.setTitle(<span class="hljs-string">'🥚 The Life of an Egg 🍳'</span>)
+  pdfDoc.setAuthor(<span class="hljs-string">'Humpty Dumpty'</span>)
+  pdfDoc.setSubject(<span class="hljs-string">'📘 An Epic Tale of Woe 📖'</span>)
+  pdfDoc.setKeywords([<span class="hljs-string">'eggs'</span>, <span class="hljs-string">'wall'</span>, <span class="hljs-string">'fall'</span>, <span class="hljs-string">'king'</span>, <span class="hljs-string">'horses'</span>, <span class="hljs-string">'men'</span>])
+  pdfDoc.setProducer(<span class="hljs-string">'PDF App 9000 🤖'</span>)
+  pdfDoc.setCreator(<span class="hljs-string">'pdf-lib (https://github.com/Hopding/pdf-lib)'</span>)
+  pdfDoc.setCreationDate(<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(<span class="hljs-string">'2018-06-24T01:58:37.228Z'</span>))
+  pdfDoc.setModificationDate(<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(<span class="hljs-string">'2019-12-21T07:00:11.000Z'</span>))
+  
+  <span class="hljs-keyword">const</span> pdfBytes = <span class="hljs-keyword">await</span> pdfDoc.save()
+}
+</code></pre>
+</span></div><iframe id="5509700" class="card"></iframe><script>document.getElementById('5509700').src = '/viewer?url=/assets/set_document_metadata.pdf'</script><div style="display:flex;flex-direction:row;justify-content:space-between;align-items:flex-end;flex-wrap:wrap"><div class="splashAnchorContainer"><div id="read-document-metadata" class="anchor"></div><a href="#read-document-metadata"><h2 class="splashSectionHeader">Read Document Metadata</h2></a></div><a style="margin-bottom:15px;display:flex;flex-direction:row;align-items:center;color:#0084ff" href="https://jsfiddle.net/Hopding/eg8rfz3k/16/" target="_blank" rel="noopener noreferrer"><svg style="height:33px;width:46px;stroke:#0084ff" width="46px" height="33px" viewBox="0 0 46 33"><g stroke-width="1.6" fill="none" fill-rule="evenodd"><path d="M23.4888889,20.543316 C21.4404656,18.4187374 19.0750303,15.6666667 16.4832014,15.6666667 C13.8721947,15.6666667 11.7555556,17.6366138 11.7555556,20.0666667 C11.7555556,22.4967196 13.8721947,24.4666667 16.4832014,24.4666667 C18.8347252,24.4666667 19.9845474,23.0125628 20.6429148,22.312473" id="Oval-1" stroke-linecap="round"></path><path d="M22.5111111,19.5900174 C24.5595344,21.7145959 26.9249697,24.4666667 29.5167986,24.4666667 C32.1278053,24.4666667 34.2444444,22.4967196 34.2444444,20.0666667 C34.2444444,17.6366138 32.1278053,15.6666667 29.5167986,15.6666667 C27.1652748,15.6666667 26.0154526,17.1207706 25.3570852,17.8208603" id="Oval-1-Copy" stroke-linecap="round"></path><path d="M45,22.7331459 C45,19.1499462 42.7950446,16.079593 39.6628004,14.7835315 C39.6774469,14.5246474 39.7003932,14.2674038 39.7003932,14.0035978 C39.7003932,6.82243304 33.8412885,1 26.611593,1 C21.3985635,1 16.9102123,4.03409627 14.8051788,8.41527616 C13.7828502,7.62878013 12.503719,7.15547161 11.1134367,7.15547161 C7.77825654,7.15547161 5.07450503,9.84159999 5.07450503,13.1544315 C5.07450503,13.7760488 5.16938207,14.3779791 5.3477444,14.9418479 C2.74863428,16.4787471 1,19.2867709 1,22.5105187 C1,27.3287502 4.89630545,31.2367856 9.72803666,31.31094 L36.3341301,31.3109406 C41.1201312,31.3406346 45,27.4870665 45,22.7331459 L45,22.7331459 Z" stroke-linejoin="round"></path></g></svg><span style="padding-left:5px">Try the JSFiddle demo</span></a></div><div><span><pre><code class="hljs css language-js"><span class="hljs-keyword">import</span> { PDFDocument } <span class="hljs-keyword">from</span> <span class="hljs-string">'pdf-lib'</span>
+
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">readDocumentMetadata</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">const</span> url = <span class="hljs-string">'https://pdf-lib.js.org/assets/with_cropbox.pdf'</span>
+  <span class="hljs-keyword">const</span> existingPdfBytes = <span class="hljs-keyword">await</span> fetch(url).then(<span class="hljs-function"><span class="hljs-params">res</span> =&gt;</span> res.arrayBuffer())
+
+  <span class="hljs-keyword">const</span> pdfDoc = <span class="hljs-keyword">await</span> PDFDocument.load(existingPdfBytes, { 
+    <span class="hljs-attr">updateMetadata</span>: <span class="hljs-literal">false</span> 
+  })
+  
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Title:'</span>, pdfDoc.getTitle())
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Author:'</span>, pdfDoc.getAuthor())
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Subject:'</span>, pdfDoc.getSubject())
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Creator:'</span>, pdfDoc.getCreator())
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Keywords:'</span>, pdfDoc.getKeywords())
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Producer:'</span>, pdfDoc.getProducer())
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Creation Date:'</span>, pdfDoc.getCreationDate())
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Modification Date:'</span>, pdfDoc.getModificationDate())
+}
+</code></pre>
+</span></div><p>This script outputs the following:</p><div><span><pre><code class="hljs">Title: Microsoft Word - Basic Curriculum Vitae example.doc
+Author: Administrator
+Subject: undefined
+Creator: PScript5.dll Version <span class="hljs-number">5.2</span>
+Keywords: undefined
+Producer: Acrobat Distiller <span class="hljs-number">8.1</span><span class="hljs-number">.0</span> (Windows)
+Creation Date: <span class="hljs-number">2010</span><span class="hljs-number">-07</span><span class="hljs-number">-29</span>T14:<span class="hljs-number">26</span>:<span class="hljs-number">00.000</span>Z
+Modification Date: <span class="hljs-number">2010</span><span class="hljs-number">-07</span><span class="hljs-number">-29</span>T14:<span class="hljs-number">26</span>:<span class="hljs-number">00.000</span>Z
+</code></pre>
+</span></div><div style="display:flex;flex-direction:row;justify-content:space-between;align-items:flex-end;flex-wrap:wrap"><div class="splashAnchorContainer"><div id="draw-svg-paths" class="anchor"></div><a href="#draw-svg-paths"><h2 class="splashSectionHeader">Draw SVG Paths</h2></a></div><a style="margin-bottom:15px;display:flex;flex-direction:row;align-items:center;color:#0084ff" href="https://jsfiddle.net/Hopding/bwaomr9h/2/" target="_blank" rel="noopener noreferrer"><svg style="height:33px;width:46px;stroke:#0084ff" width="46px" height="33px" viewBox="0 0 46 33"><g stroke-width="1.6" fill="none" fill-rule="evenodd"><path d="M23.4888889,20.543316 C21.4404656,18.4187374 19.0750303,15.6666667 16.4832014,15.6666667 C13.8721947,15.6666667 11.7555556,17.6366138 11.7555556,20.0666667 C11.7555556,22.4967196 13.8721947,24.4666667 16.4832014,24.4666667 C18.8347252,24.4666667 19.9845474,23.0125628 20.6429148,22.312473" id="Oval-1" stroke-linecap="round"></path><path d="M22.5111111,19.5900174 C24.5595344,21.7145959 26.9249697,24.4666667 29.5167986,24.4666667 C32.1278053,24.4666667 34.2444444,22.4967196 34.2444444,20.0666667 C34.2444444,17.6366138 32.1278053,15.6666667 29.5167986,15.6666667 C27.1652748,15.6666667 26.0154526,17.1207706 25.3570852,17.8208603" id="Oval-1-Copy" stroke-linecap="round"></path><path d="M45,22.7331459 C45,19.1499462 42.7950446,16.079593 39.6628004,14.7835315 C39.6774469,14.5246474 39.7003932,14.2674038 39.7003932,14.0035978 C39.7003932,6.82243304 33.8412885,1 26.611593,1 C21.3985635,1 16.9102123,4.03409627 14.8051788,8.41527616 C13.7828502,7.62878013 12.503719,7.15547161 11.1134367,7.15547161 C7.77825654,7.15547161 5.07450503,9.84159999 5.07450503,13.1544315 C5.07450503,13.7760488 5.16938207,14.3779791 5.3477444,14.9418479 C2.74863428,16.4787471 1,19.2867709 1,22.5105187 C1,27.3287502 4.89630545,31.2367856 9.72803666,31.31094 L36.3341301,31.3109406 C41.1201312,31.3406346 45,27.4870665 45,22.7331459 L45,22.7331459 Z" stroke-linejoin="round"></path></g></svg><span style="padding-left:5px">Try the JSFiddle demo</span></a></div><div><span><pre><code class="hljs css language-js"><span class="hljs-keyword">import</span> { PDFDocument, rgb } <span class="hljs-keyword">from</span> <span class="hljs-string">'pdf-lib'</span>
+
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">drawSvgPaths</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">const</span> svgPath =
+    <span class="hljs-string">'M 0,20 L 100,160 Q 130,200 150,120 C 190,-40 200,200 300,150 L 400,90'</span>
+  
+  <span class="hljs-keyword">const</span> pdfDoc = <span class="hljs-keyword">await</span> PDFDocument.create()
+  
+  <span class="hljs-keyword">const</span> page = pdfDoc.addPage()
+  page.moveTo(<span class="hljs-number">100</span>, page.getHeight() - <span class="hljs-number">5</span>)
+  
+  page.moveDown(<span class="hljs-number">25</span>)
+  page.drawSvgPath(svgPath)
+  
+  page.moveDown(<span class="hljs-number">200</span>)
+  page.drawSvgPath(svgPath, { <span class="hljs-attr">borderColor</span>: rgb(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>), <span class="hljs-attr">borderWidth</span>: <span class="hljs-number">5</span> })
+  
+  page.moveDown(<span class="hljs-number">200</span>)
+  page.drawSvgPath(svgPath, { <span class="hljs-attr">color</span>: rgb(<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>) })
+  
+  page.moveDown(<span class="hljs-number">200</span>)
+  page.drawSvgPath(svgPath, { <span class="hljs-attr">scale</span>: <span class="hljs-number">0.5</span> })
+  
+  <span class="hljs-keyword">const</span> pdfBytes = <span class="hljs-keyword">await</span> pdfDoc.save()
+}
+</code></pre>
+</span></div><iframe id="1453586" class="card"></iframe><script>document.getElementById('1453586').src = '/viewer?url=/assets/draw_svg_paths.pdf'</script></div></div></div></div></div></div></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+                document.addEventListener('keyup', function(e) {
+                  if (e.target !== document.body) {
+                    return;
+                  }
+                  // keyCode for '/' (slash)
+                  if (e.keyCode === 191) {
+                    const search = document.getElementById('search_input_react');
+                    search && search.focus();
+                  }
+                });
+              </script><script>
+              var search = docsearch({
+                
+                apiKey: '9cd7747a43c6b7e9c2554939d34db33f',
+                indexName: 'pdf-lib',
+                inputSelector: '#search_input_react',
+                algoliaOptions: {}
+              });
+            </script></body></html>

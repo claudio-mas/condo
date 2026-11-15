@@ -1,0 +1,76 @@
+{
+  "target": "/home/claudio/projetos/condo/docs/designs/plataforma-comercial-hoteleira-beta.md",
+  "feature_range": [
+    1,
+    480
+  ],
+  "detailed_range": [
+    481,
+    937
+  ],
+  "mode": "uninterrupted",
+  "language": "pt-BR",
+  "context": [
+    {
+      "path": "/home/claudio/projetos/condo/concepts_brief.md",
+      "sha256": "29f3759e343d8401eeeca310a0716549176de1fa139609c334322d8e527e7611",
+      "bytes": 18484
+    },
+    {
+      "path": "/home/claudio/projetos/condo/docs/designs/plataforma-comercial-hoteleira-beta-rfc.md",
+      "sha256": "795778c988ae83ea7a4afd6be4025c854bf4fd69f9ce4785ec02e3c9f6c91faa",
+      "bytes": 18581
+    },
+    {
+      "path": "/home/claudio/projetos/condo/Desenho do piloto - Plataforma comercial hoteleira.md",
+      "sha256": "0d9faba289d60a0b1c992b049f8b16bb1e610cf99de880415a50682781c8c8c7",
+      "bytes": 31817
+    },
+    {
+      "path": "/home/claudio/projetos/condo/Plano de implementacao - Plataforma comercial hoteleira.md",
+      "sha256": "bac354aea91792362291f448b28fd2cc9e4f7067e4ddf65fe97a5807a0781016",
+      "bytes": 44854
+    },
+    {
+      "path": "/home/claudio/projetos/condo/consolidated_review_report.md",
+      "sha256": "ee7f5ab81ea0cf00aa885296fe06c602ae80dc9ce7ce57f0378f9313d7060bc0",
+      "bytes": 17278
+    },
+    {
+      "path": "/home/claudio/projetos/condo/goldfish_review_report.md",
+      "sha256": "fc40e0e0dfb916137fad9cc978cafcdb79fbdb62b0640692d7ad954664843243",
+      "bytes": 39334
+    },
+    {
+      "path": "/home/claudio/projetos/condo/docs/designs/decisao-base-tecnologica-beta.md",
+      "sha256": "8c09592e0f3194635a91027c223bfaae09ce4a977949bc5b9ca4963456c800da",
+      "bytes": 6092
+    },
+    {
+      "path": "/home/claudio/projetos/condo/Calculadora investidores.xlsx",
+      "sha256": "6ffdbfccf8935d6c500b0d5e59bdb6c94b75f76140567fe2224794096e81b824",
+      "bytes": 265135
+    }
+  ],
+  "target_sha256": "0d4712ad2080484f3673acdb1dbbf353b617d016b65410c2a631d91f1f46bce6",
+  "excluded_urls": [
+    "https://nextjs.org/docs/app/getting-started/deploying",
+    "https://nextjs.org/docs/app/guides/authentication",
+    "https://better-auth.com/docs/adapters/drizzle",
+    "https://nodemailer.com/smtp",
+    "https://better-auth.com/docs/authentication/email-password",
+    "https://orm.drizzle.team/docs/column-types",
+    "https://mikemcl.github.io/decimal.js/",
+    "https://json-schema.org/draft/2020-12/schema\",",
+    "https://pdf-lib.js.org/docs/api/classes/pdfdocument#save",
+    "https://pdf-lib.js.org/#embed-font-and-measure-text",
+    "https://github.com/notofonts/noto-fonts/tree/main/hinted/ttf/NotoSans",
+    "https://mozilla.github.io/pdf.js/examples/",
+    "https://orm.drizzle.team/docs/get-started-postgresql",
+    "https://node-postgres.com/features/pooling",
+    "https://sharp.pixelplumbing.com/api-output/#png",
+    "https://docs.aws.amazon.com/AmazonS3/latest/userguide/conditional-writes.html",
+    "https://www.postgresql.org/docs/current/functions-datetime.html"
+  ],
+  "artifact_directory": "/home/claudio/projetos/condo/docs/reviews/beta-2026-11-14-r2"
+}

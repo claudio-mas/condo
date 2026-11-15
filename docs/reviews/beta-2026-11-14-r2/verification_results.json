@@ -1,0 +1,139 @@
+{
+  "completed_on": "2026-11-15",
+  "timezone": "America/Sao_Paulo",
+  "source_checks": [
+    {
+      "path": "/home/claudio/projetos/condo/docs/designs/plataforma-comercial-hoteleira-beta.md",
+      "sha256": "0d4712ad2080484f3673acdb1dbbf353b617d016b65410c2a631d91f1f46bce6",
+      "unchanged": true
+    },
+    {
+      "path": "/home/claudio/projetos/condo/concepts_brief.md",
+      "sha256": "29f3759e343d8401eeeca310a0716549176de1fa139609c334322d8e527e7611",
+      "unchanged": true
+    },
+    {
+      "path": "/home/claudio/projetos/condo/docs/designs/plataforma-comercial-hoteleira-beta-rfc.md",
+      "sha256": "795778c988ae83ea7a4afd6be4025c854bf4fd69f9ce4785ec02e3c9f6c91faa",
+      "unchanged": true
+    },
+    {
+      "path": "/home/claudio/projetos/condo/Desenho do piloto - Plataforma comercial hoteleira.md",
+      "sha256": "0d9faba289d60a0b1c992b049f8b16bb1e610cf99de880415a50682781c8c8c7",
+      "unchanged": true
+    },
+    {
+      "path": "/home/claudio/projetos/condo/Plano de implementacao - Plataforma comercial hoteleira.md",
+      "sha256": "bac354aea91792362291f448b28fd2cc9e4f7067e4ddf65fe97a5807a0781016",
+      "unchanged": true
+    },
+    {
+      "path": "/home/claudio/projetos/condo/consolidated_review_report.md",
+      "sha256": "ee7f5ab81ea0cf00aa885296fe06c602ae80dc9ce7ce57f0378f9313d7060bc0",
+      "unchanged": true
+    },
+    {
+      "path": "/home/claudio/projetos/condo/goldfish_review_report.md",
+      "sha256": "fc40e0e0dfb916137fad9cc978cafcdb79fbdb62b0640692d7ad954664843243",
+      "unchanged": true
+    },
+    {
+      "path": "/home/claudio/projetos/condo/docs/designs/decisao-base-tecnologica-beta.md",
+      "sha256": "8c09592e0f3194635a91027c223bfaae09ce4a977949bc5b9ca4963456c800da",
+      "unchanged": true
+    },
+    {
+      "path": "/home/claudio/projetos/condo/Calculadora investidores.xlsx",
+      "sha256": "6ffdbfccf8935d6c500b0d5e59bdb6c94b75f76140567fe2224794096e81b824",
+      "unchanged": true
+    }
+  ],
+  "reports": [
+    {
+      "name": "zoom_out_report.md",
+      "lines": 36,
+      "bytes": 4665,
+      "sha256": "0f4f1ef0a61964ea1c97b406589759da4acc8d0f9b6185f99f8c682d21e1d1a4"
+    },
+    {
+      "name": "comprehension_report.md",
+      "lines": 19,
+      "bytes": 2435,
+      "sha256": "9a6f19d8cd65f1444a6d53fca057bb3905d0c7bcb8aa3e78c6cbde81388f42e6"
+    },
+    {
+      "name": "critic_report.md",
+      "lines": 51,
+      "bytes": 5202,
+      "sha256": "e881e7328c30abd6c96d71b5674951e221c7ad798b60215b6722b14f8fd4245b"
+    },
+    {
+      "name": "intermediate_zoom_out_report.md",
+      "lines": 35,
+      "bytes": 4176,
+      "sha256": "971e73a381eb09c916bca3f559e610380072d37d1345c931c01a04a30d0b8b31"
+    },
+    {
+      "name": "implementation_readiness_report.md",
+      "lines": 67,
+      "bytes": 5581,
+      "sha256": "ae14224e525bb393076446329c5ff8e336573c7db205e59bd768695e092fc361"
+    },
+    {
+      "name": "consolidated_review_report.md",
+      "lines": 131,
+      "bytes": 14869,
+      "sha256": "5e2c702dfc92df6af263a3f781aba80be490cb1bcbc3142af7ddbd95f2916c17"
+    },
+    {
+      "name": "stage9-egm-implementation-readiness.md",
+      "lines": 41,
+      "bytes": 5724,
+      "sha256": "b3e84e1b5569452489a0698ea01f321a67679b9c06f8353084c379c72a682d0c"
+    },
+    {
+      "name": "stage9-egm-codebase-details.md",
+      "lines": 40,
+      "bytes": 4344,
+      "sha256": "1be8f018ec408eef0d8724d4c79a2a6e561ce19bc2d5f7e4e38373c3d475917b"
+    },
+    {
+      "name": "stage9-egm-style.md",
+      "lines": 35,
+      "bytes": 3326,
+      "sha256": "fda386b60f8a4afc77f1176b045cc000f1cdb3f9cceb4c7c4d0e8ff667b0738d"
+    }
+  ],
+  "local_links_checked": 13,
+  "paraphrase_headings_preserved": true,
+  "semantic_boundary_unchanged": true,
+  "completed_review_stages": [
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "received_final_reviewer_reports": 10,
+  "raw_finding_ids": [
+    "T7-01",
+    "R9-01",
+    "R9-02",
+    "B9-01",
+    "T9-01",
+    "T9-02"
+  ],
+  "consolidated_action_ids": [
+    "A-01",
+    "A-02",
+    "A-03",
+    "A-04",
+    "A-05"
+  ],
+  "consolidated_severity_counts": {
+    "Blocker": 0,
+    "Major": 3,
+    "Nit": 2
+  },
+  "product_tests_run": false
+}

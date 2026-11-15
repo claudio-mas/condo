@@ -1,0 +1,250 @@
+{
+  "review_started_on": "2026-11-13",
+  "review_completed_on": "2026-11-14",
+  "target": "/home/claudio/projetos/condo/docs/designs/plataforma-comercial-hoteleira-beta.md",
+  "target_sha256": "0ad5f486ddc551e1675db1481d3e399b4663f7ee687b30269b1e922ac8d8e60c",
+  "raw_counts": {
+    "Major": 18,
+    "Nit": 3
+  },
+  "consolidated_counts": {
+    "Blocker": 0,
+    "Major": 13,
+    "Nit": 2
+  },
+  "raw_findings": [
+    {
+      "id": "S5/ZO-01",
+      "severity": "Major",
+      "report": "docs/reviews/beta-2026-11-13/stage5-egm-zoom-out.md"
+    },
+    {
+      "id": "S6/C-01",
+      "severity": "Major",
+      "report": "docs/reviews/beta-2026-11-13/stage6-egm-comprehension.md"
+    },
+    {
+      "id": "S7/D-01",
+      "severity": "Major",
+      "report": "docs/reviews/beta-2026-11-13/stage7-egm-design.md"
+    },
+    {
+      "id": "S7/S-01",
+      "severity": "Major",
+      "report": "docs/reviews/beta-2026-11-13/stage7-egm-style.md"
+    },
+    {
+      "id": "S7/S-02",
+      "severity": "Nit",
+      "report": "docs/reviews/beta-2026-11-13/stage7-egm-style.md"
+    },
+    {
+      "id": "S8/IZ-01",
+      "severity": "Major",
+      "report": "docs/reviews/beta-2026-11-13/stage8-egm-zoom-out.md"
+    },
+    {
+      "id": "S8/IZ-02",
+      "severity": "Major",
+      "report": "docs/reviews/beta-2026-11-13/stage8-egm-zoom-out.md"
+    },
+    {
+      "id": "S9/IR-01",
+      "severity": "Major",
+      "report": "docs/reviews/beta-2026-11-13/stage9-egm-implementation-readiness.md"
+    },
+    {
+      "id": "S9/IR-02",
+      "severity": "Major",
+      "report": "docs/reviews/beta-2026-11-13/stage9-egm-implementation-readiness.md"
+    },
+    {
+      "id": "S9/IR-03",
+      "severity": "Major",
+      "report": "docs/reviews/beta-2026-11-13/stage9-egm-implementation-readiness.md"
+    },
+    {
+      "id": "S9/IR-04",
+      "severity": "Major",
+      "report": "docs/reviews/beta-2026-11-13/stage9-egm-implementation-readiness.md"
+    },
+    {
+      "id": "S9/IR-05",
+      "severity": "Major",
+      "report": "docs/reviews/beta-2026-11-13/stage9-egm-implementation-readiness.md"
+    },
+    {
+      "id": "S9/IR-06",
+      "severity": "Major",
+      "report": "docs/reviews/beta-2026-11-13/stage9-egm-implementation-readiness.md"
+    },
+    {
+      "id": "S9/CB-01",
+      "severity": "Major",
+      "report": "docs/reviews/beta-2026-11-13/stage9-egm-codebase-details.md"
+    },
+    {
+      "id": "S9/CB-02",
+      "severity": "Major",
+      "report": "docs/reviews/beta-2026-11-13/stage9-egm-codebase-details.md"
+    },
+    {
+      "id": "S9/CB-03",
+      "severity": "Major",
+      "report": "docs/reviews/beta-2026-11-13/stage9-egm-codebase-details.md"
+    },
+    {
+      "id": "S9/CB-04",
+      "severity": "Major",
+      "report": "docs/reviews/beta-2026-11-13/stage9-egm-codebase-details.md"
+    },
+    {
+      "id": "S9/IS-01",
+      "severity": "Major",
+      "report": "docs/reviews/beta-2026-11-13/stage9-egm-style.md"
+    },
+    {
+      "id": "S9/IS-02",
+      "severity": "Major",
+      "report": "docs/reviews/beta-2026-11-13/stage9-egm-style.md"
+    },
+    {
+      "id": "S9/IS-03",
+      "severity": "Nit",
+      "report": "docs/reviews/beta-2026-11-13/stage9-egm-style.md"
+    },
+    {
+      "id": "S9/IS-04",
+      "severity": "Nit",
+      "report": "docs/reviews/beta-2026-11-13/stage9-egm-style.md"
+    }
+  ],
+  "actions": [
+    {
+      "id": "F-01",
+      "severity": "Major",
+      "title": "Autoridade de credenciais da identidade multivínculo",
+      "origins": [
+        "S8/IZ-02",
+        "S9/CB-01"
+      ]
+    },
+    {
+      "id": "F-02",
+      "severity": "Major",
+      "title": "Autorização e credenciais após restauração",
+      "origins": [
+        "S7/D-01",
+        "S8/IZ-01"
+      ]
+    },
+    {
+      "id": "F-03",
+      "severity": "Major",
+      "title": "Colisão da rota raiz",
+      "origins": [
+        "S5/ZO-01",
+        "S9/IR-01"
+      ]
+    },
+    {
+      "id": "F-04",
+      "severity": "Major",
+      "title": "Contrato das condições de pagamento",
+      "origins": [
+        "S9/IR-02",
+        "S9/CB-04"
+      ]
+    },
+    {
+      "id": "F-05",
+      "severity": "Major",
+      "title": "Matriz de estados da recuperação de emissão",
+      "origins": [
+        "S9/IR-03"
+      ]
+    },
+    {
+      "id": "F-06",
+      "severity": "Major",
+      "title": "Tratamento de WebP no PDF",
+      "origins": [
+        "S9/IR-04",
+        "S9/CB-02"
+      ]
+    },
+    {
+      "id": "F-07",
+      "severity": "Major",
+      "title": "Cliente PostgreSQL e dependências diretas",
+      "origins": [
+        "S9/CB-03"
+      ]
+    },
+    {
+      "id": "F-08",
+      "severity": "Major",
+      "title": "Mudanças em arquivos de fases anteriores",
+      "origins": [
+        "S9/IR-05"
+      ]
+    },
+    {
+      "id": "F-09",
+      "severity": "Major",
+      "title": "Compilação das fases intermediárias de interface",
+      "origins": [
+        "S9/IR-06"
+      ]
+    },
+    {
+      "id": "F-10",
+      "severity": "Major",
+      "title": "Horário atual por requisição pública",
+      "origins": [
+        "S9/IS-02"
+      ]
+    },
+    {
+      "id": "F-11",
+      "severity": "Major",
+      "title": "Preservação da versão versus validade de acesso",
+      "origins": [
+        "S7/S-01"
+      ]
+    },
+    {
+      "id": "F-12",
+      "severity": "Major",
+      "title": "Autossuficiência das referências legadas",
+      "origins": [
+        "S6/C-01"
+      ]
+    },
+    {
+      "id": "F-13",
+      "severity": "Major",
+      "title": "Versionamento de arquivos gerados",
+      "origins": [
+        "S9/IS-01"
+      ]
+    },
+    {
+      "id": "F-14",
+      "severity": "Nit",
+      "title": "Definição e unidade do payback",
+      "origins": [
+        "S7/S-02",
+        "S9/IS-04"
+      ]
+    },
+    {
+      "id": "F-15",
+      "severity": "Nit",
+      "title": "Viewport responsivo reproduzível",
+      "origins": [
+        "S9/IS-03"
+      ]
+    }
+  ]
+}

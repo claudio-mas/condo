@@ -1,0 +1,707 @@
+--- a/docs/designs/plataforma-comercial-hoteleira-beta.md
++++ b/docs/designs/plataforma-comercial-hoteleira-beta.md
+@@ -3,12 +3,14 @@
+ * **Author:** Cláudio Más
+ * **Status:** Approved — desenho formal e plano detalhado aprovados pelo solicitante; homologação comercial pendente
+ * **Date:** 2026-11-11
+-* **Updated:** 2026-11-13
++* **Updated:** 2026-11-14
+ 
+ Documento iniciado a partir do [brief aprovado](../../concepts_brief.md), publicado como [RFC](plataforma-comercial-hoteleira-beta-rfc.md). O solicitante autorizou a publicação do RFC seguida da elaboração deste desenho, aprovou o primeiro bloco (Overview, The Problem, Goals e Non-Goals) e escolheu a opção TypeScript/Next.js e PostgreSQL. Em 2026-11-13, aprovou também o bloco técnico, incluindo jornadas e requisitos de operação, a seção de alternativas e o plano detalhado com suas dependências auxiliares. A versão formal é salva em `docs/designs/plataforma-comercial-hoteleira-beta.md`, no destino escolhido pelo solicitante.
+ 
+ O [desenho do piloto, revisão 1](<../../Desenho do piloto - Plataforma comercial hoteleira.md>) é a base funcional. O [plano de implementação, revisão 1](<../../Plano de implementacao - Plataforma comercial hoteleira.md>) é uma proposta técnica anterior; seus arquivos e serviços ainda não existem. Este documento incorpora as recomendações conceituais aprovadas e distingue as decisões já aprovadas das condições operacionais ainda por confirmar.
+ 
++Em 2026-11-14, o solicitante autorizou a resolução dos 15 achados da [revisão consolidada](../../consolidated_review_report.md), com decisões explícitas de identidade, pagamento, imagens, infraestrutura e operação. Esta revisão incorpora essas decisões; o [relatório de resolução](../../goldfish_review_report.md) registra F-01–F-15. As fontes históricas e os pareceres originais permanecem preservados.
++
+ ## Overview
+ 
+ A Plataforma Comercial Hoteleira apoiará equipes que comercializam unidades de condo-hotéis no Brasil. O consultor conduz a simulação durante o atendimento e compartilha uma proposta por link e PDF. O investidor consulta o material sem criar conta. O administrador mantém os dados comerciais, as regras e as premissas oficiais de cada empreendimento.
+@@ -17,7 +19,7 @@
+ 
+ A entrada em uso começará por um empreendimento, com expansão após validação dos cálculos e do atendimento. A base documental permite outras empresas beta por convite do operador da plataforma, com dados separados. Isso não implica cadastro público nem cobrança de assinaturas nesta etapa.
+ 
+-Os modelos individual e pool permanecem no escopo. O primeiro empreendimento utilizará pool com participação proporcional aos valores de venda de referência, registrados nas premissas publicadas. Alterações de preço e descontos não mudarão automaticamente essa participação. Para o primeiro cliente, o payback será apresentado com 24 meses descontados, com identificação da regra e exibição também do prazo simples. Essas são decisões existentes, não novas escolhas deste rascunho.
++Os modelos individual e pool permanecem no escopo. O primeiro empreendimento utilizará pool com participação proporcional aos valores de venda de referência, registrados nas premissas publicadas. Alterações de preço e descontos não mudarão automaticamente essa participação. O payback simples é o investimento dividido pelo resultado anual positivo, multiplicado por 12 meses. O payback ajustado subtrai desse prazo os meses definidos nas premissas publicadas; para o primeiro cliente, `payback ajustado = payback simples − 24 meses`. A apresentação identifica a regra e mostra também o prazo simples; quando a recuperação ocorre dentro da dedução, apresenta o motivo correspondente em vez de prazo negativo ou zero enganador. Essas são decisões existentes, não novas escolhas deste rascunho.
+ 
+ ## The Problem
+ 
+@@ -47,7 +49,7 @@
+ 
+ 7. **Respeitar permissões e separação entre empresas.** Administrador e consultor devem ter os acessos documentados. Convites de outras empresas não podem expor dados da parceira ou de outra beta. A consulta do investidor deve se limitar à versão vinculada ao link compartilhado.
+ 
+-8. **Preparar uma operação recuperável.** Demonstrar retomada segura de emissão, recuperação de dados e arquivos e preservação da leitura de propostas antigas após atualizações. Antes de reabrir consulta pública após restauração, conferir ou invalidar os estados de links afetados. Definir contingência e autoridade de pausa e retomada antes de a plataforma se tornar referência oficial.
++8. **Preparar uma operação recuperável.** Demonstrar retomada segura de emissão, recuperação de dados e arquivos e preservação da leitura de propostas antigas após atualizações. Antes de reabrir acessos após restauração, invalidar todas as sessões restauradas, revalidar credenciais e vínculos e conferir ou invalidar os estados de links afetados. Definir contingência e autoridade de pausa e retomada antes de a plataforma se tornar referência oficial.
+ 
+ 9. **Aprender com o uso real sem ampliar automaticamente o escopo.** Observar atendimentos, registrar dificuldades e contornos e avaliar separadamente defeitos, configuração, usabilidade e novas funcionalidades. Relacionar ocorrências a referências internas e horário quando disponíveis; o acompanhamento inicial pode ser manual e externo ao produto.
+ 
+@@ -91,7 +93,7 @@
+ 
+ - **Given:** consultor autenticado, unidade comercialmente disponível e premissas vigentes publicadas.
+ - **When:** o consultor compara cenários, escolhe condições autorizadas, salva o atendimento e solicita emissão.
+-- **Then:** o servidor recalcula, valida acesso e condições e publica uma única versão pronta por solicitação idempotente. Link e PDF representam o mesmo conteúdo. Mudanças concorrentes indicam o que precisa ser revisto; falhas técnicas preservam o rascunho e permitem tentativa controlada. A proposta anterior continua válida até a substituição ser concluída.
++- **Then:** o servidor recalcula, valida acesso e condições e publica uma única versão pronta por solicitação idempotente. Link e PDF representam o mesmo conteúdo. Mudanças concorrentes indicam o que precisa ser revisto; falhas técnicas preservam o rascunho e permitem tentativa controlada. Uma emissão em andamento ou falha não marca a proposta anterior como substituída. Sua consulta continua sujeita, independentemente, à expiração, revogação e demais restrições de acesso.
+ 
+ ### CUJ 3: consultar uma proposta compartilhada
+ 
+@@ -109,7 +111,7 @@
+ 
+ - **Given:** emissão interrompida, atualização de formato persistido ou necessidade de restaurar backup.
+ - **When:** o responsável executa o procedimento correspondente em ambiente controlado antes da liberação operacional.
+-- **Then:** a emissão não publica versões duplicadas; propostas antigas continuam legíveis sem recálculo; restauração não reabre consulta pública antes da conferência ou invalidação dos links afetados. Se não houver dados confiáveis para retomar o atendimento, novas emissões permanecem suspensas até a recuperação.
++- **Then:** a emissão não publica versões duplicadas; propostas antigas continuam legíveis sem recálculo; restauração invalida todas as sessões e não reabre acesso autenticado antes de reconciliar credenciais e vínculos, nem consulta pública antes da conferência ou invalidação dos links afetados. Se não houver dados confiáveis para retomar o atendimento, novas emissões permanecem suspensas até a recuperação.
+ 
+ ## Technical Plan (Architecture)
+ 
+@@ -122,10 +124,11 @@
+ | Responsabilidade | Proposta deste bloco | Limite de responsabilidade |
+ |---|---|---|
+ | Interface e servidor | Next.js App Router em runtime Node, com React e TypeScript | Rotas, formulários e apresentação; serviços próprios validam as regras comerciais. |
+-| Banco e migrações | PostgreSQL e Drizzle ORM | Persistência, transações e restrições; consultas recebem escopo de empresa validado. |
+-| Autenticação | Better Auth com adaptador Drizzle e sessões persistidas | Identidade e sessão; vínculos, papéis, propriedade de registros e convites passam pelos serviços do produto. |
++| Banco e migrações | PostgreSQL, `pg` (node-postgres) e Drizzle via `drizzle-orm/node-postgres` | Pool de conexões explícito, transações e restrições; consultas recebem escopo de empresa validado. |
++| Autenticação | `better-auth`, `@better-auth/drizzle-adapter` com provider `pg` e sessões persistidas | Identidade global e recuperação por e-mail do titular; vínculos, papéis e convites passam pelos serviços do produto. |
+ | Validação e cálculo | Zod e decimal.js | Entradas explícitas, decimais e regras determinísticas; não executam fórmulas livres. |
+ | Documentos | pdf-lib e apresentação comum à página externa | Gerar e armazenar os bytes do PDF, com paginação e fontes; não depender de um navegador para renderizar. |
++| Imagens | `sharp` no runtime Node | Converter WebP em PNG antes de persistir; o PDF recebe apenas PNG/JPEG validados. |
+ | Verificação futura | Vitest e Playwright | Referências de domínio, integração e jornadas; comandos e arquivos serão enumerados na implementação detalhada. |
+ 
+ O Next.js documenta [servidor Node.js](https://nextjs.org/docs/app/getting-started/deploying) e [autorização na camada de acesso aos dados](https://nextjs.org/docs/app/guides/authentication). Better Auth documenta um [adaptador para Drizzle](https://better-auth.com/docs/adapters/drizzle). Os nomes de pacotes e a configuração usados na implementação devem seguir as versões fixadas, sem copiar imports antigos por suposição.
+@@ -169,7 +172,11 @@
+ 
+ O servidor obtém `ActorContext = { userId, companyId, role }` da sessão e de um vínculo ativo. O identificador de empresa enviado num formulário não concede acesso. Cada serviço verifica papel, empresa e propriedade do registro; uma proteção apenas no menu ou no layout não substitui essa verificação.
+ 
+-O administrador mantém cadastros e premissas e consulta propostas da empresa. O consultor consulta o catálogo autorizado e administra seus próprios rascunhos e propostas dentro dos limites publicados. Desativar o vínculo impede o uso autenticado e revoga as sessões correspondentes. Criação e redefinição assistidas exigem troca de senha, sem envio automático de e-mail.
++O administrador mantém cadastros e premissas e consulta propostas da empresa. O consultor consulta o catálogo autorizado e administra seus próprios rascunhos e propostas dentro dos limites publicados. A identidade global (`userId`, e-mail verificado e credencial) é distinta do vínculo (`companyId`, papel e atividade). Administrar A permite criar/alterar/desativar somente vínculos de A e revogar somente sessões selecionadas para A. Não permite alterar e-mail, definir senha global, obter token de recuperação ou revogar sessões de B. Isso vale também para usuários com um único vínculo e impede redefinição unilateral quando a mesma identidade mantém vínculo ativo em B.
++
++A redefinição de senha ocorre exclusivamente por recuperação enviada ao e-mail verificado do próprio titular, com token de uso único, validade limitada, respostas genéricas e limitação de tentativas. Ao concluir, revoga todas as sessões globais e tokens de recuperação anteriores; o usuário faz novo login e os vínculos são revalidados. A seleção de vínculo da sessão é controlada pelo servidor, sem promover uma sessão de A para B por alteração de payload. Alterações de papel/desativação revogam as sessões locais correspondentes e continuam sendo conferidas a cada operação.
++
++O provisionamento não distribui senha conhecida pelo administrador. Para uma identidade nova, o serviço cria acesso pendente e envia ao e-mail do convidado um link de ativação para verificar a posse e definir a primeira senha; para identidade existente, cria somente o vínculo pendente e exige aceite pelo titular autenticado, sem tocar sua credencial. Os comandos do operador seguem a mesma regra. Ativação e recuperação são os únicos e-mails transacionais exigidos por esta decisão; envio de propostas ao investidor continua manual. `src/server/auth/email.ts` usa [SMTP via nodemailer](https://nodemailer.com/smtp), sem credenciais ou links em logs, com configuração e teste de entrega no ambiente efetivo. Falha no envio mantém a identidade/vínculo pendente e permite reenvio limitado, sem liberar acesso ou mostrar o token ao administrador. A configuração seguirá a [recuperação do Better Auth](https://better-auth.com/docs/authentication/email-password), com revogação de sessões explicitamente habilitada.
+ 
+ O operador provisiona empresas e seus primeiros administradores por comando de servidor, sem cadastro público ou endpoint genérico de administração global. Não recebe acesso normal aos dados comerciais das empresas. Eventual suporte com dados de cliente depende da autorização e do registro exigidos no desenho do piloto; esta beta não acrescenta um painel de impersonação.
+ 
+@@ -179,7 +186,7 @@
+ 
+ | Conjunto de dados | Conteúdo e regras |
+ |---|---|
+-| Empresa, usuário e vínculo | Identidade, papel, atividade do vínculo e trilha de provisionamento; credenciais fora do conteúdo de propostas. |
++| Empresa, usuário e vínculo | Identidade global separada do vínculo local, papel, atividade, aceite pendente e trilha de provisionamento; credenciais fora das propostas. Marcas de revalidação de credencial/vínculo bloqueiam o acesso após restauração até recuperação segura. |
+ | Empreendimento e unidade comercial | Identificadores estáveis, código único por empreendimento, preço, disponibilidade e condições; alterações relevantes incrementam a revisão do catálogo. |
+ | Inventário e participantes | Inventário operacional separado das unidades à venda; participantes e pesos abrangem todo o conjunto elegível. Vender uma unidade não retira sua participação automaticamente. |
+ | Premissas | Rascunho editável e versões publicadas imutáveis; calendário, cenários, tarifas, despesas, participação, prejuízo e payback completos antes da publicação. |
+@@ -205,7 +212,7 @@
+ 
+ O investimento total considera preço negociado e custos de aquisição explicitamente informados. O motor calcula retorno anual simples, média mensal simples, payback simples e payback conforme a regra publicada. Para `DEDUCTED_MONTHS`, mantém os dois prazos e a identificação dos meses descontados. Resultado não positivo, investimento inválido e horizonte parcial produzem os motivos de indisponibilidade previstos, em vez de números enganadores.
+ 
+-A precisão de cálculo proposta é de 40 dígitos significativos com decimal.js. A apresentação usa moeda com duas casas e `ROUND_HALF_UP`, retorno com quatro casas percentuais e prazo com duas. Ajustes de centavos são identificados na apresentação quando necessários; não modificam participações. A biblioteca permite [configurar precisão e arredondamento](https://mikemcl.github.io/decimal.js/); os limites e resultados continuam sujeitos às referências independentes do produto.
++A precisão de cálculo proposta é de 40 dígitos significativos com decimal.js. A apresentação usa moeda com duas casas e `ROUND_HALF_UP`, retorno com quatro casas percentuais e prazo com duas casas, sempre acompanhado de “meses”. Ajustes de centavos são identificados na apresentação quando necessários; não modificam participações. A biblioteca permite [configurar precisão e arredondamento](https://mikemcl.github.io/decimal.js/); os limites e resultados continuam sujeitos às referências independentes do produto.
+ 
+ O resultado registra `engineVersion`, horizonte, cenários e alertas. A proposta preserva valores, textos relevantes e apresentação da emissão; mudanças futuras do catálogo de mensagens não reescrevem seu significado. Custos pendentes e limitações dos indicadores continuam visíveis.
+ 
+@@ -215,7 +222,94 @@
+ 
+ Um rascunho comercial registra `expectedCatalogRevision`, `expectedPremiseVersionId` e sua própria revisão. O servidor resolve preços, participação, faixas e condições a partir da base autorizada. Alterações concorrentes não são absorvidas silenciosamente: o consultor recebe o motivo, atualiza explicitamente o atendimento e confere o que mudou antes de emitir. Campos ainda válidos são preservados.
+ 
+-O cronograma de pagamento deve conciliar com o preço negociado; eventual centavo residual é identificado. Não se presumem juros ou correção. Limite de desconto não configurado equivale a zero, e faixas não configuradas desabilitam o cenário personalizado.
++O cronograma de pagamento segue o contrato fechado de datas explícitas na seção “Condições de pagamento”. A soma da entrada e das parcelas deve ser exatamente o valor líquido após desconto; o resíduo da divisão assistida é identificado e somado à primeira parcela ou, quando explicitamente escolhido e existente, à entrada. Não se presumem juros ou correção. Limite de desconto não configurado equivale a zero, e faixas não configuradas desabilitam o cenário personalizado.
++
++#### Condições de pagamento — schema e conciliação
++
++`PaymentPlan` aceita somente valores fixos em BRL e vencimentos civis explícitos. Não aceita percentuais por parcela, datas relativas, recorrência, juros ou correção. Uma condição administrativa é um plano versionado com esses campos, selecionado e conferido no atendimento. A soma deve corresponder ao preço líquido desse atendimento; divergência exige ajuste explícito e autorizado, nunca redistribuição silenciosa. `PaymentSchedule` acrescenta preço de tabela resolvido no servidor, taxa e valor de desconto, valor líquido e eventual ajuste de centavos. Custos de aquisição do investimento não são embutidos nas parcelas do preço do imóvel.
++
++O JSON Schema abaixo define as formas de entrada e saída; as regras aritméticas, a existência das datas e a autorização são validações obrigatórias adicionais em Zod/serviço. `$ref` em `PaymentSchedule.plan` aponta para a mesma estrutura aceita por `PaymentPlan`.
++
++```json
++{
++  "$schema": "https://json-schema.org/draft/2020-12/schema",
++  "$defs": {
++    "Money": { "type": "string", "pattern": "^(0|[1-9][0-9]{0,15})\\.[0-9]{2}$" },
++    "Rate": { "type": "string", "pattern": "^(0(\\.[0-9]{1,12})?|1(\\.0{1,12})?)$" },
++    "Payment": {
++      "type": "object", "additionalProperties": false,
++      "required": ["id", "dueDate", "amount"],
++      "properties": {
++        "id": { "type": "string", "minLength": 1, "maxLength": 64 },
++        "dueDate": { "type": "string", "format": "date" },
++        "amount": { "$ref": "#/$defs/Money" }
++      }
++    },
++    "PaymentPlan": {
++      "type": "object", "additionalProperties": false,
++      "required": ["currency", "entry", "installments"],
++      "properties": {
++        "currency": { "const": "BRL" },
++        "entry": { "anyOf": [{ "$ref": "#/$defs/Payment" }, { "type": "null" }] },
++        "installments": { "type": "array", "items": { "$ref": "#/$defs/Payment" } }
++      }
++    },
++    "PaymentSchedule": {
++      "type": "object", "additionalProperties": false,
++      "required": ["listPrice", "discountRate", "discountAmount", "netPrice", "plan", "roundingAdjustment"],
++      "properties": {
++        "listPrice": { "$ref": "#/$defs/Money" },
++        "discountRate": { "$ref": "#/$defs/Rate" },
++        "discountAmount": { "$ref": "#/$defs/Money" },
++        "netPrice": { "$ref": "#/$defs/Money" },
++        "plan": { "$ref": "#/$defs/PaymentPlan" },
++        "roundingAdjustment": {
++          "anyOf": [
++            { "type": "null" },
++            { "type": "object", "additionalProperties": false,
++              "required": ["amount", "appliedTo"],
++              "properties": {
++                "amount": { "$ref": "#/$defs/Money" },
++                "appliedTo": { "type": "string", "minLength": 1, "maxLength": 64 }
++              }
++            }
++          ]
++        }
++      }
++    }
++  },
++  "$ref": "#/$defs/PaymentPlan"
++}
++```
++
++Regras obrigatórias:
++
++1. Resolver preço e limite de desconto no servidor. `discountAmount = ROUND_HALF_UP(listPrice × discountRate, 2)` e `netPrice = listPrice − discountAmount`, ambos em centavos exatos. Preço e líquido devem ser positivos, desconto dentro da faixa autorizada; desconto ausente equivale a zero.
++2. Exigir pelo menos um pagamento: entrada ou parcela. Valores são positivos com duas casas; IDs são únicos inclusive entre entrada e parcelas. Sem entrada, usar `null`, nunca uma entrada fictícia de valor zero.
++3. Validar cada `dueDate` como data gregoriana existente, inclusive ano bissexto; apenas `format: date` não basta. Na emissão nova, vencimentos não podem anteceder a data civil de emissão no fuso do empreendimento. Parcelas estão em ordem estritamente crescente; entrada, quando presente, vence antes ou na data da primeira parcela. Não derivar vencimentos adicionando meses.
++4. Exigir `entry.amount (ou 0) + soma(installments.amount) = netPrice` com igualdade de centavos. Rejeitar totais menores/maiores; o validador não corrige dinheiro submetido. O desconto incide primeiro no preço e o cronograma distribui o líquido, sem aplicar outro desconto em cada parcela.
++5. Na ferramenta de divisão assistida, o consultor informa todas as datas e a entrada fixa, se houver. Dividir os centavos restantes por `n` parcelas usando quociente inteiro; o resto inteiro é o ajuste. Somar todo o resto à primeira parcela por padrão. Pode somá-lo à entrada existente por escolha explícita, mantendo as parcelas no quociente. A interface exibe o ajuste e exige confirmação antes de salvar. Com nenhuma parcela, a entrada única recebe todo o líquido; não há divisão ou resíduo. O servidor reconstrói/confere a divisão e persiste o ajuste no resultado, sem confiar em metadados enviados pelo navegador.
++6. Congelar plano, desconto, cronograma e ajuste no snapshot. Revalidar a condição autorizada e o total na emissão e na confirmação; nenhuma alteração posterior reescreve uma proposta pronta.
++
++Exemplo completo: preço de tabela R$ 100.000,00, desconto autorizado de 5% (`0.05`) = R$ 5.000,00, líquido R$ 95.000,00. Entrada R$ 10.000,00 em `2026-12-01`. Restam R$ 85.000,00 para três parcelas explicitamente datadas em `2027-01-15`, `2027-02-15` e `2027-03-15`. A divisão em centavos dá R$ 28.333,33 por parcela e sobra R$ 0,01. Aplicar à primeira: R$ 28.333,34 + R$ 28.333,33 + R$ 28.333,33 + entrada de R$ 10.000,00 = R$ 95.000,00.
++
++```json
++{
++  "listPrice": "100000.00", "discountRate": "0.05", "discountAmount": "5000.00", "netPrice": "95000.00",
++  "plan": {
++    "currency": "BRL",
++    "entry": { "id": "entrada", "dueDate": "2026-12-01", "amount": "10000.00" },
++    "installments": [
++      { "id": "p1", "dueDate": "2027-01-15", "amount": "28333.34" },
++      { "id": "p2", "dueDate": "2027-02-15", "amount": "28333.33" },
++      { "id": "p3", "dueDate": "2027-03-15", "amount": "28333.33" }
++    ]
++  },
++  "roundingAdjustment": { "amount": "0.01", "appliedTo": "p1" }
++}
++```
++
++Se o consultor escolher ajuste na entrada, esta passa a R$ 10.000,01 e cada uma das três parcelas fica em R$ 28.333,33, nas mesmas datas, ainda totalizando R$ 95.000,00. Esse é outro plano confirmado, não uma modificação oculta. Rejeitar, por exemplo, três parcelas de R$ 28.333,33 com entrada de R$ 10.000,00 (falta R$ 0,01), `2027-02-29`, data repetida, valor negativo, campo de recorrência ou desconto acima do limite.
+ 
+ ### 7. Emissão consistente entre banco e PDF
+ 
+@@ -231,6 +325,30 @@
+ A retomada proposta permanece no serviço da aplicação e pode ser acionada pelo usuário ou responsável autorizado. O banco controla a posse temporária da execução e identifica a tentativa atual; um executor que perdeu essa posse não pode concluir a emissão nem remover o arquivo de outro. O prazo de suspeita de interrupção e os limites de tentativa são configurações operacionais definidas a partir do ensaio. Não é necessário introduzir uma fila externa para esse protocolo na beta.
+ 
+ Erros técnicos não apagam os dados válidos do rascunho. Se uma condição comercial mudou, repetir a mesma chave não autoriza recalcular e sobrescrever o snapshot da tentativa antiga: a interface conduz a atualização explícita e uma nova solicitação. A recuperação conserva uma única responsabilidade pelo avanço dos estados.
++
++#### Matriz normativa de emissão e retomada
++
++O estado da emissão é somente `PENDING`, `READY` ou `FAILED`; revogação, vencimento e substituição são estados independentes de acesso de uma versão `READY`. Antes da reserva não existe emissão persistida. `FAILED` é terminal para a mesma chave: nova emissão exige nova intenção confirmada e nova chave; não altera o snapshot anterior. Cada aquisição de posse consome uma tentativa, inclusive a interrompida. Persistir `attemptCount`, limite aplicado na reserva, `leaseVersion`, `leaseExpiresAt`, etapa, `errorCode`, ocorrência e `nextRetryAt` quando cabível. O limite é inteiro positivo; seu valor de produção será definido no ensaio, sem alterar a semântica abaixo.
++
++| Evento / condição | Transição persistida | Código / diagnóstico | Ação permitida |
++|---|---|---|---|
++| Preparação inválida antes da reserva (datas, soma, desconto, revisão ou autorização) | Sem emissão → sem emissão | `INPUT_INVALID`, `PAYMENT_MISMATCH`, `COMMERCIAL_CONFLICT` ou resposta genérica `ACCESS_DENIED` | Corrigir/revalidar o atendimento; nenhuma tentativa consumida. |
++| Reserva válida e chave inédita | Sem emissão → `PENDING` | Sem erro; tentativa 1 com posse | Produzir PDF e confirmar. Link permanece indisponível. |
++| Mesma chave, mesmo dono/conteúdo, executor com posse não vencida | `PENDING` → `PENDING` | `ISSUE_IN_PROGRESS` (informativo, sem substituir erro persistido) | Consultar andamento; não iniciar outro executor ou consumir tentativa. |
++| Mesma chave com conteúdo diferente | Qualquer estado → inalterado | `IDEMPOTENCY_CONFLICT` na resposta | Revisar intenção e usar nova chave, sem mudar a emissão encontrada. |
++| Repetição autorizada da chave pronta | `READY` → `READY` | Sem erro | Devolver referência original; acesso ao link ainda obedece expiração/revogação/substituição. |
++| PDF gravado e confirmação final válida, posse atual | `PENDING` → `READY` | Limpar erro transitório; registrar referência/hash do PDF | Publicar e substituir atomicamente a versão anterior. |
++| Falha transitória de rede, armazenamento, banco ou recurso temporário de renderização, com tentativa ainda abaixo do limite | `PENDING` → `PENDING` | `STORAGE_TRANSIENT`, `DATABASE_TRANSIENT` ou `PDF_TRANSIENT`; etapa e próxima tentativa | Liberar posse quando possível; retomar somente após liberação/vencimento e `nextRetryAt`, com revalidação e nova tentativa. |
++| Processo interrompido / posse vencida, abaixo do limite | `PENDING` → `PENDING` | `LEASE_EXPIRED` | Aquisição atômica de nova posse/contador; nova chave de objeto da tentativa; revalidar antes de avançar. |
++| Executor antigo tenta confirmar ou limpar após perder posse | Estado inalterado | `STALE_EXECUTOR` na ocorrência | Recusar efeito; executor antigo para. Nunca remove objeto de outro executor. |
++| Mudança comercial ou de autorização detectada após reserva (preço, disponibilidade, vigência, rascunho, vínculo ou versão atual) | `PENDING` → `FAILED` | `COMMERCIAL_CONFLICT`, `ACCESS_REVOKED` ou `VERSION_CONFLICT` | Preservar rascunho e versão anterior não substituída; corrigir/revalidar e criar nova solicitação autorizada. |
++| Snapshot inválido, PDF determinística e irreparavelmente inválido ou objeto com hash divergente | `PENDING` → `FAILED` | `SNAPSHOT_INVALID`, `PDF_RENDER_FAILED` ou `OBJECT_HASH_MISMATCH` | Diagnosticar/corrigir causa; nova solicitação após correção. Não repetir cegamente. |
++| Falha transitória na última tentativa, ou posse da última tentativa expira | `PENDING` → `FAILED` | `ATTEMPTS_EXHAUSTED`, preservando também o código causal | Retomada da mesma chave bloqueada. Responsável diagnostica; usuário confirma nova solicitação após resolver a causa. |
++| Mesma chave já falhou | `FAILED` → `FAILED` | Código terminal persistido | Consultar motivo e próximo passo; não reabrir estado, não recalcular snapshot. |
++| Leitura de status sem sessão/vínculo/propriedade autorizados | Estado inalterado | `ACCESS_DENIED` genérico | Nenhum detalhe nem link. Reconciliação interna pode concluir `ACCESS_REVOKED`; uma chamada não autorizada não controla a emissão. |
++| Manutenção operacional ativa | Sem nova reserva/posse/confirmação; estado persistido conservado | `MAINTENANCE` | Suspender execução; depois da liberação revalidar e seguir a regra de posse/limite. Posse pode expirar durante a pausa. |
++
++A confirmação é idempotente: se a conexão cair após o commit, consultar o banco pela chave antes de classificar falha; `READY` nunca regride. Se o banco estiver indisponível, não inventar transição local: registrar ocorrência sem segredos e reconciliar o estado persistido quando voltar. Limpeza de objeto órfão é operação da tentativa, não transição de uma emissão pronta. Objetos de `FAILED` só são removidos após conferir ausência de referências e de posse ativa. A interface oferece “acompanhar”, “retomar” ou “revisar e emitir nova solicitação” conforme a matriz; nunca mostra “retomar” para `FAILED`.
+ 
+ O PDF usa paginação, acentos, fontes e imagens validadas, com tamanho de conteúdo considerado no ensaio. A API do [pdf-lib permite serializar o documento em bytes](https://pdf-lib.js.org/docs/api/classes/pdfdocument#save); o layout, a coerência dos valores e a integração com armazenamento são responsabilidades a verificar na aplicação.
+ 
+@@ -246,7 +364,7 @@
+ | Substituída | Estado e contato, sem valores nem PDF e sem redirecionamento à nova versão. |
+ | Token inexistente ou inválido | Resposta genérica, sem revelar empresa, interessado ou documento. |
+ 
+-Página e download passam pelo mesmo resolvedor de autorização pública. A validade é registrada como instante final derivado da data civil e do fuso do empreendimento. O arquivo privado não é exposto por URL permanente.
++Página e download passam pelo mesmo resolvedor de autorização pública, e cada requisição captura o horário atual do servidor e revalida estado e validade antes de liberar conteúdo. O download não recebe nem reaproveita timestamp, autorização temporal ou decisão capturados na abertura da página. Um relógio injetado com o mesmo instante serve apenas a testes comparativos determinísticos; não é uma autorização compartilhada entre requisições. A validade é registrada como instante final derivado da data civil e do fuso do empreendimento. O arquivo privado não é exposto por URL permanente.
+ 
+ As respostas da proposta e do download são dinâmicas e usam `Cache-Control: no-store`, sem cache no proxy/CDN, com `Referrer-Policy: no-referrer` e `X-Robots-Tag: noindex, nofollow`. Não há analytics, preview com dados pessoais ou rastreamento de abertura. A equipe continua responsável pelo envio nos canais existentes. Revogar o link não remove PDFs já baixados.
+ 
+@@ -267,15 +385,19 @@
+ 
+ As telas autenticadas e suas mutações chamam serviços de servidor. Entradas são validadas e o resultado devolve apenas os campos necessários ao papel. Validações de formulário apontam os campos; conflitos explicam a atualização necessária; falhas inesperadas retornam código de ocorrência sem detalhes sensíveis.
+ 
+-Rotas propostas: `/entrar`, áreas administrativas e comerciais sob sessão, `/api/auth/[...all]` para o mecanismo de identidade, `/p/[token]` para consulta externa e `/p/[token]/pdf` para download. Não haverá endpoint público para cadastrar empresas, confirmar contratação ou reservar unidade. A autenticação não concede autorização comercial por si só.
++Rotas propostas: `/` como única entrada pública/redirecionador (`src/app/page.tsx`), `/entrar`, `/recuperar-senha`, `/trocar-senha`, `/dashboard` (`src/app/(staff)/dashboard/page.tsx`) como início autenticado, áreas administrativas e comerciais sob sessão, `/api/auth/[...all]` para o mecanismo de identidade, `/p/[token]` para consulta externa e `/p/[token]/pdf` para download. Não haverá endpoint público para cadastrar empresas, confirmar contratação ou reservar unidade. A autenticação não concede autorização comercial por si só.
+ 
+ ### 10. Atualizações e recuperação do histórico
+ 
+ Snapshots e apresentação emitida usam versão explícita de formato. Antes de uma alteração incompatível, será verificada a leitura de uma proposta da versão anterior e declarado se o código anterior ainda pode operar sobre os dados migrados. Preferir mudanças aditivas; não recalcular propostas antigas para adaptá-las a uma regra nova. O PDF emitido permanece o documento da sua versão.
+ 
+-O procedimento de restauração suspende o acesso público antes de restaurar banco e arquivos. Esse bloqueio pertence ao ambiente de operação, e não pode depender de uma flag que volte ao valor antigo junto do backup. O ensaio deve incluir uma revogação e uma substituição posteriores ao ponto restaurado, além de conferir snapshot e bytes do PDF.
++O procedimento de restauração suspende acesso público, login normal, seleção de vínculo e todas as operações autenticadas antes de restaurar banco e arquivos. Esse bloqueio pertence ao ambiente de operação, e não pode depender de uma flag que volte ao valor antigo junto do backup. O ensaio deve incluir uma revogação e uma substituição posteriores ao ponto restaurado, além de conferir snapshot e bytes do PDF.
+ 
+ Antes de reabrir a consulta pública, reconciliar as restrições posteriores ao backup com registros confiáveis disponíveis. Se não for possível demonstrar o estado de um conjunto de links restaurados, invalidá-los antes de retomar; a equipe precisará compartilhar novas versões pelo fluxo normal. Essa alternativa tem custo de reemissão e comunicação manual, mas não exige presumir que o backup conserva alterações posteriores a sua criação.
++
++Além dos links, invalidar incondicionalmente todas as sessões autenticadas restauradas e todos os tokens pendentes de ativação/recuperação antes de qualquer reabertura. Reconciliar identidades, e-mails verificados, vínculos, papéis e desativações com uma trilha confiável posterior ao backup. Uma senha antiga não pode voltar a autorizar login: marcar credenciais restauradas como exigindo recuperação pelo e-mail confirmado do titular e rejeitar o login com a senha restaurada até sua substituição. Mesmo uma identidade já recuperada não ganha autorização comercial até seu vínculo e papel serem revalidados.
++
++Na ausência de trilha confiável, manter vínculos restaurados suspensos e exigir confirmação explícita da autoridade de cada empresa para reativá-los, sem conceder a essa autoridade poder sobre senha ou e-mail global. Se o e-mail atual de uma identidade não puder ser demonstrado, manter sua recuperação bloqueada até comprovação pelo procedimento operacional de identidade; não enviar recuperação a um e-mail antigo por presunção. Reabrir primeiro apenas o fluxo de recuperação para titulares com endereço reconciliado, ainda sob restrição comercial. Reabrir o acesso normal somente após relatório auditado de reconciliação e ensaio. Identidades/vínculos não confirmados continuam bloqueados, mesmo que os demais tenham sido liberados. O healthcheck e os comandos operacionais controlados são as únicas exceções durante o bloqueio total.
+ 
+ Na adoção por empreendimento, a empresa identifica a referência oficial e quem autoriza suspensão e retomada. O retorno temporário à planilha exige conferir dados atuais; quando ela não puder representar as condições vigentes, novas emissões ficam suspensas até a recuperação. Não se cria sincronização permanente entre as duas ferramentas.
+ 
+@@ -346,8 +468,8 @@
+ | Recomendação do brief | Evidência esperada no produto e na homologação |
+ |---|---|
+ | R1 — contingência | Ensaio de pausa/retomada com referência oficial, responsável e conferência dos dados. |
+-| R2 — restauração dos links | Backup anterior a revogação/substituição não permite reabertura pública indevida. |
+-| R3 — emissão recuperável | Interrupção após upload, retry concorrente e conflito comercial preservam uma versão pronta coerente e a anterior até substituição válida. |
++| R2 — restauração dos acessos | Backup anterior a revogação/substituição, desativação de vínculo ou troca de senha não reabre links, sessões, credenciais antigas ou permissões indevidas. |
++| R3 — emissão recuperável | Interrupção após upload, retry concorrente e conflito comercial preservam uma versão pronta coerente e não substituem a anterior até a confirmação válida, sem suspender sua expiração ou revogação. |
+ | R4 — histórico legível | Proposta emitida antes de atualização conserva valores, textos relevantes e PDF. |
+ | R5 — clareza do fluxo | Administrador distingue os três conjuntos do pool; consultor compreende conflitos e continua com dados válidos preservados. |
+ | R6 — diagnóstico | Relato manual pode ser associado a uma ocorrência interna sem copiar dados do investidor ou o link público. |
+@@ -362,13 +484,25 @@
+ 
+ Este é um plano para construção posterior, na raiz deste workspace. Não autoriza executar a implementação, publicar o serviço ou contratar infraestrutura nesta etapa documental. O desenho original, o plano anterior, o RFC, o brief e o XLSX permanecem como fontes históricas; a aplicação não altera nem interpreta fórmulas do XLSX.
+ 
+-Os quinze pacotes abaixo constituem uma única sequência de implementação. Cada tabela enumera os arquivos do pacote e a finalidade de cada um. Todos estão previstos como **Create**, pois não há implementação de produto identificada. Não há exclusões previstas. Ao executar um pacote, confirmar antes se algum arquivo passou a existir e preservar alterações legítimas; diferenças materiais exigem atualizar o manifesto. Arquivos gerados de instalação e build, segredos locais, PDFs emitidos e backups são artefatos de execução, não código a versionar.
++Os quinze pacotes abaixo constituem uma única sequência de implementação. Cada tabela enumera os arquivos do pacote e a finalidade de cada um. As ações **Create** identificam a primeira criação; **Modify** autoriza a alteração explícita de arquivo entregue por fase anterior. A lista de cada fase é seu manifesto de escrita, incluindo integrações posteriores. Não há exclusões previstas. O `.gitignore` já é entregue nesta resolução documental e aparece como **Modify** no P01. Ao executar um pacote, confirmar antes se algum arquivo passou a existir e preservar alterações legítimas; diferenças materiais exigem atualizar o manifesto. Excluir do versionamento `node_modules/`, `.next/`, `out/`, `dist/`, `build/`, arquivos `.env` e `.env.*` (exceto `.env.example`), PDFs gerados, armazenamento privado e backups. A regra não abrange todos os gerados: **versionar obrigatoriamente `package-lock.json`, migrações SQL e os metadados gerados de migração em `drizzle/meta/`**, inclusive snapshots e `_journal.json`. O `.gitignore` deve manter essas exceções explícitas; `npm ci` e a geração incremental de migrações dependem delas.
+ 
+ Os caminhos entre crases são relativos à raiz e representam arquivos futuros. Não são links para implementações existentes. Os nomes de migrações e metadados abaixo são os nomes planejados para a primeira migração; se a versão fixada do gerador produzir nomes diferentes, registrar os nomes efetivos no manifesto antes de aplicá-la. Não editar um snapshot gerado para simular uma migração que não ocorreu.
+ 
+-Além das bibliotecas do bloco técnico, o detalhamento explicita auxiliares de implementação: `@aws-sdk/client-s3` para o adaptador de arquivos, `@pdf-lib/fontkit` para fontes incorporadas, `server-only` para proteger importações de servidor e `pdfjs-dist` apenas no desenvolvimento para conferir o conteúdo dos PDFs. São dependências de apoio aprovadas pelo solicitante junto com este plano em 2026-11-13. Fixar versões compatíveis e registrar o lockfile; não pressupor que a documentação consultada comprova a integração.
++Além das bibliotecas do bloco técnico, o detalhamento explicita auxiliares de implementação: `@aws-sdk/client-s3` para o adaptador de arquivos, `@pdf-lib/fontkit` para fontes incorporadas, `server-only` para proteger importações de servidor e `pdfjs-dist` apenas no desenvolvimento para conferir o conteúdo dos PDFs. Foram aprovadas com o plano em 2026-11-13; em 2026-11-14 foram acrescentados `pg`, `@better-auth/drizzle-adapter`, `sharp` e o transporte transacional `nodemailer`, com `@types/pg` e `@types/nodemailer` no desenvolvimento. Fixar versões compatíveis e registrar o lockfile; não pressupor que a documentação consultada comprova a integração.
+ 
+ O [pdf-lib exige fontkit para fontes personalizadas](https://pdf-lib.js.org/#embed-font-and-measure-text). As fontes propostas são Noto Sans regular e bold, com bytes e licença copiados de uma revisão identificada do [repositório de fontes](https://github.com/notofonts/noto-fonts/tree/main/hinted/ttf/NotoSans), sem download durante a emissão. O [PDF.js documenta uso como biblioteca e exemplos em Node](https://mozilla.github.io/pdf.js/examples/). Essas consultas sustentam os auxiliares propostos, não acrescentam funções para o usuário final.
++
++#### Matriz fechada de pacotes diretos
++
++| Uso | Pacotes / importações selecionadas |
++|---|---|
++| Runtime da aplicação | `next`, `react`, `react-dom`, `server-only` |
++| Persistência e identidade | `pg` (`Pool`, `PoolClient`), `drizzle-orm` (`drizzle-orm/node-postgres`), `better-auth`, `@better-auth/drizzle-adapter` (provider `pg`) |
++| Domínio e arquivos | `zod`, `decimal.js`, `pdf-lib`, `@pdf-lib/fontkit`, `@aws-sdk/client-s3`, `sharp` |
++| E-mail de identidade | `nodemailer` com SMTP configurado no servidor |
++| Desenvolvimento | `typescript`, `@types/node`, `@types/react`, `@types/react-dom`, `@types/pg`, `@types/nodemailer`, `drizzle-kit`, `eslint`, `eslint-config-next`, `vitest`, `@playwright/test`, `pdfjs-dist` |
++
++Fixar versões compatíveis no P01, incluindo pacotes de tipos necessários, e conservar o lockfile. `drizzle-orm/node-postgres` é uma importação de `drizzle-orm`, não um pacote separado. O cliente segue a [integração Drizzle com node-postgres](https://orm.drizzle.team/docs/get-started-postgresql); o adaptador de identidade segue o [pacote próprio do Better Auth](https://better-auth.com/docs/adapters/drizzle). A decisão não autoriza instalar ou contratar serviços nesta etapa documental.
+ 
+ ### Contratos que a implementação deve preservar
+ 
+@@ -380,6 +514,7 @@
+ | `PaybackRule`, `Metric` | `SIMPLE` ou `DEDUCTED_MONTHS` com inteiro positivo; resultado disponível ou motivo `PARTIAL_YEAR`, `NON_POSITIVE_RESULT`, `INVALID_INVESTMENT` ou `RECOVERED_WITHIN_DEDUCTION`. |
+ | `CalculationResult` | `engineVersion`, horizonte, indicador de ano completo, cenários, períodos, totais, despesas discriminadas, participação, retorno, payback escolhido e simples e alertas. |
+ | `ActorContext` | `userId`, `companyId` e papel resolvidos pelo servidor a partir de sessão e vínculo ativo. |
++| `PaymentPlan`, `PaymentSchedule` | Valores fixos, datas explícitas, desconto sobre preço e conciliação exata conforme schema e regras da seção 6; ajuste na primeira parcela ou entrada existente, nunca na última por padrão. |
+ | `DraftCommand` | Empreendimento, unidade, revisões esperadas, desconto, condição, interessado, horizonte e eventual cenário personalizado; não recebe resultados financeiros prontos. |
+ | `DraftDTO` | Entradas, dono, revisão do rascunho, referências utilizadas, resultado e desatualização; inclui referência da emissão em andamento para recuperar uma tentativa após recarregar a tela. |
+ | `ProposalSnapshot` | Formato versionado com empresa, empreendimento, unidade, consultor, interessado, condições, versões de catálogo/premissas/motor, entradas e resultados, número, versão, emissão, validade, fuso, contatos e ativos imutáveis. |
+@@ -393,7 +528,7 @@
+ 
+ #### P01 — configuração, contratos e precisão
+ 
+-Preparar ferramentas e contratos antes de importar regras em telas. Declarar em `package.json` os scripts indicados ao final desta seção. Configurar testes unitários sem banco e testes de integração com configuração separada; o build completo só será exigido após existir a aplicação do P13.
++Preparar ferramentas e contratos antes de importar regras em telas. Declarar em `package.json` os scripts indicados ao final desta seção. Configurar testes unitários sem banco e testes de integração com configuração separada. Criar já a estrutura mínima de App Router, antes das páginas funcionais do P06, e executar build a partir deste pacote. As verificações não exigem banco operacional nem acesso à rede para renderizar uma entrada mínima.
+ 
+ | Ação | Arquivo | Conteúdo e motivo |
+ |---|---|---|
+@@ -403,12 +538,17 @@
+ | Create | `next-env.d.ts` | Declarações geradas pelo Next, sem edição manual de tipos. |
+ | Create | `next.config.ts` | Publicação Node e inclusão dos ativos locais necessários ao PDF. |
+ | Create | `eslint.config.mjs` | Regras compatíveis com Next/TypeScript e restrição de importações do domínio para servidor/UI. |
+-| Create | `.gitignore` | Excluir segredos, armazenamento, relatórios locais, dependências e builds. |
++| Modify | `.gitignore` | Preservar exclusões explícitas de execução e exceções obrigatórias para `.env.example`, `package-lock.json` e `drizzle/meta/`. |
+ | Create | `.env.example` | Nomes das configurações, exemplos identificados como desenvolvimento e nenhum segredo real. |
+ | Create | `vitest.config.ts` | Descobrir somente testes unitários e seus aliases. |
+ | Create | `vitest.integration.config.ts` | Runner com banco de teste e setup separado; execução de integração explícita. |
+ | Create | `playwright.config.ts` | Servidor e projetos de navegador para jornadas responsivas controladas. |
+ | Create | `drizzle.config.ts` | Schema e diretório de migrações; não aplicar migrações automaticamente no carregamento da aplicação. |
++| Create | `src/app/layout.tsx` | Estrutura global mínima com `lang="pt-BR"` e importação de estilos. |
++| Create | `src/app/globals.css` | Estilos mínimos para build e páginas iniciais; acabamento no P13. |
++| Create | `src/app/page.tsx` | Único proprietário de `/`; entrada mínima sem importar autenticação ainda inexistente. |
++| Create | `src/app/not-found.tsx` | Estado genérico mínimo. |
++| Create | `src/app/error.tsx` | Limite mínimo de erro recuperável, sem detalhes sensíveis. |
+ | Create | `src/domain/contracts.ts` | Tipos compartilhados de entradas, regras e resultados descritos acima. |
+ | Create | `src/domain/schemas.ts` | Validação discriminada, limites numéricos e campos obrigatórios, distinguindo ausência de zero. |
+ | Create | `src/domain/errors.ts` | Erros de domínio e associação aos campos sem dependência de HTTP. |
+@@ -416,7 +556,7 @@
+ | Create | `tests/unit/money.test.ts` | Precisão, arredondamento e rejeição de entrada ambígua. |
+ | Create | `tests/unit/schemas.test.ts` | Limites, regras incompletas e diferenças entre zero, ausência e valor inválido. |
+ 
+-**Verificação do pacote:** `1.234,56` vira `1234.56`; texto inválido é recusado; `0.1 + 0.2` apresenta `0.30` e `1.005` apresenta `1.01`. Ocupação maior que um e meses descontados não inteiros/positivos são recusados. Rodar os testes unitários afetados e typecheck; não executar banco ou build antes de existirem seus pré-requisitos.
++**Verificação do pacote:** `1.234,56` vira `1234.56`; texto inválido é recusado; `0.1 + 0.2` apresenta `0.30` e `1.005` apresenta `1.01`. Ocupação maior que um e meses descontados não inteiros/positivos são recusados. Rodar os testes unitários afetados, typecheck e `npm run build` da estrutura mínima. Cada pacote posterior executa typecheck e build sobre a aplicação acumulada, usando apenas dependências já entregues. Isso inclui P06–P13 ao introduzir/alterar UI e P14–P15 ao integrar dados e operação. Acessos a banco/segredos de runtime são adiados para requisições, sem consultas na geração estática; os testes de integração usam configuração isolada.
+ 
+ #### P02 — calendário e horizonte
+ 
+@@ -440,7 +580,7 @@
+ | Create | `tests/unit/individual.test.ts` | Operação completa, receita zero, custos persistentes e horizonte parcial. |
+ | Create | `tests/unit/metrics.test.ts` | Retornos simples, regra de meses descontados e estados sem valor. |
+ 
+-**Verificação do pacote:** 365 noites, diária `500`, ocupação `0.8`, custo fixo anual `18000` e administração `0.15` geram receita `146000.00`, custos `39900.00` e resultado `106100.00`. Investimento `600000` produz payback simples `67.86` e, descontando 24 meses, `43.86`. Ocupação zero conserva resultado `-18000.00`; ano parcial não anualiza. A diferença de 24 meses é conferida antes do arredondamento.
++**Verificação do pacote:** 365 noites, diária `500`, ocupação `0.8`, custo fixo anual `18000` e administração `0.15` geram receita `146000.00`, custos `39900.00` e resultado `106100.00`. Investimento `600000` produz payback simples de `67.86` meses e, descontando 24 meses, `43.86` meses. Ocupação zero conserva resultado `-18000.00`; ano parcial não anualiza. A diferença de 24 meses é conferida antes do arredondamento.
+ 
+ #### P04 — pool e distribuição
+ 
+@@ -461,9 +601,9 @@
+ |---|---|---|
+ | Create | `compose.yaml` | PostgreSQL local de desenvolvimento/teste, sem apontar para dados operacionais. |
+ | Create | `src/server/env.ts` | Validar ambiente, origens, banco, armazenamento, chave de links e limites operacionais. |
+-| Create | `src/server/db/client.ts` | Conexão, transações e fronteira de uso exclusivo no servidor. |
+-| Create | `src/server/db/schema/auth.ts` | Tabelas requeridas pela configuração efetiva do Better Auth e troca obrigatória de senha. |
+-| Create | `src/server/db/schema/company.ts` | Empresa, vínculo ativo, papéis e contador de propostas por empresa. |
++| Create | `src/server/db/client.ts` | `pg.Pool` único por processo, `drizzle-orm/node-postgres`, transações no mesmo cliente e encerramento explícito em comandos/testes. |
++| Create | `src/server/db/schema/auth.ts` | Identidade global, sessões com vínculo selecionado, tokens de ativação/recuperação e marca de credencial a recuperar após restauração. |
++| Create | `src/server/db/schema/company.ts` | Empresa, vínculo/aceite/revalidação pendentes, papéis e contador de propostas por empresa. |
+ | Create | `src/server/db/schema/catalog.ts` | Empreendimentos, unidades, condições, disponibilidade e revisão de catálogo. |
+ | Create | `src/server/db/schema/premises.ts` | Rascunhos, versões publicadas, inventário/participantes e referência de vigência. |
+ | Create | `src/server/db/schema/simulations.ts` | Interessados, dono, entradas, resultado e revisão de rascunho. |
+@@ -477,6 +617,10 @@
+ | Create | `tests/support/setup-integration.ts` | Verificar ambiente de teste antes de migrar ou limpar dados. |
+ | Create | `tests/integration/schema.test.ts` | Referências cruzadas, imutabilidade, unicidade e separação de bases. |
+ 
++**Cliente e ciclo de conexões:** `client.ts` importa `Pool` de `pg` e `drizzle` de `drizzle-orm/node-postgres`; cria `new Pool({ connectionString, max, idleTimeoutMillis, connectionTimeoutMillis, ssl })` a partir de ambiente validado e `drizzle({ client: pool, schema })`. Validar `DATABASE_POOL_MAX`, `DATABASE_IDLE_TIMEOUT_MS` e `DATABASE_CONNECT_TIMEOUT_MS` como inteiros positivos e `DATABASE_SSL` conforme ambiente; os exemplos locais usam `max=10`, `idleTimeoutMillis=30000`, `connectionTimeoutMillis=5000`, sem representar capacidade contratada. TLS operacional valida certificado; não usar `rejectUnauthorized: false` como solução genérica. Uma instância por processo, reaproveitada no hot reload, sem criar pool por requisição. Em transação, reservar um cliente e executar todas as consultas nesse cliente; liberar em `finally`, com rollback antes de liberar após erro. `pool.on('error')` produz diagnóstico sem segredos. Comandos encerram com `await pool.end()` em `finally`; o runtime drena no desligamento controlado, não a cada requisição. Ver [ciclo do pool node-postgres](https://node-postgres.com/features/pooling).
++
++`tests/support/database.ts` cria um pool exclusivo para o banco isolado, com pelo menos duas conexões para disputas. Em cada teste concorrente, adquirir dois `PoolClient` por `pool.connect()`, mantê-los reservados simultaneamente e conferir `pg_backend_pid()` distintos; envolver cada um no Drizzle sem compartilhamento de transação. Fazer rollback se necessário e `release()` em `finally` para ambos, inclusive quando uma asserção falhar; executar `await pool.end()` no teardown da suíte. Migração/limpeza só começa após a guarda do destino efetivo. Nenhum cliente ou pool de testes é o singleton operacional.
++
+ **Regras de schema:** referências comerciais incluem empresa e identificador. Unicidade de unidade é por empreendimento; de versão, por série/empresa; de chave idempotente, por empresa; de hash do token, global. A série guarda o ponteiro para a versão pronta atual. Emissões guardam dono, rascunho, fingerprint da solicitação e estado; tentativas guardam contador crescente, posse temporária, etapa, objeto e erro. Número e versão são reservados atomicamente e não reutilizados após falha; lacunas não significam proposta emitida.
+ 
+ **Verificação do pacote:** migrar banco vazio; recusar vínculos entre empresas; impedir alteração de conteúdo publicado e permitir operações autorizadas sobre estados separados. A guarda compara o destino efetivo do banco, e não somente a grafia de URLs, e impede usar a base operacional em integração. Testes concorrentes usam conexões reais distintas, não mocks das transações.
+@@ -485,27 +629,36 @@
+ 
+ | Ação | Arquivo | Conteúdo e motivo |
+ |---|---|---|
+-| Create | `src/server/auth/config.ts` | Better Auth, adaptador Drizzle, sessões de banco, origem e cadastro público desativado. |
++| Create | `src/server/auth/config.ts` | Better Auth, adaptador Drizzle `pg`, ativação/recuperação por e-mail e revogação global na troca de senha; cadastro público desativado. |
+ | Create | `src/server/auth/context.ts` | `requireActor` e autorização por papel/vínculo sem confiar no payload. |
+-| Create | `src/server/auth/users.ts` | Criar, desativar e redefinir acesso da equipe dentro da empresa. |
++| Create | `src/server/auth/users.ts` | Criar/ativar/desativar vínculos e revogar sessões locais; nunca definir senha ou alterar e-mail de identidade global. |
++| Create | `src/server/auth/email.ts` | Transporte SMTP com `nodemailer` para ativação e recuperação, sem revelar token ao administrador ou aos logs. |
++| Create | `src/server/auth/recovery.ts` | Recuperação exclusiva pelo titular, tokens de uso único, limitação e verificação da exigência pós-restauração. |
+ | Create | `src/app/api/auth/[...all]/route.ts` | Integração do mecanismo de identidade com o Next. |
+ | Create | `src/app/(auth)/entrar/page.tsx` | Entrada da equipe com mensagens recuperáveis. |
+-| Create | `src/app/(auth)/trocar-senha/page.tsx` | Fluxo obrigatório após credencial inicial ou redefinida. |
++| Create | `src/app/(auth)/recuperar-senha/page.tsx` | Solicitar recuperação ao e-mail verificado com resposta genérica. |
++| Create | `src/app/(auth)/trocar-senha/page.tsx` | Concluir ativação/recuperação com token do e-mail do titular; nunca senha escolhida pelo administrador. |
+ | Create | `src/app/(auth)/actions.ts` | Adaptação de formulários de identidade, sem regras comerciais no navegador. |
++| Create | `src/app/(staff)/layout.tsx` | Exigir sessão/vínculo e compor navegação mínima antes das primeiras páginas comerciais. |
++| Create | `src/app/(staff)/dashboard/page.tsx` | Início autenticado em `/dashboard`, sem referências a páginas/serviços ainda não entregues. |
++| Create | `src/components/app-shell.tsx` | Navegação mínima por papel; links de cada módulo entram quando a fase os entregar. |
++| Modify | `src/app/page.tsx` | Encaminhar anônimo a `/entrar` e sessão autorizada a `/dashboard`; vínculo pendente segue ativação/seleção. |
+ | Create | `scripts/bootstrap-admin.ts` | Provisionar a empresa parceira e seu primeiro administrador. |
+ | Create | `scripts/invite-company.ts` | Criar empresa beta e primeiro administrador por comando do operador. |
+-| Create | `tests/integration/auth.test.ts` | Sessões, papéis, redefinição, desativação e convites isolados. |
+-
+-**Contexto da sessão:** armazenar a referência do vínculo ativo na sessão e revalidá-la no servidor. Com um vínculo permitido, a entrada é direta; se houver mais de um, o próprio fluxo de entrada apresenta somente os vínculos retornados ao usuário autenticado e persiste a seleção após conferi-la. A escolha enviada pelo navegador nunca cria permissão. Enquanto houver troca obrigatória de senha pendente, permitir somente o fluxo de identidade necessário para concluí-la.
+-
+-**Verificação do pacote:** sessão ausente recusa acesso; consultor não administra equipe; vínculo inativo impede operações; `companyId` forjado não troca empresa; senha inicial exige troca e redefinição revoga sessões. Com duas empresas convidadas, conferir catálogo, premissas, equipe e propostas em leitura e escrita. Scripts usam entrada/configuração segura para credenciais, sem imprimi-las nem registrá-las em argumentos de log.
++| Create | `tests/integration/auth.test.ts` | Identidade A/B, autoridade local, recuperação pelo titular, entrega simulada de e-mail, revogação de sessões e convites. |
++
++**Contexto da sessão:** armazenar a referência do vínculo ativo na sessão e revalidá-la no servidor. Com um vínculo permitido, a entrada é direta; se houver mais de um, o próprio fluxo de entrada apresenta somente os vínculos retornados ao usuário autenticado e persiste a seleção após conferi-la. A escolha enviada pelo navegador nunca cria permissão. Enquanto houver ativação, recuperação de credencial ou revalidação de vínculo pendente, permitir somente o fluxo restrito necessário, sem acesso comercial. O papel de administrador de A não amplia a autoridade sobre a identidade global.
++
++**Verificação do pacote:** sessão ausente recusa acesso; consultor não administra equipe; vínculo inativo impede operações; `companyId` forjado não troca empresa. A mesma identidade com vínculos ativos em A/B comprova que administrador de A não define senha, não altera e-mail, não obtém token nem afeta sessão de B. Desativar A bloqueia sessão de A e mantém B. Recuperação só conclui com token recebido no e-mail do titular e revoga todas as sessões; reutilização/expiração do token e falha de entrega são testadas. Identidade existente convidada conserva sua credencial. Scripts não recebem/imprimem senha do titular ou token. Testar `/` anônimo → `/entrar`, autenticado autorizado → `/dashboard`, e navegação mínima sem links quebrados. Rodar typecheck e build já nesta fase. A separação comercial de catálogo/premissas/propostas será ampliada nos pacotes que os criarem; não importar serviços futuros neste teste.
+ 
+ #### P07 — catálogo, identidade da empresa e arquivos
+ 
+ | Ação | Arquivo | Conteúdo e motivo |
+ |---|---|---|
++| Modify | `src/components/app-shell.tsx` | Acrescentar somente os links de navegação das telas entregues neste pacote. |
+ | Create | `src/server/catalog/contracts.ts` | Comandos e DTOs de empresa, empreendimento, unidade, desconto e pagamento. |
+ | Create | `src/server/catalog/service.ts` | Cadastro, identidade comercial, arquivo lógico e incremento de revisão. |
++| Create | `src/server/catalog/images.ts` | Validar upload e converter WebP com sharp antes do armazenamento, produzindo referência PNG imutável. |
+ | Create | `src/server/storage/contract.ts` | Interface privada e tipos de objeto/hash/MIME. |
+ | Create | `src/server/storage/local.ts` | Adaptador de desenvolvimento com gravação exclusiva e caminhos confinados. |
+ | Create | `src/server/storage/s3.ts` | Adaptador S3 com bucket privado e proteção contra sobrescrita. |
+@@ -518,12 +671,15 @@
+ | Create | `tests/integration/catalog.test.ts` | Permissões, revisões, condições, arquivos e conservação do histórico. |
+ | Create | `tests/integration/storage.test.ts` | Imutabilidade de objeto, falhas de leitura/gravação e isolamento dos adaptadores. |
+ 
+-**Regras e verificação:** desconto ausente permite zero; exceção por unidade é explícita; condições devem conciliar com o preço. Alterações de preço/disponibilidade incrementam a revisão de forma transacional. Upload aceita PNG/JPEG/WebP de até 5 MB, com validação dos bytes e sem buscar URLs arbitrárias. Objeto já existente não é sobrescrito: conferir hash para reconhecer repetição idêntica ou recusar diferença. A implementação S3 usa a precondição documentada de [gravação condicional](https://docs.aws.amazon.com/AmazonS3/latest/userguide/conditional-writes.html), cuja disponibilidade deve ser ensaiada no provedor efetivo. Não presumir que um mock prova compatibilidade de todo serviço S3.
++**Regras e verificação:** desconto ausente permite zero; exceção por unidade é explícita; condições devem conciliar com o preço. Alterações de preço/disponibilidade incrementam a revisão de forma transacional. Upload aceita PNG/JPEG/WebP de até 5 MB na entrada, com validação dos bytes e sem buscar URLs arbitrárias. Para WebP estático, `images.ts` usa `sharp(input).png().toBuffer()` antes de persistir qualquer objeto; valida também o PNG derivado (até 5 MB e 25 milhões de pixels). Entradas de qualquer formato acima de 25 milhões de pixels e WebP animado são recusadas com mensagem explícita. Preservar transparência no PNG. Persistir somente o derivado PNG, com `contentType=image/png`, tamanho, dimensões, hash SHA-256 calculado sobre seus bytes e chave imutável; registrar `sourceMime=image/webp` apenas como proveniência. O snapshot referencia esse PNG/hash, e pdf-lib o incorpora diretamente com `embedPng`; não converter na emissão. PNG/JPEG validados seguem seus MIME/hashes próprios e `embedPng`/`embedJpg`. A API de [saída PNG do sharp](https://sharp.pixelplumbing.com/api-output/#png) sustenta a conversão.
++
++Se decodificação/conversão falhar, retornar `IMAGE_CONVERSION_FAILED` com ocorrência e orientação para reenviar PNG/JPEG ou corrigir WebP; falhas de limite/formato usam `IMAGE_LIMIT_EXCEEDED`/`IMAGE_FORMAT_UNSUPPORTED`. Não persistir WebP bruto nem substituir a referência anterior, não salvar ativo incompleto e não omitir silenciosamente imagem aceita. Se upload do PNG falhar, devolver `IMAGE_STORAGE_FAILED`, manter o ativo anterior e tratar eventual objeto sem vínculo como órfão. Testar PNG, JPEG, WebP transparente convertido, bytes inválidos, WebP animado, PNG derivado acima do limite e indisponibilidade do sharp/storage; conferir MIME/hash do derivado e presença da imagem no PDF no P10. Objeto já existente não é sobrescrito: conferir hash para reconhecer repetição idêntica ou recusar diferença. A implementação S3 usa a precondição documentada de [gravação condicional](https://docs.aws.amazon.com/AmazonS3/latest/userguide/conditional-writes.html), cuja disponibilidade deve ser ensaiada no provedor efetivo. Não presumir que um mock prova compatibilidade de todo serviço S3.
+ 
+ #### P08 — publicação das premissas
+ 
+ | Ação | Arquivo | Conteúdo e motivo |
+ |---|---|---|
++| Modify | `src/components/app-shell.tsx` | Acrescentar somente os links de navegação das telas entregues neste pacote. |
+ | Create | `src/server/premises/contracts.ts` | Schemas e DTOs de rascunho, publicação e retirada. |
+ | Create | `src/server/premises/service.ts` | Validar e publicar versões, controlar vigência e localizar propostas afetadas. |
+ | Create | `src/app/(staff)/admin/empreendimentos/[id]/premissas/page.tsx` | Preparar calendário, cenários, custos, inventário e participantes com revisão antes da publicação. |
+@@ -536,16 +692,17 @@
+ 
+ | Ação | Arquivo | Conteúdo e motivo |
+ |---|---|---|
++| Modify | `src/components/app-shell.tsx` | Acrescentar somente os links de navegação das telas entregues neste pacote. |
+ | Create | `src/server/simulations/contracts.ts` | Comandos/DTOs, revisões esperadas e referência de emissão recuperável. |
+ | Create | `src/server/simulations/service.ts` | Criar, atualizar e recalcular rascunhos com propriedade e versões verificadas. |
+-| Create | `src/server/simulations/payments.ts` | Datas e parcelas determináveis com conciliação do preço. |
++| Create | `src/server/simulations/payments.ts` | PaymentPlan/PaymentSchedule com datas explícitas, desconto e divisão assistida com resíduo na primeira parcela ou entrada. |
+ | Create | `src/app/(staff)/simulacoes/page.tsx` | Atendimentos acessíveis ao ator com estados de atualização. |
+ | Create | `src/app/(staff)/simulacoes/nova/page.tsx` | Seleção de empreendimento/unidade e início do atendimento. |
+ | Create | `src/app/(staff)/simulacoes/[id]/page.tsx` | Cenários, condições, interessado e recuperação do rascunho. |
+ | Create | `src/app/(staff)/simulacoes/actions.ts` | Validar comandos de formulário e chamar serviços autorizados. |
+ | Create | `tests/integration/simulations.test.ts` | Dono, concorrência, troca de unidade, faixas e condições. |
+ 
+-**Verificação do pacote:** outro consultor não abre o rascunho; revisão antiga gera conflito; troca de unidade refaz referências sem reaproveitar participação/custos indevidos. Cenário personalizado não sobrescreve oficiais. Atualização explícita destaca diferenças e preserva dados válidos. Parcelas conciliam com ajuste identificado na última, sem presumir juros/correção. Reiniciar a aplicação conserva o atendimento.
++**Verificação do pacote:** outro consultor não abre o rascunho; revisão antiga gera conflito; troca de unidade refaz referências sem reaproveitar participação/custos indevidos. Cenário personalizado não sobrescreve oficiais. Atualização explícita destaca diferenças e preserva dados válidos. Parcelas conciliam exatamente com o líquido; conferir o exemplo de desconto de 5%, entrada de R$ 10.000,00 e resíduo de R$ 0,01 na primeira parcela ou entrada. Rejeitar soma divergente, datas inexistentes/repetidas/anteriores à emissão, recorrência e alteração não autorizada da condição, sem presumir juros/correção. Reiniciar a aplicação conserva o atendimento.
+ 
+ #### P10 — snapshot, apresentação e PDF
+ 
+@@ -567,12 +724,13 @@
+ | Create | `tests/support/pdf-text.ts` | Extração de texto do PDF com PDF.js, sem virar dependência da consulta pública. |
+ | Create | `tests/unit/proposal-pdf.test.ts` | Comparar conteúdo efetivo do PDF com a apresentação congelada. |
+ 
+-**Verificação do pacote:** conferir preço, três cenários oficiais e eventual quarto personalizado, resultado, investimento, participação, número, versão e validade extraindo texto dos bytes produzidos. Conferir `DEDUCTED_MONTHS`, prazo simples e mensagem de recuperação dentro dos meses descontados. Revisar visualmente páginas com nomes extensos, acentos, ausência de imagem e quebra de página. Não gerar PDF a partir de HTML ou valores recebidos prontos do navegador. Futuras alterações de mensagens não mudam a apresentação já persistida.
++**Verificação do pacote:** conferir preço, três cenários oficiais e eventual quarto personalizado, resultado, investimento, participação, número, versão e validade extraindo texto dos bytes produzidos. Conferir `DEDUCTED_MONTHS`, prazo simples e mensagem de recuperação dentro dos meses descontados. Conferir que PNG/JPEG e o PNG derivado de WebP são incorporados pelos seus bytes/hash congelados. Revisar visualmente páginas com nomes extensos, acentos, ausência de imagem e quebra de página. Não gerar PDF a partir de HTML ou valores recebidos prontos do navegador. Futuras alterações de mensagens não mudam a apresentação já persistida.
+ 
+ #### P11 — emissão, recuperação e acesso autenticado às propostas
+ 
+ | Ação | Arquivo | Conteúdo e motivo |
+ |---|---|---|
++| Modify | `src/components/app-shell.tsx` | Acrescentar somente os links de navegação das telas entregues neste pacote. |
+ | Create | `src/server/proposals/repository.ts` | Reserva de número/versão, unicidade, bloqueios e transição final consistente. |
+ | Create | `src/server/proposals/issue.ts` | Coordenar preparação, reserva, PDF e confirmação conforme o protocolo aprovado. |
+ | Create | `src/server/proposals/recovery.ts` | Posse temporária, tentativas, retomada e identificação de órfãos. |
+@@ -581,17 +739,25 @@
+ | Create | `src/app/(staff)/propostas/page.tsx` | Histórico filtrado pela empresa e pelo papel/dono. |
+ | Create | `src/app/(staff)/propostas/[id]/page.tsx` | Versões, estado de emissão, cópia de link e revogação autorizada. |
+ | Create | `src/app/(staff)/propostas/actions.ts` | Adaptar emissão, retomada e revogação aos serviços. |
++| Modify | `src/server/auth/users.ts` | Coordenar desativação/alteração de vínculo com os bloqueios e a ordem de registros da confirmação de emissão. |
++| Modify | `src/server/catalog/service.ts` | Escritas de preço/disponibilidade usam os mesmos registros e ordem de locks da confirmação. |
++| Modify | `src/server/premises/service.ts` | Publicar/retirar vigência coordena os mesmos registros da confirmação. |
++| Modify | `src/server/simulations/service.ts` | Revisões de rascunho e referência de emissão coordenadas com reserva/confirmação. |
++| Modify | `tests/integration/auth.test.ts` | Desativação concorrente com confirmação não publica indevidamente. |
++| Modify | `tests/integration/catalog.test.ts` | Mudança comercial concorrente usa a coordenação entregue no P11. |
++| Modify | `tests/integration/premises.test.ts` | Retirada/publicação concorrente impede confirmação com vigência antiga. |
++| Modify | `tests/integration/simulations.test.ts` | Edição concorrente impede confirmação com revisão antiga. |
+ | Create | `tests/support/failing-store.ts` | Falhas e barreiras controladas no armazenamento para testar interrupções reais do protocolo. |
+ | Create | `tests/integration/issuance.test.ts` | Idempotência, disputas de versão, conflitos e confirmação final. |
+ | Create | `tests/integration/issuance-recovery.test.ts` | Reinício, posse vencida, executor antigo e limpeza protegida. |
+ 
+ **Reserva e concorrência:** calcular o fingerprint a partir do comando normalizado, contexto do dono e revisões solicitadas. Após verificar o direito de acesso, procurar a chave existente antes de recalcular: mesma chave e comando de uma emissão pronta devolvem sua referência original, mesmo que o rascunho ou catálogo tenham evoluído; isso não autoriza reemitir nem alterar o documento. Conteúdo diferente conflita. Na reserva nova, usar unicidade e transação para obter ou criar a emissão, alocar número/versão e congelar conteúdo. Na confirmação, bloquear os registros de autorização e estado relevantes numa ordem estável, com IDs ordenados dentro do mesmo grupo; conferir vínculo, catálogo, premissas, rascunho, série atual e tentativa antes de atualizar o ponteiro. Escritas de preços, vigência e desativação devem coordenar os mesmos registros para não contornar a conferência. Transação nenhuma atravessa geração ou upload.
+ 
+-**Retomada:** cada aquisição de posse incrementa um contador; a chave do objeto pertence à tentativa, cujo registro existe antes do upload. A confirmação exige o contador atual. Executor antigo não conclui depois de perder a posse. Recuperação não adota objeto já marcado para limpeza; cria outra tentativa e chave. Limpeza marca a tentativa de forma coordenada, confere referências e preserva objetos de versões prontas ou tentativas ativas. O armazenamento só apaga depois dessa decisão. Duração da posse, limite de tentativas e concorrência são configurações positivas validadas, com valores de produção definidos pelo ensaio, sem depender do relógio do navegador.
+-
+-**Validade e links:** token de 32 bytes aleatórios em base64url, hash SHA-256 e cifra autenticada AES-256-GCM com IV aleatório; a cifra vincula empresa e versão para evitar troca de envelopes. Datas são convertidas uma vez no servidor. Internamente, `expiresAt` é o início exclusivo do dia seguinte à data final no fuso escolhido, e acesso exige `now < expiresAt`; a apresentação conserva a data final inclusiva. Usar a conversão de fuso do PostgreSQL e testar a fronteira, sem depender do fuso do processo Node. A documentação descreve [operações de datas e AT TIME ZONE](https://www.postgresql.org/docs/current/functions-datetime.html).
+-
+-**Verificação do pacote:** duas chamadas da mesma chave retornam uma emissão; chave com outro conteúdo conflita. Dois comandos substituindo a mesma versão não tornam ambos atuais. Mudança de preço, venda, retirada de premissas, revisão do rascunho ou desativação antes da confirmação impede publicação. Falha após upload não libera link; retomada não duplica versão; executor com posse antiga é recusado; limpeza não apaga PDF referenciado. A versão anterior permanece vigente até existir substituta pronta.
++**Retomada:** implementar integralmente a matriz normativa da seção 7, incluindo códigos persistidos e distinção entre retomada de `PENDING` e nova solicitação após `FAILED`. Cada aquisição de posse incrementa um contador; a chave do objeto pertence à tentativa, cujo registro existe antes do upload. A confirmação exige o contador atual. Executor antigo não conclui depois de perder a posse. Recuperação não adota objeto já marcado para limpeza; cria outra tentativa e chave. Limpeza marca a tentativa de forma coordenada, confere referências e preserva objetos de versões prontas ou tentativas ativas. O armazenamento só apaga depois dessa decisão. Duração da posse, limite de tentativas e concorrência são configurações positivas validadas, com valores de produção definidos pelo ensaio, sem depender do relógio do navegador.
++
++**Validade e links:** token de 32 bytes aleatórios em base64url, hash SHA-256 e cifra autenticada AES-256-GCM com IV aleatório; a cifra vincula empresa e versão para evitar troca de envelopes. A data final civil e o fuso são convertidos uma vez no servidor ao emitir, sem congelar o horário das consultas futuras. Internamente, `expiresAt` é o início exclusivo do dia seguinte à data final no fuso escolhido, e acesso exige `now < expiresAt`; a apresentação conserva a data final inclusiva. Usar a conversão de fuso do PostgreSQL e testar a fronteira, sem depender do fuso do processo Node. A documentação descreve [operações de datas e AT TIME ZONE](https://www.postgresql.org/docs/current/functions-datetime.html).
++
++**Verificação do pacote:** duas chamadas da mesma chave retornam uma emissão; chave com outro conteúdo conflita. Dois comandos substituindo a mesma versão não tornam ambos atuais. Mudança de preço, venda, retirada de premissas, revisão do rascunho ou desativação antes da confirmação impede publicação. Falha após upload não libera link; retomada não duplica versão; executor com posse antiga é recusado; limpeza não apaga PDF referenciado. Cobrir todas as linhas da matriz, incluindo última tentativa transitória, posse expirada no limite, falha permanente de PDF, consulta de executor ativo e perda de resposta após commit; `READY` nunca regride e `FAILED` nunca retoma pela mesma chave. A versão anterior só é marcada como substituída na confirmação da substituta pronta; expiração ou revogação independentes continuam bloqueando seu acesso mesmo durante falha/retomada da reemissão.
+ 
+ #### P12 — página externa e download controlado
+ 
+@@ -602,20 +768,26 @@
+ | Create | `src/app/p/[token]/pdf/route.ts` | Download do objeto autorizado, sem URL permanente ou recálculo. |
+ | Create | `tests/integration/public-proposal.test.ts` | Token, estados, fuso, headers e ausência de conteúdo indevido. |
+ 
+-**Verificação do pacote:** token ativo funciona sem sessão; inexistente não revela identidade; vencido/revogado/substituído não contém valores nem bytes do PDF. Página e download usam o mesmo instante e resolvedor. Testar validade no último instante do dia e no início do seguinte, inclusive fuso diferente do processo. Aplicar `no-store`, `no-referrer` e `noindex, nofollow`; conferir também proxy e logs no ambiente efetivo. Versão antiga não redireciona à nova. Não adicionar confirmação de leitura.
++**Verificação do pacote:** token ativo funciona sem sessão; inexistente não revela identidade; vencido/revogado/substituído não contém valores nem bytes do PDF. Página e download usam o mesmo resolvedor, mas cada requisição valida seu próprio horário atual do servidor. Somente testes comparativos podem injetar o mesmo instante; é proibido reutilizar o timestamp da abertura da página para autorizar o download. Testar abertura antes de `expiresAt` seguida de download após esse limite, que deve recusar os bytes. Testar validade no último instante do dia e no início do seguinte, inclusive fuso diferente do processo. Aplicar `no-store`, `no-referrer` e `noindex, nofollow`; conferir também proxy e logs no ambiente efetivo. Versão antiga não redireciona à nova. Testar vencimento e revogação da proposta anterior enquanto sua reemissão permanece `PENDING` ou falha: o conteúdo anterior já não pode ser liberado. Não adicionar confirmação de leitura.
+ 
+ #### P13 — integração das telas e jornadas
+ 
+ | Ação | Arquivo | Conteúdo e motivo |
+ |---|---|---|
+-| Create | `src/app/layout.tsx` | Estrutura global, idioma pt-BR e carregamento dos estilos. |
+-| Create | `src/app/globals.css` | Legibilidade, comparação de cenários e adaptação aos tamanhos de tela. |
+-| Create | `src/app/page.tsx` | Entrada que encaminha ao fluxo de login ou área autenticada. |
+-| Create | `src/app/not-found.tsx` | Resposta genérica para recurso não encontrado. |
+-| Create | `src/app/error.tsx` | Falhas recuperáveis sem exposição de detalhes técnicos sensíveis. |
+-| Create | `src/app/(staff)/layout.tsx` | Exigir sessão e compor navegação de acordo com o papel. |
+-| Create | `src/app/(staff)/page.tsx` | Acesso aos empreendimentos e atendimentos autorizados, sem novos indicadores de analytics. |
+-| Create | `src/components/app-shell.tsx` | Navegação e identidade comercial compartilhadas. |
++| Modify | `src/app/layout.tsx` | Acabamento da estrutura global criada no P01, conservando pt-BR. |
++| Modify | `src/app/globals.css` | Completar estilos mínimos do P01: legibilidade, cenários e responsividade. |
++| Modify | `src/app/page.tsx` | Conferir o redirecionador único de `/`: `/entrar` ou `/dashboard`. |
++| Modify | `src/app/not-found.tsx` | Completar estado genérico de recurso não encontrado criado no P01. |
++| Modify | `src/app/error.tsx` | Completar recuperação de erros criada no P01, sem detalhes sensíveis. |
++| Modify | `src/app/(staff)/layout.tsx` | Integrar navegação completa e estados da sessão já criada no P06. |
++| Modify | `src/app/(staff)/dashboard/page.tsx` | Acesso autorizado aos empreendimentos e atendimentos em `/dashboard`, sem analytics. |
++| Modify | `src/components/app-shell.tsx` | Concluir navegação/identidade comercial do shell criado no P06. |
++| Modify | `src/app/(staff)/admin/empreendimentos/[id]/page.tsx` | Integrar campo monetário e mensagens finais sem alterar regras do serviço. |
++| Modify | `src/components/premises-form.tsx` | Finalizar comparação e distinção visual dos conjuntos do pool. |
++| Modify | `src/app/(staff)/simulacoes/[id]/page.tsx` | Conectar formulário, comparação de cenários e controles recuperáveis aos serviços existentes. |
++| Modify | `src/app/(staff)/simulacoes/actions.ts` | Ajustar DTOs de formulário para preservar entradas e comunicar conflitos na UI integrada. |
++| Modify | `src/app/(staff)/propostas/[id]/page.tsx` | Integrar controles de emissão/retomada/revogação conforme a matriz normativa. |
++| Modify | `src/app/(staff)/propostas/actions.ts` | Conservar chave idempotente e traduzir ações permitidas na UI integrada. |
+ | Create | `src/components/money-field.tsx` | Entrada monetária pt-BR acessível, preservando texto validável. |
+ | Create | `src/components/scenario-comparison.tsx` | Comparar resultados com horizonte, unidades e motivos explícitos. |
+ | Create | `src/components/simulation-form.tsx` | Campos do atendimento e conservação de entradas após conflitos. |
+@@ -625,7 +797,7 @@
+ | Create | `tests/e2e/access-isolation.spec.ts` | Papéis, consultores distintos e empresas convidadas. |
+ | Create | `tests/e2e/public-proposal.spec.ts` | Consulta anônima e estados após revogação/substituição. |
+ 
+-**Verificação do pacote:** executar as cinco CUJs com dados controlados. O navegador não inventa nova chave em cada retry da mesma intenção; após recarregar, recupera a emissão associada ao rascunho autorizado. Conferir 1440 px, tablet e 390 px, teclado, nomes extensos, erros de campo, perda do pool e ausência de imagem. O administrador distingue os três conjuntos do pool. Geração da proposta e envio efetivo continuam ações distintas. Rodar build, typecheck, lint e os E2E afetados após a integração.
++**Verificação do pacote:** executar as cinco CUJs com dados controlados. O navegador não inventa nova chave em cada retry da mesma intenção; após recarregar, recupera a emissão associada ao rascunho autorizado. Conferir viewports fixos em CSS pixels: `1440×900` (largura 1440 px), `768×1024` em retrato e `390×844` (largura 390 px), teclado, nomes extensos, erros de campo, perda do pool e ausência de imagem. O administrador distingue os três conjuntos do pool. Geração da proposta e envio efetivo continuam ações distintas. Rodar build, typecheck, lint e os E2E afetados após a integração.
+ 
+ #### P14 — referências legadas e homologação assistida
+ 
+@@ -639,7 +811,43 @@
+ | Create | `docs/runbooks/implantacao-gradual.md` | Referência oficial, entrada de cada empreendimento, primeiro balanço e adoção. |
+ | Create | `docs/runbooks/feedback-beta.md` | Canal, registro manual, triagem, decisões e definições de atendimento/emissão/envio. |
+ 
+-**Verificação do pacote:** FINAL 07 usa receita `93145.03`, resultado `61173.28`, payback simples `97.69` e prazo `73.69` com 24 meses descontados. O calendário de 366 dias da origem é representado em fixture sintética de 2024, identificada como teste; não é definição do ano real. Esse caso não homologa o pool. O caso do primeiro empreendimento permanece pendente até receber inventário, despesas e regras aprovados; uma condição pendente não pode ser contada como aceite. Conferir fevereiro, fim de semana, diárias do FINAL 03 e os textos exigidos no desenho antes da publicação real. O script aceita dados estruturados revisados, com modo de prévia, e nunca modifica o XLSX.
++**Origem e limite das referências:** `FINAL 03` e `FINAL 07` são códigos comerciais da aba QUARTOS do arquivo [Calculadora investidores.xlsx](<../../Calculadora investidores.xlsx>), não números de cenários de ocupação. O [desenho do piloto, revisão 1, seções 6 e 7](<../../Desenho do piloto - Plataforma comercial hoteleira.md>) registra suas discrepâncias. Os dados abaixo foram lidos dos valores e fórmulas persistidos, sem executar Excel. O caso aritmético não transforma a planilha em motor nem homologa tarifas, calendário ou rateio do pool real.
++
++**FINAL 07 — comparação aritmética individual controlada:** QUARTOS!E12:P12 identifica unidade LUXO, investimento e venda de R$ 498.000,00. O comparativo reproduz CALCULADORA!B3, G6:J19 e K25:K30, usando tarifas proporcionais fixas de alta `1200 × 498000 / 628000 = 951.592356687898089…` BRL/noite e baixa `650 × 498000 / 628000 = 515.445859872611464…` BRL/noite, iguais nas quatro categorias em cada temporada. `1200` e `650` são as bases salvas do FINAL 09 em CALCULADORA!E33:F33; a razão é somente a origem dessa referência legada, não participação no pool. Registrar essas duas razões como entradas exatas da fixture e calcular com a precisão do motor, sem reproduzir dependência circular por MAX ou usar os valores de exibição arredondados como entrada.
++
++Cada período está incluído (`Simulação=1`). A tabela transcreve CALCULADORA!K6:N19 e a ocupação realista D6:D19; K/L são os rótulos legados, cuja interpretação de fim de semana está pendente. A receita de cada linha é `(K+L+M+N) × tarifa da temporada × ocupação`. Como as quatro tarifas são iguais, a troca de rótulos K/L não altera esta referência monetária, mas continua relevante para as tarifas reais distintas.
++
++| Período | Temporada | K (legado “Final de Semana”) | L (legado “Dias de Semana”) | M (feriados) | N (festivas) | Noites | Ocupação realista | Condomínio BRL |
++|---|---|---|---|---|---|---|---|---|
++| Janeiro | Alta | 16 | 14 | 1 | 0 | 31 | `0.8` | `1500.00` |
++| Fevereiro | Alta | 13 | 12 | 4 | 0 | 29 | `0.8` | `1500.00` |
++| Março 1 | Alta | 8 | 7 | 0 | 0 | 15 | `0.5` | `750.00` |
++| Março 2 | Baixa | 6 | 10 | 0 | 0 | 16 | `0.2` | `750.00` |
++| Abril | Baixa | 17 | 12 | 1 | 0 | 30 | `0.2` | `1500.00` |
++| Maio | Baixa | 16 | 15 | 0 | 0 | 31 | `0.2` | `1500.00` |
++| Junho | Baixa | 17 | 12 | 1 | 0 | 30 | `0.2` | `1500.00` |
++| Julho | Baixa | 18 | 13 | 0 | 0 | 31 | `0.2` | `1500.00` |
++| Agosto | Baixa | 17 | 14 | 0 | 0 | 31 | `0.2` | `1500.00` |
++| Setembro | Baixa | 17 | 12 | 1 | 0 | 30 | `0.2` | `1500.00` |
++| Outubro | Baixa | 16 | 14 | 1 | 0 | 31 | `0.2` | `1500.00` |
++| Novembro | Baixa | 16 | 13 | 1 | 0 | 30 | `0.2` | `1500.00` |
++| Dezembro 1 | Baixa | 11 | 9 | 0 | 0 | 20 | `0.5` | `750.00` |
++| Dezembro 2 | Alta | 3 | 3 | 1 | 4 | 11 | `0.8` | `750.00` |
++
++DESPESAS OPERACIONAIS!J5:L18 informa administração de `0.15` sobre receita em cada período e outras despesas `0.00`; o condomínio acima totaliza R$ 18.000,00. Não há custos de aquisição adicionais nesta fixture. Calcular `receita = soma(receitas dos períodos)`, `despesas = receita × 0.15 + 18000`, `resultado = receita − despesas`, `payback simples = 498000 × 12 / resultado` em meses e `payback ajustado = payback simples − 24 meses`. Saídas após arredondamento: receita R$ 93.145,03, despesas R$ 31.971,75, resultado R$ 61.173,28, payback simples de **97,69 meses** e ajustado de **73,69 meses**. As despesas e o resultado são calculados antes do arredondamento de exibição; subtrair os valores já exibidos pode diferir por um centavo. Esses resultados validam receita por período, administração sobre receita, despesas fixas, precisão e rótulo da dedução; não validam divisão coletiva de receitas. A fixture usa horizonte sintético bissexto de 2024, com as contagens legadas explicitadas como entradas de comparação; o calendário real de 2024 não é apresentado como origem das categorias K/L. Os testes civis do P02 geram as categorias de datas reais separadamente, sem importar as contagens legadas como regra. Para executar o motor neste comparativo, gerar as datas civis de `2024-01-01` a `2024-12-31`: Março 1 corresponde a `2024-03-01`–`2024-03-15`, Março 2 a `2024-03-16`–`2024-03-31`, Dezembro 1 a `2024-12-01`–`2024-12-20` e Dezembro 2 a `2024-12-21`–`2024-12-31`; os demais períodos são meses inteiros. Aplicar temporadas e ocupações da tabela. As categorias geradas pelo calendário de teste podem diferir de K/L/M/N da origem e não são comparadas como se fossem históricas; tarifas iguais por categoria preservam a receita e permitem validar as saídas monetárias sem burlar o contrato civil do motor.
++
++**FINAL 03 — conferência de cadastro e bloqueio de homologação:** QUARTOS!E8:H8 identifica unidade LUXO, investimento/venda de R$ 599.000,00. Os oito valores exatos de QUARTOS!I8:P8, em BRL/noite, são:
++
++| Temporada | Final de semana | Dia de semana | Feriado | Data festiva |
++|---|---|---|---|---|
++| Alta (I8:L8) | `500.00` | `400.00` | `500.00` | `600.00` |
++| Baixa (M8:P8) | `300.00` | `200.00` | `300.00` | `500.00` |
++
++Na mesma aba, FINAL 07 tem alta `1000/800/1000/900` e baixa `600/400/600/500` BRL/noite nessa ordem. FINAL 03 é o segundo maior investimento cadastrado, mas tem valores frequentemente pela metade e festivas acima de fim de semana. Esta saída de conferência valida transcrição, distinção entre ausência e valor explícito e identificação da divergência. Não existe resultado anual FINAL 03 homologado para usar como oráculo: nenhuma regra “corrige” as diárias automaticamente nem as substitui pelas tarifas proporcionais do FINAL 07. A publicação de dados reais fica pendente da confirmação/correção explícita pela empresa.
++
++**Calendário e homologação real:** a origem soma 366 noites e fevereiro soma 29 (`13+12+4`). O desenho do piloto registra que L coincide com sextas a domingos de 2026 nos dez meses inteiros, indício de K/L trocadas; 2026 tem 365 dias e fevereiro, 28. Registrar essa divergência, confirmar o ano e os dias de fim de semana (sexta a domingo é hipótese da origem; sábado/domingo é apenas padrão inicial configurável), cadastrar feriados/especiais reais e gerar cada data uma única vez. Não transportar fevereiro com 29 dias para 2026 nem renomear colunas silenciosamente. Conferir os textos exigidos pelo desenho do piloto: dedução explícita de 24 meses e prazo simples ao lado, ausência de garantia de rentabilidade, estimativa sujeita a premissas/ocupação/despesas, custos de aquisição conhecidos ou pendentes e proposta que não reserva a unidade.
++
++**Verificação do pacote:** o caso real do primeiro empreendimento continua pendente até receber inventário completo, despesas, pesos pelo valor de referência e regras aprovados; uma condição pendente não pode contar como aceite. A comparação FINAL 07, a pendência FINAL 03 e o pool real têm estados separados no roteiro. O script aceita dados estruturados revisados, com modo de prévia, e nunca modifica o XLSX. Em homologação visual/E2E, repetir os viewports `1440×900`, `768×1024` retrato e `390×844` em CSS pixels; 1440 px e 390 px são larguras.
+ 
+ #### P15 — operação, diagnóstico, backup e restauração
+ 
+@@ -648,30 +856,40 @@
+ | Create | `Dockerfile` | Imagem Node reproduzível com fontes, build e runtime da aplicação. |
+ | Create | `.dockerignore` | Excluir segredos, arquivos privados e material de teste da imagem. |
+ | Create | `src/server/diagnostics.ts` | Logs estruturados com correlação e supressão de dados sensíveis. |
+-| Create | `src/server/maintenance.ts` | Bloqueio operacional de emissão/consulta que não seja revertido junto de um backup. |
++| Create | `src/server/maintenance.ts` | Modos externos de bloqueio total, recuperação restrita e operação normal, sem regressão pelo backup. |
+ | Create | `src/app/api/health/route.ts` | Saúde sem dados comerciais ou segredos, para verificação do ambiente. |
+ | Create | `scripts/seed-demo.ts` | Criar apenas dados de demonstração identificados em ambiente permitido. |
+ | Create | `scripts/diagnose-issuance.ts` | Consultar andamento e falhas pelo identificador interno, sem devolver token ou interessado. |
+ | Create | `scripts/clean-orphans.ts` | Limpeza com prévia e seleção de tentativas elegíveis pelo serviço de recuperação. |
+ | Create | `scripts/backup.ts` | Exportar banco e manifesto consistente de objetos privados com hashes. |
+ | Create | `scripts/restore-check.ts` | Restaurar e ensaiar recuperação somente em banco e armazenamento isolados. |
++| Create | `scripts/reconcile-restored-access.ts` | Invalidar todas as sessões/tokens, exigir recuperação de credenciais e reconciliar identidade, e-mail, vínculo e papel antes de liberar acesso. |
+ | Create | `scripts/reconcile-restored-links.ts` | Conferir ou invalidar links restaurados antes da reabertura, com auditoria e prévia. |
+ | Create | `scripts/measure-beta.ts` | Registrar tempos, memória e tamanho de artefatos em cenários controlados de homologação. |
+ | Create | `tests/integration/diagnostics.test.ts` | Assegurar localização de falhas sem credenciais, token ou dados pessoais nos registros. |
+-| Create | `tests/integration/restore.test.ts` | Conteúdo, arquivos, chaves e proteção contra regressão de estado dos links. |
++| Create | `tests/integration/restore.test.ts` | Conteúdo/PDF e backup anterior à revogação/substituição, troca de senha e desativação de vínculo; nenhuma autorização indevida revive. |
+ | Create | `tests/integration/historical-proposal.test.ts` | Leitura do formato emitido após mudanças de regras e mensagens. |
+ | Create | `tests/integration/maintenance.test.ts` | Bloqueio antes de acesso ao conteúdo e independência do estado restaurado. |
+ | Create | `docs/runbooks/operacao.md` | Contatos, horários, backups, consumo, diagnóstico e dependências do ambiente. |
+-| Create | `docs/runbooks/restauracao.md` | Destinos, chaves, ensaio e conferência/invalidação dos links antes de reabrir. |
++| Create | `docs/runbooks/restauracao.md` | Sessões/tokens invalidados, recuperação de credenciais, reconciliação de vínculos e links e autorização documentada antes de reabrir. |
+ | Create | `docs/runbooks/contingencia.md` | Autoridade de pausa/retomada e condições para usar uma referência alternativa. |
+ | Create | `docs/runbooks/publicacao.md` | Migrações, homologação separada, bloqueios, logs/proxy e verificações do ambiente efetivo. |
++| Modify | `src/server/env.ts` | Configuração externa de manutenção, reconciliação e fluxo restrito de recuperação. |
++| Modify | `src/server/auth/config.ts` | Bloquear login/ativação no modo total e só permitir recuperação de identidade reconciliada no modo restrito. |
++| Modify | `src/server/auth/context.ts` | Negar operação comercial em manutenção ou com credencial/vínculo aguardando revalidação. |
++| Modify | `src/server/auth/recovery.ts` | Invalidar tokens restaurados e exigir recuperação para credenciais marcadas, sem aceitar senha antiga. |
++| Modify | `src/server/auth/users.ts` | Aplicar confirmação auditada de vínculos restaurados sem autoridade sobre senha/e-mail global. |
++| Modify | `src/server/proposals/issue.ts` | Conferir manutenção antes da reserva e novamente na confirmação. |
++| Modify | `src/server/proposals/recovery.ts` | Impedir aquisição/avanço de posse enquanto houver manutenção. |
++| Modify | `src/server/proposals/public.ts` | Conferir manutenção antes de resolver/devolver conteúdo ou permitir leitura do PDF. |
++| Modify | `tests/integration/auth.test.ts` | Modos total/restrito/normal e credenciais/vínculos não reconciliados. |
+ | Create | `README.md` | Setup, execução, scripts, variáveis, limites e acesso aos documentos de operação. |
+ 
+ **Backup consistente:** obter um snapshot de leitura do banco para o dump e para coletar as referências de arquivos do mesmo ponto. Manter a conexão desse snapshot durante o dump; copiar os objetos imutáveis referenciados e conferir tamanho/hash antes de marcar o conjunto como concluído. Backup não concluído não conta como recuperável. Credenciais e chave de cifra são guardadas separadamente dos dados. As ferramentas de banco necessárias são pré-requisitos documentados; não instalar serviços nem contratar armazenamento por iniciativa da execução.
+ 
+-**Restauração:** bloquear tráfego público e novas emissões no ambiente antes de restaurar. A configuração de manutenção é externa ao conjunto restaurado e deve ser verificada também na inicialização. Restaurar em destino isolado, conferir snapshot/PDF e testar backup anterior a uma revogação e a uma substituição. Se registros confiáveis permitirem reconciliar as restrições posteriores ao backup, reaplicá-las; caso contrário, invalidar os links cujo estado não pode ser demonstrado. O modo conservador é invalidar todos os links restaurados. Reabrir somente depois da verificação e autorização operacional; reenviar novas versões pelo fluxo normal quando necessário.
+-
+-**Diagnóstico e capacidade:** comandos aceitam identificadores internos e usam os serviços autorizados; não são endpoints públicos. Conectar o bloqueio de manutenção ao serviço de emissão e ao resolvedor público antes de ler ou publicar conteúdo; o healthcheck informa manutenção sem revelar dados. Acompanhar última execução bem-sucedida e falhas/ausência de backup, além de saúde e erros de emissão. Registrar a medição do ensaio antes de definir concorrência, duração da posse e tolerâncias de recuperação. Não prometer plantão, custo ou capacidade sem acordo. Testes não usam banco operacional, nem o script de ensaio aceita esse destino.
++**Restauração:** bloquear tráfego público, login normal, seleção de vínculo e toda operação autenticada no ambiente antes de restaurar, inclusive em requisições já em andamento antes da confirmação. A configuração de manutenção é externa ao conjunto restaurado e deve ser verificada também na inicialização. Restaurar em destino isolado, conferir snapshot/PDF e testar backup anterior a uma revogação e a uma substituição. Se registros confiáveis permitirem reconciliar as restrições posteriores ao backup, reaplicá-las; caso contrário, invalidar os links cujo estado não pode ser demonstrado. O modo conservador é invalidar todos os links restaurados. Executar também `reconcile-restored-access`: invalidar todas as sessões autenticadas e tokens restaurados sem exceção; exigir recuperação de todas as credenciais restauradas pelo titular e reconciliar e-mails, vínculos, papéis e desativações. O modo conservador suspende todos os vínculos restaurados até confirmação auditada da empresa e bloqueia recuperação se o e-mail atual não for comprovado. Sessões novas só autorizam vínculos revalidados. O modo restrito permite apenas recuperação de titulares com e-mail reconciliado; não reabre uso comercial. Ensaiar backup anterior à desativação de vínculo e à redefinição de senha: sessão restaurada, senha antiga e vínculo desativado continuam recusados após a liberação parcial dos demais. Reabrir somente depois do relatório de reconciliação, verificação e autorização operacional; reenviar novas versões pelo fluxo normal quando necessário.
++
++**Diagnóstico e capacidade:** comandos aceitam identificadores internos e usam os serviços autorizados; não são endpoints públicos. Conectar os modos de manutenção ao mecanismo de login/recuperação, `requireActor`, serviço de emissão, retomada e resolvedor público antes de ler ou publicar conteúdo; o healthcheck informa manutenção sem revelar dados. Acompanhar última execução bem-sucedida e falhas/ausência de backup, além de saúde e erros de emissão. Registrar a medição do ensaio antes de definir concorrência, duração da posse e tolerâncias de recuperação. Não prometer plantão, custo ou capacidade sem acordo. Testes não usam banco operacional, nem o script de ensaio aceita esse destino.
+ 
+ ### Verification Plan
+ 
+@@ -687,12 +905,13 @@
+ | `npm run lint` | Sem violações das fronteiras e regras do projeto. |
+ | `npm run build` | Build Node completo com os ativos/fontes necessários incluídos. |
+ | `npm run db:generate`, `npm run db:migrate` | Migração registrada e aplicação em destino deliberadamente escolhido; sem migração automática ao iniciar a aplicação. |
+-| `npm run bootstrap:admin`, `npm run invite:company` | Provisionamento do operador, sem cadastro público, sem credenciais em logs e com isolamento comprovado. |
++| `npm run bootstrap:admin`, `npm run invite:company` | Provisionamento por vínculo e ativação pelo e-mail do titular, sem senha definida pelo operador, cadastro público ou tokens em logs. |
+ | `npm run prepare:initial-data` | Prévia da carga assistida, validação de pendências e nenhuma publicação automática. |
+ | `npm run seed:demo` | Dados identificados e recusa de ambiente operacional por padrão. |
+ | `npm run diagnose:issuance`, `npm run clean:orphans` | Diagnóstico mínimo e limpeza com prévia, preservando objetos referenciados/ativos. |
+ | `npm run backup`, `npm run restore:check` | Conjunto íntegro e restauração demonstrada em destino isolado. |
+-| `npm run reconcile:links` | Prévia e aplicação auditada das restrições após restauração, com manutenção ativa. |
++| `npm run reconcile:links` | Prévia e aplicação auditada das restrições públicas após restauração, com manutenção ativa. |
++| `npm run reconcile:access` | Invalidar sessões/tokens, reconciliar identidade/vínculo/papel e exigir recuperação de credenciais antes de liberar acesso normal. |
+ | `npm run measure:beta` | Evidência representativa de tempos, memória e armazenamento antes da liberação real. |
+ 
+ Cada pacote implementa primeiro os casos que demonstram seu comportamento e executa as verificações apropriadas antes de avançar. Repetir a suíte completa quando houver integração transversal, antes da entrega, ou quando novas mudanças/falhas justificarem. Não criar uma meta percentual de cobertura sem relação com os riscos: a exigência é cobrir as regras, falhas e jornadas explicitadas neste documento.
+@@ -708,9 +927,11 @@
+ | Complemento em relação ao brief | Decisão e aprovação registradas |
+ |---|---|
+ | Base tecnológica e componentes | O brief tratava a stack como proposta. O solicitante escolheu TypeScript/Next.js e PostgreSQL em DT-01 e aprovou os componentes e dependências do bloco técnico. |
+-| Dependências auxiliares | SDK S3, fontkit, proteção de importações de servidor e PDF.js foram explicitados no plano detalhado e aprovados com ele; não representam novos módulos comerciais. |
++| Dependências auxiliares | SDK S3, fontkit, proteção de importações de servidor e PDF.js aprovados no plano; `pg`, adaptador Better Auth, `sharp`, SMTP com `nodemailer` e tipos diretos explicitados na resolução autorizada de 2026-11-14. |
+ | Detalhes de interfaces e operação | Seleção de vínculo permitido na entrada, limite de validade exclusivo, recuperação com posse temporária e procedimentos de manutenção foram detalhados nos blocos aprovados. Não criam API pública de integração, cadastro público ou automação de comunicação. |
+ 
+-Não há acréscimo de arquitetura, interface externa ou dependência sem decisão coberta pelas aprovações acima. As alternativas preservam seus motivos e limites, sem atribuir ao autor justificativas que ele não informou. O próximo passo recomendado é uma revisão independente deste desenho com a skill egm-review; a revisão Goldfish anterior avaliou o conceito e não equivale a essa revisão do documento formal.
++As decisões de resolução de 2026-11-14 prevalecem sobre descrições históricas de redefinição administrativa e ausência de e-mail de identidade: senha global pertence ao titular e ativação/recuperação exige entrega ao seu endereço verificado. Isso não automatiza comunicação comercial. As alternativas preservam seus motivos e limites, sem atribuir ao autor justificativas que ele não informou.
++
++A revisão formal em cinco etapas foi concluída em 2026-11-14; seus 15 achados estão mapeados no relatório de resolução. A presente atualização fecha os contratos e critérios documentais indicados, sem declarar implementação, execução de testes do produto ou homologação dos dados reais. O RFC, o brief, o rascunho anterior e os pareceres são registros históricos, não cópias sincronizadas deste desenho formal.
+ 
+ *Drafted with EGM*
+--- /dev/null
++++ b/.gitignore
+@@ -0,0 +1,35 @@
++# Dependências instaladas e saídas de build
++node_modules/
++.next/
++out/
++dist/
++build/
++*.tsbuildinfo
++
++# Segredos locais; o modelo de configuração é versionado
++.env
++.env.*
++!.env.example
++
++# Armazenamento privado e PDFs emitidos (não são fontes do projeto)
++/storage/
++/private-storage/
++/generated/**/*.pdf
++/artifacts/proposals/**/*.pdf
++
++# Backups e exportações locais; migrações SQL continuam versionadas
++/backups/
++*.backup
++*.dump
++*.bak
++
++# Resultados locais das verificações
++coverage/
++playwright-report/
++test-results/
++
++# Gerados obrigatórios para instalação e migrações reproduzíveis
++!package-lock.json
++!drizzle/
++!drizzle/meta/
++!drizzle/meta/**
