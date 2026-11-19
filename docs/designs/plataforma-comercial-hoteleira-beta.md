@@ -13,6 +13,8 @@ Em 2026-11-14, o solicitante autorizou a resolução dos 15 achados da [revisão
 
 Em 2026-11-15, o solicitante autorizou os cinco ajustes A-01–A-05 da [segunda revisão consolidada](../reviews/beta-2026-11-14-r2/consolidated_review_report.md), começando pelo catálogo de mensagens. O [registro desta resolução](../reviews/beta-2026-11-14-r2/goldfish_review_report.md) documenta a ordem das fases, a autorização de ajustes de pagamento, a publicação por modelo e as correções editoriais. A política de prejuízo continua obrigatória nos dois modos de pool, conforme esclarecimento do solicitante.
 
+Em 2026-11-18, o solicitante autorizou iniciar a implementação pelo P01, com dados controlados.
+
 ## Overview
 
 A Plataforma Comercial Hoteleira apoiará equipes que comercializam unidades de condo-hotéis no Brasil. O consultor conduz a simulação durante o atendimento e compartilha uma proposta por link e PDF. O investidor consulta o material sem criar conta. O administrador mantém os dados comerciais, as regras e as premissas oficiais de cada empreendimento.

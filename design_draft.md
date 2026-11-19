@@ -9,8 +9,6 @@ Documento iniciado a partir do [brief aprovado](concepts_brief.md), publicado co
 
 O [desenho do piloto, revisão 1](<Desenho do piloto - Plataforma comercial hoteleira.md>) é a base funcional. O [plano de implementação, revisão 1](<Plano de implementacao - Plataforma comercial hoteleira.md>) é uma proposta técnica anterior; seus arquivos e serviços ainda não existem. Este documento incorpora as recomendações conceituais aprovadas e distingue as decisões já aprovadas das condições operacionais ainda por confirmar.
 
-Em 2026-11-18, o solicitante autorizou iniciar a implementação pelo P01, com dados controlados.
-
 ## Overview
 
 A Plataforma Comercial Hoteleira apoiará equipes que comercializam unidades de condo-hotéis no Brasil. O consultor conduz a simulação durante o atendimento e compartilha uma proposta por link e PDF. O investidor consulta o material sem criar conta. O administrador mantém os dados comerciais, as regras e as premissas oficiais de cada empreendimento.
