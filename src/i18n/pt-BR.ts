@@ -76,6 +76,7 @@ export const ptBR = {
   "issue.NOT_RECONCILED": "Os percentuais precisam somar exatamente 100%.",
   "issue.UNKNOWN_WEIGHT": "Peso não informado. Pesos desconhecidos não são considerados zero.",
   "issue.UNEXPECTED_FIELD": "Campo não aplicável a este modelo.",
+  "issue.MISSING_TARIFF": "Falta a diária necessária para esta categoria, temporada e tipo de dia.",
 
   // Indicadores
   "metric.unavailable.PARTIAL_YEAR": "Indisponível: requer um ano-base completo de premissas.",

@@ -15,6 +15,12 @@ type Brand<T, B extends string> = T & { readonly [brand]: { readonly [K in B]: t
 export type DecimalText = Brand<string, "DecimalText">;
 /** Moeda BRL não negativa com exatamente duas casas (`1234.56`). */
 export type MoneyText = DecimalText & Brand<string, "MoneyText">;
+/**
+ * Valor de cálculo não negativo com a precisão de entrada do motor
+ * (até 18 dígitos inteiros e 12 fracionários, compatível com numeric(30,12)).
+ * Não é arredondado para duas casas: o arredondamento pertence à apresentação.
+ */
+export type AmountText = DecimalText & Brand<string, "AmountText">;
 /** Fração entre 0 e 1 inclusive, até 12 casas (`0.75`). */
 export type RateText = DecimalText & Brand<string, "RateText">;
 /** Data civil gregoriana existente, `YYYY-MM-DD`. */
@@ -81,7 +87,8 @@ export interface Tariff {
   readonly categoryId: string;
   readonly seasonId: string;
   readonly dayCategory: DayCategory;
-  readonly dailyRate: MoneyText;
+  /** Diária de cálculo (BRL/noite), sem arredondamento de apresentação. */
+  readonly dailyRate: AmountText;
 }
 
 /** Bases suportadas para custos percentuais. */
@@ -93,7 +100,7 @@ export interface FixedCost {
   readonly id: string;
   readonly name: string;
   readonly kind: "FIXED";
-  readonly amount: MoneyText | null;
+  readonly amount: AmountText | null;
   readonly periodIds: readonly string[];
 }
 
@@ -206,7 +213,7 @@ export interface Retention {
 export interface InvestorCost {
   readonly id: string;
   readonly name: string;
-  readonly amount: MoneyText | null;
+  readonly amount: AmountText | null;
   readonly periodIds: readonly string[];
 }
 

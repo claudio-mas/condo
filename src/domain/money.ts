@@ -1,5 +1,5 @@
 import Decimal from "decimal.js";
-import type { DecimalText, MoneyText, RateText } from "./contracts";
+import type { AmountText, DecimalText, MoneyText, RateText } from "./contracts";
 import { type FieldIssue, type IssueCode, type Result, fail, inputInvalid, ok } from "./errors";
 
 /**
@@ -38,13 +38,27 @@ export function isMoneyText(value: unknown): value is MoneyText {
   return typeof value === "string" && MONEY_TEXT.test(value);
 }
 
+/**
+ * Limites de numeric(30,12) para um decimal canônico: até 18 dígitos inteiros
+ * (OUT_OF_RANGE) e 12 fracionários (TOO_MANY_DECIMALS). `null` se dentro dos limites.
+ */
+export function decimalLimitIssue(value: DecimalText | string): "OUT_OF_RANGE" | "TOO_MANY_DECIMALS" | null {
+  const [integer = "", fraction = ""] = value.replace(/^-/, "").split(".");
+  if (integer.length > DECIMAL_MAX_INTEGER_DIGITS) return "OUT_OF_RANGE";
+  if (fraction.length > DECIMAL_MAX_FRACTION_DIGITS) return "TOO_MANY_DECIMALS";
+  return null;
+}
+
 /** Fração canônica entre 0 e 1 inclusive, com até 12 casas. */
 export function isRateText(value: unknown): value is RateText {
-  if (!isDecimalText(value)) return false;
-  const fraction = value.split(".")[1] ?? "";
-  if (fraction.length > DECIMAL_MAX_FRACTION_DIGITS) return false;
+  if (!isDecimalText(value) || decimalLimitIssue(value) !== null) return false;
   const d = new Dec(value);
   return d.gte(0) && d.lte(1);
+}
+
+/** Valor de cálculo não negativo dentro dos limites de numeric(30,12). */
+export function isAmountText(value: unknown): value is AmountText {
+  return isDecimalText(value) && decimalLimitIssue(value) === null && !value.startsWith("-");
 }
 
 function invalid(code: IssueCode): Result<never> {

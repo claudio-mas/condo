@@ -18,7 +18,8 @@ export type IssueCode =
   | "UNKNOWN_REFERENCE"
   | "NOT_RECONCILED"
   | "UNKNOWN_WEIGHT"
-  | "UNEXPECTED_FIELD";
+  | "UNEXPECTED_FIELD"
+  | "MISSING_TARIFF";
 
 export const ISSUE_CODES: readonly IssueCode[] = [
   "REQUIRED",
@@ -36,6 +37,7 @@ export const ISSUE_CODES: readonly IssueCode[] = [
   "NOT_RECONCILED",
   "UNKNOWN_WEIGHT",
   "UNEXPECTED_FIELD",
+  "MISSING_TARIFF",
 ];
 
 export type FieldPath = readonly (string | number)[];
@@ -43,6 +45,8 @@ export type FieldPath = readonly (string | number)[];
 export interface FieldIssue {
   readonly path: FieldPath;
   readonly code: IssueCode;
+  /** Identificadores que localizam a pendência (ex.: categoria, temporada e tipo de dia). */
+  readonly params?: Readonly<Record<string, string>>;
 }
 
 export type DomainErrorCode = "INPUT_INVALID";

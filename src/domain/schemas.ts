@@ -10,7 +10,7 @@ import {
   SCENARIO_KEYS,
 } from "./contracts";
 import { type FieldIssue, type FieldPath, type Result, fail, inputInvalid, isIssueCode, ok } from "./errors";
-import { DECIMAL_MAX_FRACTION_DIGITS, Dec, isDecimalText, isMoneyText } from "./money";
+import { Dec, decimalLimitIssue, isDecimalText, isMoneyText } from "./money";
 
 /**
  * Validação das entradas do domínio em duas etapas:
@@ -57,14 +57,17 @@ const civilDate = z.string().superRefine((value, ctx) => {
 
 const money = z.string().refine(isMoneyText, "INVALID_FORMAT");
 
-function fractionDigits(value: string): number {
-  return value.split(".")[1]?.length ?? 0;
-}
-
+/** Decimal canônico dentro dos limites de numeric(30,12): 18 inteiros, 12 fracionários. */
 const decimalText = z
   .string()
   .refine(isDecimalText, { message: "INVALID_FORMAT", abort: true })
-  .refine((value) => fractionDigits(value) <= DECIMAL_MAX_FRACTION_DIGITS, "TOO_MANY_DECIMALS");
+  .superRefine((value, ctx) => {
+    const issue = decimalLimitIssue(value);
+    if (issue) ctx.addIssue({ code: "custom", message: issue });
+  });
+
+/** Valor de cálculo não negativo (tarifas, custos): precisão do motor, sem duas casas. */
+const amount = decimalText.refine((value) => !value.startsWith("-"), "OUT_OF_RANGE");
 
 /** Fração entre 0 e 1 inclusive. */
 const rate = decimalText.refine((value) => {
@@ -110,7 +113,7 @@ const tariffSchema = z.strictObject({
   categoryId: id,
   seasonId: id,
   dayCategory: z.enum(DAY_CATEGORIES),
-  dailyRate: money,
+  dailyRate: amount,
 });
 
 const costSchema = z.discriminatedUnion("kind", [
@@ -118,7 +121,7 @@ const costSchema = z.discriminatedUnion("kind", [
     id,
     name,
     kind: z.literal("FIXED"),
-    amount: money.nullable(),
+    amount: amount.nullable(),
     periodIds: z.array(id).min(1, "REQUIRED"),
   }),
   z.strictObject({
@@ -176,7 +179,7 @@ const calculationInputSchema = z.discriminatedUnion("model", [
     participation: participationSchema,
     lossPolicy: z.enum(LOSS_POLICIES),
     retentions: z.array(z.strictObject({ id, name, rate })),
-    investorCosts: z.array(z.strictObject({ id, name, amount: money.nullable(), periodIds: z.array(id).min(1, "REQUIRED") })),
+    investorCosts: z.array(z.strictObject({ id, name, amount: amount.nullable(), periodIds: z.array(id).min(1, "REQUIRED") })),
   }),
 ]);
 
@@ -227,7 +230,7 @@ function toFieldIssues(raw: unknown, issues: readonly z.core.$ZodIssue[]): Field
 function dedupe(issues: readonly FieldIssue[]): FieldIssue[] {
   const seen = new Set<string>();
   return issues.filter((issue) => {
-    const key = `${issue.path.join(".")}|${issue.code}`;
+    const key = `${issue.path.join(".")}|${issue.code}|${JSON.stringify(issue.params ?? {})}`;
     if (seen.has(key)) return false;
     seen.add(key);
     return true;
@@ -262,6 +265,46 @@ function checkReferences(
     if (!known.has(value)) issues.push({ path: pathOf(index), code: "UNKNOWN_REFERENCE" });
   });
   checkUnique(ids, (value) => value, pathOf, issues);
+}
+
+/**
+ * Cobertura estática das tarifas necessárias (sem classificar data a data, o que
+ * pertence ao calendário do P02). Para cada categoria em uso e cada temporada com
+ * período incluído no horizonte, exige:
+ * - WEEKDAY, salvo se todos os sete dias forem final de semana;
+ * - WEEKEND, se houver dias de final de semana configurados;
+ * - HOLIDAY, se algum feriado que não seja data especial cair em período incluído da temporada;
+ * - SPECIAL, se alguma data especial cair em período incluído da temporada.
+ * Tarifa zero explícita satisfaz a cobertura.
+ */
+function missingTariffIssues(input: StructuralInput, categoryIds: readonly string[]): FieldIssue[] {
+  const { calendar } = input;
+  const included = new Set(input.horizon.includedPeriodIds);
+  const specialDates = new Set(calendar.specialDates);
+  const holidays = calendar.holidays.filter((date) => !specialDates.has(date));
+  const weekendDays = new Set(calendar.weekendDays);
+  const available = new Set(input.tariffs.map((t) => `${t.categoryId}|${t.seasonId}|${t.dayCategory}`));
+
+  const required: { seasonId: string; dayCategory: (typeof DAY_CATEGORIES)[number] }[] = [];
+  for (const season of calendar.seasons) {
+    const periods = calendar.periods.filter((p) => p.seasonId === season.id && included.has(p.id));
+    if (periods.length === 0) continue;
+    const within = (date: string) => periods.some((p) => p.start <= date && date <= p.end);
+    if (weekendDays.size < 7) required.push({ seasonId: season.id, dayCategory: "WEEKDAY" });
+    if (weekendDays.size > 0) required.push({ seasonId: season.id, dayCategory: "WEEKEND" });
+    if (holidays.some(within)) required.push({ seasonId: season.id, dayCategory: "HOLIDAY" });
+    if (calendar.specialDates.some(within)) required.push({ seasonId: season.id, dayCategory: "SPECIAL" });
+  }
+
+  const issues: FieldIssue[] = [];
+  for (const categoryId of new Set(categoryIds)) {
+    for (const { seasonId, dayCategory } of required) {
+      if (!available.has(`${categoryId}|${seasonId}|${dayCategory}`)) {
+        issues.push({ path: ["tariffs"], code: "MISSING_TARIFF", params: { categoryId, seasonId, dayCategory } });
+      }
+    }
+  }
+  return issues;
 }
 
 function semanticIssues(input: StructuralInput): FieldIssue[] {
@@ -348,6 +391,10 @@ function semanticIssues(input: StructuralInput): FieldIssue[] {
     (i) => ["investment", "acquisitionCosts", i, "id"],
     issues,
   );
+
+  const categoryIds =
+    input.model === "INDIVIDUAL" ? [input.unit.categoryId] : input.inventory.map((item) => item.categoryId);
+  issues.push(...missingTariffIssues(input, categoryIds));
 
   if (input.model === "INDIVIDUAL") {
     checkUnique(input.unavailableDates, String, (i) => ["unavailableDates", i], issues);

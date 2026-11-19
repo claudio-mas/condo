@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { CalculationInput, IndividualCalculationInput, PoolCalculationInput } from "@/domain/contracts";
-import type { IssueCode } from "@/domain/errors";
+import { ISSUE_CODES, type IssueCode } from "@/domain/errors";
+import { isMessageKey } from "@/i18n";
 import {
   validateCalculationInput,
   validateCivilDate,
@@ -41,6 +42,10 @@ function baseInput(): Json {
     tariffs: [
       { categoryId: "std", seasonId: "high", dayCategory: "WEEKDAY", dailyRate: "450.00" },
       { categoryId: "std", seasonId: "low", dayCategory: "WEEKDAY", dailyRate: "0.00" },
+      { categoryId: "std", seasonId: "high", dayCategory: "WEEKEND", dailyRate: "520.00" },
+      { categoryId: "std", seasonId: "high", dayCategory: "HOLIDAY", dailyRate: "600.00" },
+      { categoryId: "std", seasonId: "high", dayCategory: "SPECIAL", dailyRate: "900.00" },
+      { categoryId: "std", seasonId: "low", dayCategory: "WEEKEND", dailyRate: "300.00" },
     ],
     costs: [
       { id: "c1", name: "Condomínio", kind: "FIXED", amount: "800.00", periodIds: ["p1", "p2", "p3"] },
@@ -256,6 +261,34 @@ describe("zero, ausência e valor inválido são distintos", () => {
     expect(issuesOf(set(individualInput(), path, null))).toContainEqual({ path: "tariffs.1.dailyRate", code: "INVALID_FORMAT" });
   });
 
+  it("tarifa de cálculo aceita a precisão de numeric(30,12) sem arredondar", () => {
+    // FINAL 07: 1200 × 498000 / 628000 = 951.592356687898089… (12 casas armazenáveis)
+    const proportional = "951.592356687898";
+    const result = validateCalculationInput(set(individualInput(), ["tariffs", 0, "dailyRate"], proportional));
+    expect(result.ok).toBe(true);
+    if (result.ok) expect(result.value.tariffs[0]?.dailyRate).toBe(proportional);
+    const low = "515.445859872611";
+    expect(issuesOf(set(individualInput(), ["tariffs", 1, "dailyRate"], low))).toEqual([]);
+  });
+
+  it("valores de cálculo de custos também não são limitados a duas casas", () => {
+    const result = validateCalculationInput(set(individualInput(), ["costs", 0, "amount"], "1500.123456789012"));
+    expect(result.ok).toBe(true);
+    const pool = set(poolInput(), ["investorCosts", 0, "amount"], "100.5");
+    expect(validateCalculationInput(pool).ok).toBe(true);
+  });
+
+  it("tarifa e custos de cálculo negativos são recusados", () => {
+    expect(issuesOf(set(individualInput(), ["tariffs", 0, "dailyRate"], "-1"))).toContainEqual({
+      path: "tariffs.0.dailyRate",
+      code: "OUT_OF_RANGE",
+    });
+    expect(issuesOf(set(individualInput(), ["costs", 0, "amount"], "-0.01"))).toContainEqual({
+      path: "costs.0.amount",
+      code: "OUT_OF_RANGE",
+    });
+  });
+
   it("peso desconhecido no pool não vira zero", () => {
     const raw = set(poolInput(), ["participation", "participants", 1, "weight"], null);
     expect(issuesOf(raw)).toContainEqual({ path: "participation.participants.1.weight", code: "UNKNOWN_WEIGHT" });
@@ -343,5 +376,133 @@ describe("calendário — datas civis e períodos", () => {
       path: "horizon.includedPeriodIds",
       code: "REQUIRED",
     });
+  });
+});
+
+describe("tarifas necessárias — cobertura estática por temporada incluída", () => {
+  function missing(raw: unknown) {
+    const result = validateCalculationInput(raw);
+    if (result.ok) return [];
+    return result.error.issues.filter((issue) => issue.code === "MISSING_TARIFF").map((issue) => issue.params);
+  }
+
+  function withoutTariff(raw: Json, seasonId: string, dayCategory: string): Json {
+    raw.tariffs = (raw.tariffs as Json[]).filter((t) => !(t.seasonId === seasonId && t.dayCategory === dayCategory));
+    return raw;
+  }
+
+  it("fixture completa não tem pendências de tarifa", () => {
+    expect(missing(individualInput())).toEqual([]);
+    expect(missing(poolInput())).toEqual([]);
+  });
+
+  it("recusa lista de tarifas vazia indicando cada combinação necessária", () => {
+    const issues = missing(set(individualInput(), ["tariffs"], []));
+    expect(issues).toHaveLength(6);
+    expect(issues).toContainEqual({ categoryId: "std", seasonId: "high", dayCategory: "WEEKDAY" });
+    expect(issues).toContainEqual({ categoryId: "std", seasonId: "high", dayCategory: "WEEKEND" });
+    expect(issues).toContainEqual({ categoryId: "std", seasonId: "high", dayCategory: "HOLIDAY" });
+    expect(issues).toContainEqual({ categoryId: "std", seasonId: "high", dayCategory: "SPECIAL" });
+    expect(issues).toContainEqual({ categoryId: "std", seasonId: "low", dayCategory: "WEEKDAY" });
+    expect(issues).toContainEqual({ categoryId: "std", seasonId: "low", dayCategory: "WEEKEND" });
+  });
+
+  it("recusa ausência de tarifa de final de semana quando há dias de final de semana", () => {
+    expect(missing(withoutTariff(individualInput(), "low", "WEEKEND"))).toEqual([
+      { categoryId: "std", seasonId: "low", dayCategory: "WEEKEND" },
+    ]);
+  });
+
+  it("não exige tarifa de final de semana sem dias de final de semana configurados", () => {
+    const raw = withoutTariff(withoutTariff(individualInput(), "low", "WEEKEND"), "high", "WEEKEND");
+    expect(missing(raw)).toHaveLength(2);
+    expect(missing(set(raw, ["calendar", "weekendDays"], []))).toEqual([]);
+  });
+
+  it("exige tarifa de feriado na temporada em cujo intervalo o feriado cai", () => {
+    const raw = individualInput();
+    (raw.calendar as Json).holidays = ["2026-01-01", "2026-12-25", "2026-04-21"];
+    expect(missing(raw)).toEqual([{ categoryId: "std", seasonId: "low", dayCategory: "HOLIDAY" }]);
+  });
+
+  it("feriado que também é data especial exige apenas a tarifa especial (precedência)", () => {
+    const raw = individualInput();
+    (raw.calendar as Json).holidays = ["2026-12-31"];
+    withoutTariff(raw, "high", "HOLIDAY");
+    expect(missing(raw)).toEqual([]);
+  });
+
+  it("exige tarifa de data especial quando há data especial na temporada", () => {
+    expect(missing(withoutTariff(individualInput(), "high", "SPECIAL"))).toEqual([
+      { categoryId: "std", seasonId: "high", dayCategory: "SPECIAL" },
+    ]);
+  });
+
+  it("temporada só de períodos fora do horizonte não exige tarifas", () => {
+    const raw = withoutTariff(withoutTariff(individualInput(), "low", "WEEKDAY"), "low", "WEEKEND");
+    expect(missing(raw)).toHaveLength(2);
+    expect(missing(set(raw, ["horizon", "includedPeriodIds"], ["p1", "p3"]))).toEqual([]);
+  });
+
+  it("feriado em período excluído do horizonte não exige tarifa de feriado", () => {
+    const raw = set(individualInput(), ["horizon", "includedPeriodIds"], ["p2"]);
+    expect(missing(raw)).toEqual([]);
+  });
+
+  it("individual exige a categoria da unidade; pool exige cada categoria do inventário", () => {
+    expect(missing(set(individualInput(), ["unit", "categoryId"], "lux"))).toHaveLength(6);
+    const pool = set(poolInput(), ["inventory"], [
+      { categoryId: "std", units: 40 },
+      { categoryId: "lux", units: 10 },
+    ]);
+    const issues = missing(pool);
+    expect(issues).toHaveLength(6);
+    expect(issues.every((params) => params?.categoryId === "lux")).toBe(true);
+  });
+
+  it("tarifa zero explícita satisfaz a cobertura", () => {
+    const raw = individualInput();
+    for (const tariff of raw.tariffs as Json[]) tariff.dailyRate = "0";
+    expect(missing(raw)).toEqual([]);
+    expect(validateCalculationInput(raw).ok).toBe(true);
+  });
+});
+
+describe("limites de numeric(30,12) para decimais de cálculo", () => {
+  const max = "999999999999999999.999999999999";
+
+  it("aceita 18 dígitos inteiros e 12 fracionários", () => {
+    expect(issuesOf(set(individualInput(), ["tariffs", 0, "dailyRate"], max))).toEqual([]);
+    expect(issuesOf(set(poolInput(), ["participation", "participants", 0, "weight"], max))).toEqual([]);
+  });
+
+  it("recusa 19 dígitos inteiros", () => {
+    const tooBig = "1000000000000000000";
+    expect(issuesOf(set(individualInput(), ["tariffs", 0, "dailyRate"], tooBig))).toContainEqual({
+      path: "tariffs.0.dailyRate",
+      code: "OUT_OF_RANGE",
+    });
+    expect(issuesOf(set(poolInput(), ["participation", "participants", 0, "weight"], tooBig))).toContainEqual({
+      path: "participation.participants.0.weight",
+      code: "OUT_OF_RANGE",
+    });
+  });
+
+  it("recusa 13 casas fracionárias", () => {
+    const tooPrecise = "951.5923566878981";
+    expect(issuesOf(set(individualInput(), ["tariffs", 0, "dailyRate"], tooPrecise))).toContainEqual({
+      path: "tariffs.0.dailyRate",
+      code: "TOO_MANY_DECIMALS",
+    });
+    expect(issuesOf(set(individualInput(), ["scenarios", 0, "occupancy", 0, "rate"], "0.1234567890123"))).toContainEqual({
+      path: "scenarios.0.occupancy.0.rate",
+      code: "TOO_MANY_DECIMALS",
+    });
+  });
+});
+
+describe("catálogo de mensagens", () => {
+  it("tem mensagem pt-BR para cada código de erro de campo", () => {
+    expect(ISSUE_CODES.filter((code) => !isMessageKey(`issue.${code}`))).toEqual([]);
   });
 });
