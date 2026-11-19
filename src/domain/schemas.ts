@@ -267,33 +267,71 @@ function checkReferences(
   checkUnique(ids, (value) => value, pathOf, issues);
 }
 
+type DayCategoryValue = (typeof DAY_CATEGORIES)[number];
+
+/** Dia seguinte de uma data civil `YYYY-MM-DD`, por aritmética de calendário (sem horário local). */
+function nextCivilDate(date: string): string {
+  let year = Number(date.slice(0, 4));
+  let month = Number(date.slice(5, 7));
+  let day = Number(date.slice(8, 10)) + 1;
+  if (day > daysInMonth(year, month)) {
+    day = 1;
+    month += 1;
+    if (month > 12) {
+      month = 1;
+      year += 1;
+    }
+  }
+  return `${String(year).padStart(4, "0")}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+}
+
+/** Dia da semana ISO (1 = segunda … 7 = domingo) de uma data civil, algoritmo de Sakamoto. */
+function isoWeekdayOf(date: string): number {
+  const offsets = [0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4];
+  const month = Number(date.slice(5, 7));
+  const day = Number(date.slice(8, 10));
+  let year = Number(date.slice(0, 4));
+  if (month < 3) year -= 1;
+  const sunday0 =
+    (year + Math.floor(year / 4) - Math.floor(year / 100) + Math.floor(year / 400) + offsets[month - 1]! + day) % 7;
+  return sunday0 === 0 ? 7 : sunday0;
+}
+
 /**
- * Cobertura estática das tarifas necessárias (sem classificar data a data, o que
- * pertence ao calendário do P02). Para cada categoria em uso e cada temporada com
- * período incluído no horizonte, exige:
- * - WEEKDAY, salvo se todos os sete dias forem final de semana;
- * - WEEKEND, se houver dias de final de semana configurados;
- * - HOLIDAY, se algum feriado que não seja data especial cair em período incluído da temporada;
- * - SPECIAL, se alguma data especial cair em período incluído da temporada.
- * Tarifa zero explícita satisfaz a cobertura.
+ * Tarifas necessárias: para cada categoria em uso e cada temporada, exige somente
+ * os tipos de dia efetivamente presentes nas datas dos períodos incluídos no
+ * horizonte, classificando cada data uma única vez com a precedência
+ * SPECIAL > HOLIDAY > WEEKEND > WEEKDAY. Tarifa zero explícita satisfaz.
+ * (Validação de cobertura apenas; contagens e horizonte são do calendário do P02.)
  */
 function missingTariffIssues(input: StructuralInput, categoryIds: readonly string[]): FieldIssue[] {
   const { calendar } = input;
+  const year = `${calendar.baseYear}-`;
   const included = new Set(input.horizon.includedPeriodIds);
   const specialDates = new Set(calendar.specialDates);
-  const holidays = calendar.holidays.filter((date) => !specialDates.has(date));
-  const weekendDays = new Set(calendar.weekendDays);
+  const holidays = new Set(calendar.holidays);
+  const weekendDays = new Set<number>(calendar.weekendDays);
   const available = new Set(input.tariffs.map((t) => `${t.categoryId}|${t.seasonId}|${t.dayCategory}`));
 
-  const required: { seasonId: string; dayCategory: (typeof DAY_CATEGORIES)[number] }[] = [];
+  const classify = (date: string): DayCategoryValue => {
+    if (specialDates.has(date)) return "SPECIAL";
+    if (holidays.has(date)) return "HOLIDAY";
+    if (weekendDays.has(isoWeekdayOf(date))) return "WEEKEND";
+    return "WEEKDAY";
+  };
+
+  const required: { seasonId: string; dayCategory: DayCategoryValue }[] = [];
   for (const season of calendar.seasons) {
-    const periods = calendar.periods.filter((p) => p.seasonId === season.id && included.has(p.id));
-    if (periods.length === 0) continue;
-    const within = (date: string) => periods.some((p) => p.start <= date && date <= p.end);
-    if (weekendDays.size < 7) required.push({ seasonId: season.id, dayCategory: "WEEKDAY" });
-    if (weekendDays.size > 0) required.push({ seasonId: season.id, dayCategory: "WEEKEND" });
-    if (holidays.some(within)) required.push({ seasonId: season.id, dayCategory: "HOLIDAY" });
-    if (calendar.specialDates.some(within)) required.push({ seasonId: season.id, dayCategory: "SPECIAL" });
+    const present = new Set<DayCategoryValue>();
+    for (const period of calendar.periods) {
+      if (period.seasonId !== season.id || !included.has(period.id)) continue;
+      // Períodos malformados já geram issue própria; só percorre os do ano-base.
+      if (!period.start.startsWith(year) || !period.end.startsWith(year) || period.end < period.start) continue;
+      for (let date = period.start; date <= period.end; date = nextCivilDate(date)) present.add(classify(date));
+    }
+    for (const dayCategory of DAY_CATEGORIES) {
+      if (present.has(dayCategory)) required.push({ seasonId: season.id, dayCategory });
+    }
   }
 
   const issues: FieldIssue[] = [];

@@ -379,7 +379,7 @@ describe("calendário — datas civis e períodos", () => {
   });
 });
 
-describe("tarifas necessárias — cobertura estática por temporada incluída", () => {
+describe("tarifas necessárias — cobertura por temporada incluída", () => {
   function missing(raw: unknown) {
     const result = validateCalculationInput(raw);
     if (result.ok) return [];
@@ -504,5 +504,75 @@ describe("limites de numeric(30,12) para decimais de cálculo", () => {
 describe("catálogo de mensagens", () => {
   it("tem mensagem pt-BR para cada código de erro de campo", () => {
     expect(ISSUE_CODES.filter((code) => !isMessageKey(`issue.${code}`))).toEqual([]);
+  });
+});
+
+describe("tarifas necessárias — somente categorias presentes nas datas incluídas", () => {
+  type Day = "WEEKDAY" | "WEEKEND" | "HOLIDAY" | "SPECIAL";
+
+  function singlePeriod(start: string, end: string, tariffs: Day[], calendar: Json = {}): Json {
+    const raw = individualInput();
+    raw.calendar = {
+      ...(raw.calendar as Json),
+      weekendDays: [6, 7],
+      holidays: [],
+      specialDates: [],
+      periods: [{ id: "p1", start, end, seasonId: "high" }],
+      ...calendar,
+    };
+    raw.horizon = { includedPeriodIds: ["p1"] };
+    raw.scenarios = [{ key: "REALISTIC", occupancy: [{ periodId: "p1", rate: "0.5" }] }];
+    raw.costs = [];
+    raw.tariffs = tariffs.map((dayCategory) => ({ categoryId: "std", seasonId: "high", dayCategory, dailyRate: "100" }));
+    return raw;
+  }
+
+  function missingDays(raw: unknown): string[] {
+    const result = validateCalculationInput(raw);
+    if (result.ok) return [];
+    return result.error.issues.filter((i) => i.code === "MISSING_TARIFF").map((i) => i.params?.dayCategory ?? "");
+  }
+
+  it("período só com dia útil (segunda 2026-01-05) exige apenas WEEKDAY", () => {
+    const raw = singlePeriod("2026-01-05", "2026-01-05", ["WEEKDAY"]);
+    expect(validateCalculationInput(raw).ok).toBe(true);
+    expect(missingDays(singlePeriod("2026-01-05", "2026-01-05", []))).toEqual(["WEEKDAY"]);
+  });
+
+  it("período só com final de semana (domingo 2026-01-04) exige apenas WEEKEND", () => {
+    const raw = singlePeriod("2026-01-04", "2026-01-04", ["WEEKEND"]);
+    expect(validateCalculationInput(raw).ok).toBe(true);
+    expect(missingDays(singlePeriod("2026-01-03", "2026-01-04", []))).toEqual(["WEEKEND"]);
+  });
+
+  it("período só com data especial exige apenas SPECIAL, mesmo se também for feriado e fim de semana", () => {
+    const calendar = { specialDates: ["2026-01-04"], holidays: ["2026-01-04"] };
+    expect(validateCalculationInput(singlePeriod("2026-01-04", "2026-01-04", ["SPECIAL"], calendar)).ok).toBe(true);
+    expect(missingDays(singlePeriod("2026-01-04", "2026-01-04", [], calendar))).toEqual(["SPECIAL"]);
+  });
+
+  it("feriado em dia útil prevalece sobre WEEKDAY naquela data", () => {
+    const calendar = { holidays: ["2026-01-05"] };
+    expect(validateCalculationInput(singlePeriod("2026-01-05", "2026-01-05", ["HOLIDAY"], calendar)).ok).toBe(true);
+  });
+
+  it("dia da semana conforme configuração do empreendimento (sexta como fim de semana)", () => {
+    // 2026-01-02 é sexta-feira
+    const calendar = { weekendDays: [5, 6, 7] };
+    expect(validateCalculationInput(singlePeriod("2026-01-02", "2026-01-02", ["WEEKEND"], calendar)).ok).toBe(true);
+    expect(missingDays(singlePeriod("2026-01-02", "2026-01-02", ["WEEKEND"]))).toEqual(["WEEKDAY"]);
+  });
+
+  it("semana completa exige WEEKDAY e WEEKEND; atravessa fim de mês e 29 de fevereiro bissexto", () => {
+    expect(missingDays(singlePeriod("2026-01-26", "2026-02-01", [])).sort()).toEqual(["WEEKDAY", "WEEKEND"]);
+    const raw = singlePeriod("2024-02-29", "2024-02-29", ["WEEKDAY"], { baseYear: 2024 });
+    // 2024-02-29 foi quinta-feira
+    expect(validateCalculationInput(raw).ok).toBe(true);
+  });
+
+  it("tarifa zero explícita continua válida", () => {
+    const raw = singlePeriod("2026-01-05", "2026-01-05", ["WEEKDAY"]);
+    (raw.tariffs as Json[])[0]!.dailyRate = "0";
+    expect(validateCalculationInput(raw).ok).toBe(true);
   });
 });
